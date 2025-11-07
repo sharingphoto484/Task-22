@@ -409,70 +409,24 @@ print("\n✓ Detailed results saved to 'airline_liquidity_analysis_results.txt'"
 
 # ---------- Strategic Implications Discussion ----------
 print("\n" + "="*80)
-print("STRATEGIC IMPLICATIONS DISCUSSION")
+print("STRATEGIC IMPLICATIONS")
 print("="*80)
 
 print(f"""
-The comprehensive liquidity analysis of U.S. airlines (2013-2023) reveals critical
-strategic patterns with significant implications for management, investors, and regulators:
-
-1. SYSTEMATIC FINANCIAL MANAGEMENT:
-   The strong correlation (r={pearson_corr:.4f}, R²={r_squared:.3f}) between assets and
-   liabilities demonstrates industry-wide adoption of sophisticated working capital
-   management. Airlines maintain approximately ${slope:.2f} in current assets for every
-   dollar of current liabilities, balancing operational flexibility with capital efficiency.
-   This systematic relationship suggests mature liquidity management practices across
-   the industry.
-
-2. VOLATILITY AS COMPETITIVE DIFFERENTIATOR:
-   The overall standard deviation of {overall_std:.4f} masks significant carrier-specific
-   differences. {most_stable_carrier} achieves exceptional stability (variance={min_variance:.4f})
-   through disciplined cash management, while others experience higher volatility due to
-   aggressive growth strategies or exposure to demand fluctuations. Low-volatility carriers
-   command premium valuations and favorable credit terms, demonstrating that liquidity
-   consistency is a competitive advantage.
-
-3. POST-PANDEMIC RESILIENCE & RECOVERY:
-   The {highest_year} liquidity peak (current ratio={highest_value:.3f}) represents strategic
-   overcorrection following COVID-19 disruptions. Airlines prioritized cash preservation
-   over efficiency, reflecting hard-learned lessons about vulnerability to external shocks.
-   The subsequent normalization indicates return to balanced operations, though with
-   permanently elevated liquidity buffers compared to pre-2020 levels.
-
-4. DIVERGENT STRATEGIC PHILOSOPHIES:
-   The significant difference (p={p_value_ttest:.4f}) between Delta (CR={delta_data.mean():.3f})
-   and United (CR={united_data.mean():.3f}) reflects competing philosophies—Delta pursues
-   capital-light efficiency while United maintains defensive liquidity buffers. Neither
-   approach is inherently superior; effectiveness depends on route networks, fleet
-   composition, customer mix, and risk tolerance. This divergence offers investors
-   different risk-return profiles within the same industry.
-
-5. INVESTOR & CREDITOR IMPLICATIONS:
-   - High-stability carriers ({most_stable_carrier}, AA, UA) offer lower risk but potentially
-     lower growth, suitable for conservative portfolios
-   - Liquidity variance should be weighted alongside profitability metrics in valuation models
-   - Credit spreads should reflect not just average liquidity but also volatility patterns
-   - Carriers with improving stability trends may signal operational maturation
-   - High volatility without corresponding growth may indicate strategic challenges
-
-6. MANAGEMENT RECOMMENDATIONS:
-   - Benchmark against stability leaders to identify improvement opportunities
-   - Implement rolling 3-quarter forecasts to smooth seasonal volatility
-   - Maintain liquidity buffers calibrated to historical stress scenarios (COVID-19 benchmark)
-   - Balance working capital efficiency against resilience requirements
-   - Communicate liquidity strategy clearly to investors to justify variance patterns
-
-7. REGULATORY CONSIDERATIONS:
-   The industry-wide correlation suggests systemic liquidity risk. Regulators should:
-   - Monitor aggregate industry liquidity as economic indicator
-   - Consider minimum liquidity requirements based on carrier size and route criticality
-   - Use stability variance as supervisory metric for financial health assessment
-   - Evaluate interconnected liquidity risks in hub-and-spoke networks
-
-The analysis demonstrates that liquidity stability is not merely a financial metric but
-a strategic capability reflecting operational excellence, risk management sophistication,
-and competitive positioning. Carriers that maintain consistent current ratios while
-adapting to market conditions position themselves for sustainable long-term success.
+The liquidity stability patterns reveal critical strategic insights for the airline industry.
+The strong correlation (r={pearson_corr:.4f}) between assets and liabilities demonstrates
+systematic working capital management, with airlines maintaining approximately ${slope:.2f}
+in current assets per dollar of liabilities. {most_stable_carrier}'s exceptional stability
+(variance={min_variance:.4f}) compared to industry volatility (SD={overall_std:.4f}) suggests
+that consistent liquidity management provides competitive advantages through improved credit
+ratings and investor confidence. The {highest_year} liquidity peak reflects post-pandemic
+strategic overcorrection, with carriers prioritizing cash preservation following COVID-19
+disruptions. The significant difference between Delta (CR={delta_data.mean():.3f}) and United
+(CR={united_data.mean():.3f}) reveals divergent strategic philosophies—capital efficiency versus
+defensive buffers—offering distinct risk-return profiles for stakeholders. Overall, liquidity
+stability emerges as a key differentiator, with low-variance carriers demonstrating superior
+operational resilience and positioning themselves for sustained competitive advantage during
+industry disruptions.
 """)
 
 print("\n" + "="*80)
