@@ -3,22 +3,23 @@
 # ==========================================
 # Hospital Readmission Statistical Analysis
 # ==========================================
-# Requirements: pandas, numpy, matplotlib, seaborn, scikit-learn, scipy, statsmodels
+# Requirements: pandas, numpy, matplotlib, seaborn, scikit-learn, scipy, statsmodels, pymc, arviz
 # Input files: train_df.csv, test_df.csv, sample_submission.csv (in same directory)
 # Output files: boxplot_days_by_diagnosis.png
 #
 # Purpose: Comprehensive statistical and predictive modeling analysis of hospital
 #          readmission outcomes including logistic regression, ROC analysis,
-#          chi-square tests, causal inference, and quantile regression
+#          chi-square tests, causal inference, Bayesian MCMC, and quantile regression
 #
 # Key Analyses:
 #   1. Logistic regression with z-score standardized predictors
 #   2. ROC curve analysis with Youden J statistic optimization
 #   3. Chi-square test of independence (gender vs readmitted)
 #   4. Causal coefficient estimation via multiple logistic regression
-#   5. Quantile regression at 90th percentile (τ=0.90)
-#   6. Boxplot visualization of hospitalization duration by diagnosis
-#   7. Standardized coefficient comparison across predictors
+#   5. Bayesian inference with MCMC sampling for posterior distributions
+#   6. Quantile regression at 90th percentile (τ=0.90)
+#   7. Boxplot visualization of hospitalization duration by diagnosis
+#   8. Standardized coefficient comparison across predictors
 # ==========================================
 
 import pandas as pd
@@ -191,9 +192,87 @@ causal_coef = logit_result.params['days_in_hospital']
 print(f"\nCausal coefficient of days_in_hospital: {causal_coef:.4f}")
 
 # ============================================================================
-# 6. QUANTILE REGRESSION (τ = 0.90)
+# 6. BAYESIAN INFERENCE WITH MCMC SAMPLING
 # ============================================================================
-print("\n[6] Performing quantile regression at τ=0.90...")
+print("\n[6] Performing Bayesian inference with MCMC sampling...")
+
+# ---------- Import PyMC and ArviZ Libraries ----------
+import pymc as pm
+import arviz as az
+
+# ---------- Prepare Data for Bayesian Model ----------
+# Use the same standardized predictors as the frequentist logistic regression
+X_bayes = X_train_scaled_df.values
+y_bayes = y_train.values
+
+# ---------- Define Bayesian Logistic Regression Model ----------
+# Using non-informative priors for all parameters
+print("Building Bayesian logistic regression model with non-informative priors...")
+
+with pm.Model() as bayesian_model:
+    # Non-informative priors for coefficients (Normal with large variance)
+    # Using Normal(0, 10) as non-informative priors
+    beta_age = pm.Normal('beta_age', mu=0, sigma=10)
+    beta_num_procedures = pm.Normal('beta_num_procedures', mu=0, sigma=10)
+    beta_days_in_hospital = pm.Normal('beta_days_in_hospital', mu=0, sigma=10)
+    beta_comorbidity_score = pm.Normal('beta_comorbidity_score', mu=0, sigma=10)
+
+    # Intercept with non-informative prior
+    alpha = pm.Normal('alpha', mu=0, sigma=10)
+
+    # Linear combination
+    logit_p = (alpha +
+               beta_age * X_bayes[:, 0] +
+               beta_num_procedures * X_bayes[:, 1] +
+               beta_days_in_hospital * X_bayes[:, 2] +
+               beta_comorbidity_score * X_bayes[:, 3])
+
+    # Likelihood (Bernoulli logistic regression)
+    y_obs = pm.Bernoulli('y_obs', logit_p=logit_p, observed=y_bayes)
+
+    # ---------- Perform MCMC Sampling ----------
+    # Draw 5,000 posterior samples using NUTS sampler
+    print("Drawing 5,000 posterior samples using MCMC (this may take a few minutes)...")
+    trace = pm.sample(draws=5000,
+                      tune=1000,  # Warm-up samples
+                      random_seed=42,
+                      progressbar=True,
+                      return_inferencedata=True)
+
+# ---------- Extract Posterior Statistics ----------
+print("\nBayesian MCMC Sampling Complete!")
+
+# Get posterior summary statistics
+posterior_summary = az.summary(trace, var_names=['beta_days_in_hospital'])
+print("\nPosterior Summary for days_in_hospital coefficient:")
+print(posterior_summary)
+
+# ---------- Extract Posterior Mean and Credible Interval ----------
+# Extract posterior samples for days_in_hospital
+posterior_samples_dih = trace.posterior['beta_days_in_hospital'].values.flatten()
+
+# Calculate posterior mean
+posterior_mean_dih = np.mean(posterior_samples_dih)
+
+# Calculate 95% credible interval
+credible_interval = np.percentile(posterior_samples_dih, [2.5, 97.5])
+ci_lower = credible_interval[0]
+ci_upper = credible_interval[1]
+
+print(f"\nPosterior mean of days_in_hospital coefficient: {posterior_mean_dih:.4f}")
+print(f"95% Credible Interval: [{ci_lower:.4f}, {ci_upper:.4f}]")
+
+# ---------- Display All Posterior Means ----------
+print("\nPosterior means for all coefficients:")
+for var in ['beta_age', 'beta_num_procedures', 'beta_days_in_hospital', 'beta_comorbidity_score']:
+    post_samples = trace.posterior[var].values.flatten()
+    post_mean = np.mean(post_samples)
+    print(f"  {var}: {post_mean:.4f}")
+
+# ============================================================================
+# 7. QUANTILE REGRESSION (τ = 0.90)
+# ============================================================================
+print("\n[7] Performing quantile regression at τ=0.90...")
 
 # ---------- Define Quantile Regression Model ----------
 # Dependent variable: days_in_hospital
@@ -217,9 +296,9 @@ quant_coef = quantreg_result.params['comorbidity_score']
 print(f"\nCoefficient of comorbidity_score at τ=0.90: {quant_coef:.4f}")
 
 # ============================================================================
-# 7. BOXPLOT VISUALIZATION
+# 8. BOXPLOT VISUALIZATION
 # ============================================================================
-print("\n[7] Creating boxplot visualization...")
+print("\n[8] Creating boxplot visualization...")
 
 # ---------- Create Boxplot of Days by Diagnosis ----------
 plt.figure(figsize=(14, 6))
@@ -250,9 +329,9 @@ print(f"Lowest median: {lowest_median:.3f} ({median_by_diagnosis.idxmin()})")
 print(f"Difference: {median_difference:.3f}")
 
 # ============================================================================
-# 8. IDENTIFY HIGHEST STANDARDIZED COEFFICIENT
+# 9. IDENTIFY HIGHEST STANDARDIZED COEFFICIENT
 # ============================================================================
-print("\n[8] Identifying predictor with highest standardized coefficient...")
+print("\n[9] Identifying predictor with highest standardized coefficient...")
 
 # ---------- Extract Standardized Coefficients ----------
 # Compare among: days_in_hospital, comorbidity_score, num_procedures
@@ -273,7 +352,7 @@ max_predictor = max(coef_dict, key=coef_dict.get)
 print(f"\nPredictor with highest standardized coefficient: {max_predictor}")
 
 # ============================================================================
-# 9. SUMMARY OF RESULTS
+# 10. SUMMARY OF RESULTS
 # ============================================================================
 print("\n" + "="*80)
 print("SUMMARY OF RESULTS")
@@ -292,6 +371,11 @@ print(f"Chi-square statistic: {chi2:.3f}")
 # ---------- Causal Analysis Results ----------
 print("\n--- Causal Coefficient Estimation ---")
 print(f"Causal coefficient of days_in_hospital: {causal_coef:.4f}")
+
+# ---------- Bayesian MCMC Results ----------
+print("\n--- Bayesian Inference (MCMC) ---")
+print(f"Posterior mean of days_in_hospital coefficient: {posterior_mean_dih:.4f}")
+print(f"95% Credible Interval: [{ci_lower:.4f}, {ci_upper:.4f}]")
 
 # ---------- Quantile Regression Results ----------
 print("\n--- Quantile Regression (τ=0.90) ---")

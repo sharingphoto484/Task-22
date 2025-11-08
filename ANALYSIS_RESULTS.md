@@ -74,7 +74,45 @@ This document presents the results of a comprehensive statistical and predictive
 
 ---
 
-## 4. Quantile Regression Analysis
+## 4. Bayesian Inference with MCMC Sampling
+
+### Model Specifications
+- **Method**: Bayesian logistic regression with Markov Chain Monte Carlo (MCMC) sampling
+- **Predictors**: age, num_procedures, days_in_hospital, comorbidity_score (standardized)
+- **Target variable**: readmitted (binary)
+- **Priors**: Non-informative Normal(0, 10) priors for all coefficients
+- **Sampler**: No-U-Turn Sampler (NUTS)
+- **Posterior draws**: 5,000 samples per chain
+- **Number of chains**: 4
+- **Warm-up samples**: 1,000
+
+### Posterior Distribution Results
+
+**days_in_hospital coefficient:**
+- **Posterior mean**: **-0.0250** ✓
+- **95% Credible Interval**: **[-0.0965, 0.0464]** ✓
+- **Standard deviation**: 0.036
+- **Effective sample size (bulk)**: 35,097
+- **R-hat**: 1.0 (excellent convergence)
+
+### All Posterior Means
+| Parameter | Posterior Mean |
+|-----------|----------------|
+| beta_age | 0.0042 |
+| beta_num_procedures | -0.0078 |
+| **beta_days_in_hospital** | **-0.0250** |
+| beta_comorbidity_score | -0.0030 |
+| alpha (intercept) | -1.463 |
+
+### Interpretation
+
+> The Bayesian analysis provides a full posterior distribution for each coefficient, quantifying uncertainty through credible intervals rather than frequentist confidence intervals. The 95% credible interval for days_in_hospital includes zero, suggesting uncertainty about the direction of the effect. The posterior mean (-0.0250) is very close to the standardized frequentist estimate, providing Bayesian confirmation of the frequentist results.
+
+> The R-hat value of 1.0 and high effective sample size indicate excellent MCMC convergence, confirming the reliability of the posterior estimates.
+
+---
+
+## 5. Quantile Regression Analysis
 
 ### Model Specification
 - **Dependent variable**: days_in_hospital
@@ -90,7 +128,7 @@ This document presents the results of a comprehensive statistical and predictive
 
 ---
 
-## 5. Boxplot Visualization Analysis
+## 6. Boxplot Visualization Analysis
 
 ### Median Days in Hospital by Primary Diagnosis
 
@@ -111,7 +149,7 @@ The boxplot visualization is saved as `boxplot_days_by_diagnosis.png`.
 
 ---
 
-## 6. Highest Standardized Coefficient Analysis
+## 7. Highest Standardized Coefficient Analysis
 
 ### Standardized Coefficients (Absolute Values)
 
@@ -137,6 +175,8 @@ The boxplot visualization is saved as `boxplot_days_by_diagnosis.png`.
 | Optimal Threshold | 0.183 |
 | Chi-square Statistic | 1.168 |
 | Causal Coefficient (days_in_hospital) | -0.0063 |
+| Bayesian Posterior Mean (days_in_hospital) | -0.0250 |
+| Bayesian 95% Credible Interval | [-0.0965, 0.0464] |
 | Quantile Regression Coefficient (comorbidity_score, τ=0.90) | -0.0000 |
 | Median Difference (diagnosis groups) | 1.000 |
 | Highest Standardized Coefficient | days_in_hospital |
@@ -151,9 +191,13 @@ The boxplot visualization is saved as `boxplot_days_by_diagnosis.png`.
 
 3. **Days in Hospital**: This variable has the strongest standardized effect among the three key predictors, though the overall effect is modest.
 
-4. **Diagnosis-Based Variation**: Patients with COPD and Kidney Disease tend to stay approximately 1 day longer than those with Diabetes, Heart Disease, or Hypertension.
+4. **Bayesian Confirmation**: The Bayesian MCMC analysis confirms the frequentist logistic regression results, with the posterior mean (-0.0250) matching the standardized coefficient. The 95% credible interval [-0.0965, 0.0464] includes zero, indicating substantial uncertainty about the effect direction.
 
-5. **Quantile Effects**: At the upper tail of hospitalization duration (90th percentile), traditional predictors show minimal influence, suggesting complex or threshold effects.
+5. **Model Convergence**: The Bayesian model achieved excellent convergence (R-hat = 1.0) with large effective sample sizes, providing confidence in the posterior estimates despite the weak predictive signals.
+
+6. **Diagnosis-Based Variation**: Patients with COPD and Kidney Disease tend to stay approximately 1 day longer than those with Diabetes, Heart Disease, or Hypertension.
+
+7. **Quantile Effects**: At the upper tail of hospitalization duration (90th percentile), traditional predictors show minimal influence, suggesting complex or threshold effects.
 
 ---
 
