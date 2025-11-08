@@ -1,0 +1,28 @@
+{
+  "logistic_regression": {
+    "auc": 0.526,
+    "optimal_threshold": 0.599,
+    "precision_at_optimal": 0.63,
+    "recall_at_optimal": 0.575,
+    "tpr_at_optimal": 0.575,
+    "fpr_at_optimal": 0.511,
+    "most_influential_predictor": "Popularity",
+    "most_influential_coefficient": 0.0708
+  },
+  "anova": {
+    "f_statistic": 0.279,
+    "p_value": 0.8916,
+    "significant": "No",
+    "mean_difference_highest_lowest": 0.0
+  },
+  "causal_analysis": {
+    "causal_coefficient": 0.1053,
+    "p_value": 0.1847
+  },
+  "gender_ttest": {
+    "t_statistic": 1.135,
+    "p_value": 0.2564,
+    "male_mean": 3.074,
+    "female_mean": 2.972
+  }
+}
