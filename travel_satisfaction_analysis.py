@@ -248,6 +248,8 @@ plt.grid(alpha=0.3)
 plt.tight_layout()
 plt.savefig('roc_curve.png', dpi=300, bbox_inches='tight')
 print("Saved roc_curve.png")
+print("Displaying ROC curve...")
+plt.show()
 plt.close()
 
 # ---------- Summary JSON Output ----------
@@ -317,6 +319,34 @@ print(f"   - P-value: {summary['causal_analysis']['p_value']}")
 print("\n5. GENDER-BASED T-TEST:")
 print(f"   - T-statistic: {summary['gender_ttest']['t_statistic']}")
 print(f"   - P-value: {summary['gender_ttest']['p_value']}")
+
+print("\n" + "="*60)
+print("STRATEGIC DISCUSSION: Tourism Planning Implications")
+print("="*60)
+print("\n")
+strategic_discussion = """Although the statistical analysis revealed no significant differences in satisfaction
+ratings across destination types (Beach, City, Historical, Nature), this finding itself
+carries important strategic implications for tourism planning. The homogeneity in traveler
+satisfaction across diverse destination categories suggests that visitor experience quality
+is primarily driven by factors beyond destination type classification, such as infrastructure
+quality, service standards, accessibility, and management effectiveness. Tourism planners
+should therefore prioritize cross-cutting improvements in hospitality infrastructure, visitor
+services, and destination management practices rather than focusing resources disproportionately
+on specific destination categories. The modest influence of destination popularity (standardized
+coefficient: 0.0708) on positive review probability indicates that while popular destinations
+have a slight advantage, satisfaction can be achieved across all popularity levels through
+consistent service delivery. Furthermore, the absence of gender-based satisfaction differences
+demonstrates that tourism experiences are equally valued across demographic segments, enabling
+planners to implement universal quality standards rather than gender-specific interventions.
+Strategic investments should thus emphasize operational excellence, visitor experience design,
+and service quality improvements that transcend destination type boundaries, ensuring that all
+categories—whether Beach, City, Historical, or Nature—benefit from systematic enhancements to
+maximize overall traveler satisfaction and destination competitiveness."""
+
+# Format and print the discussion with proper line wrapping
+import textwrap
+wrapped_text = textwrap.fill(strategic_discussion, width=80)
+print(wrapped_text)
 
 print("\n" + "="*60)
 print("ANALYSIS COMPLETE")
