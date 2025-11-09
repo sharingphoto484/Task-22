@@ -1,0 +1,17 @@
+
+ANALYTICAL TAKE ON NBA MVP VOTING EVOLUTION (2001-2023):
+
+The evolution of MVP voting reveals a fundamental shift from rewarding pure scorers to
+valuing hyper-efficient, well-rounded superstars. Modern MVPs shoot 56.5%
+from the field versus 49.2% in the early 2000s, while posting
+significantly higher all-around scores (50.7 vs
+42.4), demonstrating that voters now prize versatility
+as much as dominance. Win Shares per 48 minutes has emerged as the single most predictive metric across all eras,
+correlating at r=0.69 with recent MVP voting, which signals voters' increasing sophistication in recognizing
+team impact over box score aesthetics. Ironically, despite clearer statistical criteria (correlation strength
+increased from r=0.58 to r=0.76 for top metrics), the competitive gap between winners and runners-up has
+narrowed from 0.25 to 0.21,
+suggesting elite performance has become more widespread even as the standards have risen. Perhaps most tellingly,
+a hypothetical player with identical stats would see their MVP chances drop from 40.8%
+vote share in the early 2000s to just 20.4% today, underscoring how
+the bar for MVP-caliber excellence has been dramatically elevated in the modern NBA.

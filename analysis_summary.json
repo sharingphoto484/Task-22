@@ -1,0 +1,266 @@
+{
+  "era_correlations": {
+    "Early 2000s (2001-2010)": {
+      "PTS": {
+        "correlation": 0.3028764549331424,
+        "significant": true
+      },
+      "TRB": {
+        "correlation": 0.1588103194365929,
+        "significant": false
+      },
+      "AST": {
+        "correlation": 0.20117315601203933,
+        "significant": true
+      },
+      "STL": {
+        "correlation": 0.04973847735709144,
+        "significant": false
+      },
+      "BLK": {
+        "correlation": 0.1669054810510387,
+        "significant": true
+      },
+      "FG%": {
+        "correlation": 0.1751500349241144,
+        "significant": true
+      },
+      "3P%": {
+        "correlation": -0.0025740653492143575,
+        "significant": false
+      },
+      "FT%": {
+        "correlation": -0.031189882010347864,
+        "significant": false
+      },
+      "WS": {
+        "correlation": 0.5748371301288473,
+        "significant": true
+      },
+      "WS/48": {
+        "correlation": 0.5486204712652332,
+        "significant": true
+      },
+      "MP": {
+        "correlation": 0.1630787234905262,
+        "significant": true
+      },
+      "G": {
+        "correlation": 0.1199378399990487,
+        "significant": false
+      },
+      "Total_Stats": {
+        "correlation": 0.4739781734049048,
+        "significant": true
+      },
+      "All_Around_Score": {
+        "correlation": 0.48238433865871405,
+        "significant": true
+      },
+      "Defensive_Stats": {
+        "correlation": 0.19791629639826175,
+        "significant": true
+      }
+    },
+    "The 2010s (2010-2021)": {
+      "PTS": {
+        "correlation": 0.486873500466826,
+        "significant": true
+      },
+      "TRB": {
+        "correlation": 0.1045713508210667,
+        "significant": false
+      },
+      "AST": {
+        "correlation": 0.198736419784858,
+        "significant": true
+      },
+      "STL": {
+        "correlation": 0.21202556925552674,
+        "significant": true
+      },
+      "BLK": {
+        "correlation": -0.05373356367988043,
+        "significant": false
+      },
+      "FG%": {
+        "correlation": 0.14176259816027875,
+        "significant": false
+      },
+      "3P%": {
+        "correlation": 0.1977085693840699,
+        "significant": true
+      },
+      "FT%": {
+        "correlation": 0.04573505277415485,
+        "significant": false
+      },
+      "WS": {
+        "correlation": 0.6444547542746164,
+        "significant": true
+      },
+      "WS/48": {
+        "correlation": 0.6185031948168483,
+        "significant": true
+      },
+      "MP": {
+        "correlation": 0.18169347417765197,
+        "significant": true
+      },
+      "G": {
+        "correlation": 0.2047209612849336,
+        "significant": true
+      },
+      "Total_Stats": {
+        "correlation": 0.5307827627457673,
+        "significant": true
+      },
+      "All_Around_Score": {
+        "correlation": 0.5351051148064916,
+        "significant": true
+      },
+      "Defensive_Stats": {
+        "correlation": 0.09200711714865226,
+        "significant": false
+      }
+    },
+    "Recent Years (2022-2023)": {
+      "PTS": {
+        "correlation": 0.31567463240391636,
+        "significant": false
+      },
+      "TRB": {
+        "correlation": 0.7572045946291421,
+        "significant": true
+      },
+      "AST": {
+        "correlation": -0.08906833612538975,
+        "significant": false
+      },
+      "STL": {
+        "correlation": -0.11099829186947048,
+        "significant": false
+      },
+      "BLK": {
+        "correlation": 0.7158918093343164,
+        "significant": true
+      },
+      "FG%": {
+        "correlation": 0.5165093328488546,
+        "significant": true
+      },
+      "3P%": {
+        "correlation": -0.33391141893034604,
+        "significant": false
+      },
+      "FT%": {
+        "correlation": -0.23486625634508754,
+        "significant": false
+      },
+      "WS": {
+        "correlation": 0.6550502867352611,
+        "significant": true
+      },
+      "WS/48": {
+        "correlation": 0.6929239692980491,
+        "significant": true
+      },
+      "MP": {
+        "correlation": -0.35914366664597697,
+        "significant": false
+      },
+      "G": {
+        "correlation": 0.2232600895896482,
+        "significant": false
+      },
+      "Total_Stats": {
+        "correlation": 0.6496236542704261,
+        "significant": true
+      },
+      "All_Around_Score": {
+        "correlation": 0.671305456533084,
+        "significant": true
+      },
+      "Defensive_Stats": {
+        "correlation": 0.5496577005895837,
+        "significant": true
+      }
+    }
+  },
+  "winner_profiles": {
+    "Early 2000s (2001-2010)": {
+      "Count": 11,
+      "Avg_PTS": 25.372727272727275,
+      "Avg_TRB": 8.018181818181818,
+      "Avg_AST": 6.581818181818182,
+      "Avg_FG%": 0.4918181818181818,
+      "Avg_3P%": 0.32781818181818184,
+      "Avg_WS": 15.91818181818182,
+      "Avg_WS/48": 0.2530909090909091,
+      "Avg_All_Around": 42.445454545454545,
+      "Std_PTS": 4.847079720634046,
+      "Std_All_Around": 5.549660104252088
+    },
+    "The 2010s (2010-2021)": {
+      "Count": 11,
+      "Avg_PTS": 28.218181818181815,
+      "Avg_TRB": 8.19090909090909,
+      "Avg_AST": 7.281818181818181,
+      "Avg_FG%": 0.5096363636363637,
+      "Avg_3P%": 0.3678181818181818,
+      "Avg_WS": 15.390909090909089,
+      "Avg_WS/48": 0.28309090909090906,
+      "Avg_All_Around": 45.93636363636364,
+      "Std_PTS": 2.690657236371137,
+      "Std_All_Around": 4.9043394513986724
+    },
+    "Recent Years (2022-2023)": {
+      "Count": 2,
+      "Avg_PTS": 30.1,
+      "Avg_TRB": 12.0,
+      "Avg_AST": 6.050000000000001,
+      "Avg_FG%": 0.5655,
+      "Avg_3P%": 0.3335,
+      "Avg_WS": 13.75,
+      "Avg_WS/48": 0.27749999999999997,
+      "Avg_All_Around": 50.7,
+      "Std_PTS": 4.242640687119285,
+      "Std_All_Around": 0.7071067811865476
+    }
+  },
+  "model_performance": {
+    "Early 2000s (2001-2010)": 0.17462387372832908,
+    "The 2010s (2010-2021)": 0.48833236037983535,
+    "Recent Years (2022-2023)": -2761.5823916160334
+  },
+  "predictability_metrics": {
+    "Early 2000s (2001-2010)": {
+      "avg_winner_share": 0.8838181818181817,
+      "avg_gap": 0.24563636363636354,
+      "coefficient_variation": 1.145650353619967,
+      "unanimous_winners": 4
+    },
+    "The 2010s (2010-2021)": {
+      "avg_winner_share": 0.9500000000000001,
+      "avg_gap": 0.27854545454545465,
+      "coefficient_variation": 1.016260812172837,
+      "unanimous_winners": 7
+    },
+    "Recent Years (2022-2023)": {
+      "avg_winner_share": 0.895,
+      "avg_gap": 0.20500000000000007,
+      "coefficient_variation": 1.036944314795311,
+      "unanimous_winners": 0
+    }
+  },
+  "hypothetical_player_predictions": {
+    "Early 2000s (2001-2010)": 0.40786842857142874,
+    "The 2010s (2010-2021)": 0.3844174761904761,
+    "Recent Years (2022-2023)": 0.20442999999999992
+  },
+  "key_insights": {
+    "scoring_trend": "Increasing",
+    "efficiency_trend": "Increasing",
+    "predictability_trend": "Less Predictable"
+  }
+}
