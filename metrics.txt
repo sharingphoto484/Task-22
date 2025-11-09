@@ -1,0 +1,21 @@
+Pearson_Correlation_BTC_ETH_Returns: 0.8014312027
+Pearson_Correlation_PValue: 0.0000000000
+Spearman_Correlation_ETH_AbsReturns_VolumePctChange: 0.4156206088
+Spearman_Correlation_PValue: 0.0000000000
+ADF_Test_Statistic: -11.9291866752
+ADF_Test_PValue: 0.0000000000
+ARIMA_Order: (0, 0, 0)
+ARIMA_AIC: -1392.1569266249
+ARIMA_RMSE: 0.0278708994
+ARIMAX_AIC: -1390.5971028278
+ARIMAX_RMSE: 0.0277515943
+Quantile_Regression_Median_Coefficient: 0.0000000000
+Quantile_Regression_Median_Intercept: 0.0009824188
+Granger_Causality_PValue_Lag2: 0.0941415034
+KMeans_Silhouette_Score: 0.5357751035
+TTest_Statistic: 0.4536385652
+TTest_PValue: 0.6502418143
+Number_of_Changepoints_PELT: 14
+ChiSquare_Statistic: 16.4973688780
+ChiSquare_PValue: 0.0000487176
+ChiSquare_DegreesOfFreedom: 1
