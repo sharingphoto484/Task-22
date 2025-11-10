@@ -1,0 +1,37 @@
+{
+  "regression": {
+    "r_squared": 0.474,
+    "coefficients": {
+      "Cores": 37.687256,
+      "Clock": 2.698826,
+      "TDP": 7.21039
+    },
+    "highest_coefficient_variable": "Cores"
+  },
+  "t_test": {
+    "t_statistic": 3.849,
+    "p_value": 0.000153
+  },
+  "correlation": {
+    "pearson_r": 0.1762,
+    "p_value": 1e-06
+  },
+  "anova": {
+    "f_statistic": 12.18,
+    "p_value": 0.0,
+    "n_groups": 17
+  },
+  "chi_square": {
+    "chi2_statistic": 10577.94,
+    "p_value": 0.0,
+    "degrees_of_freedom": 19
+  },
+  "mean_price": {
+    "overall_mean": 77555.93,
+    "n_brands": 24
+  },
+  "regression_line": {
+    "slope": 5.851,
+    "intercept": 10.659
+  }
+}
