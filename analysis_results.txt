@@ -1,0 +1,74 @@
+
+==========================================
+QUANTITATIVE ANALYSIS SUMMARY RESULTS
+==========================================
+
+Dataset Information:
+- inc_occ_gender.csv: 479 rows (after cleaning)
+- laptop.csv: 292 rows (after cleaning)
+- tpu_cpus.csv: 243 rows (after cleaning)
+
+==========================================
+ANALYSIS RESULTS
+==========================================
+
+1. Multiple Linear Regression (tpu_cpus)
+   Dependent Variable: PerformanceScore
+   Predictors: Cores, ClockSpeed, MemoryBandwidth, PowerConsumption (standardized)
+   R-squared: 0.991
+
+2. Independent Two-Sample T-Test (Income by Gender)
+   T-statistic: 4.544
+   P-value: 0.0000
+
+3. Pearson Correlation (Price vs ProcessorSpeed)
+   Correlation Coefficient: 0.1940
+   P-value: 0.0009
+
+4. One-Way ANOVA (Income by Occupation)
+   F-statistic: 202.874
+   P-value: 0.0000
+
+5. Chi-Square Test of Independence (Gender and Occupation)
+   Chi-Square Statistic: 2.073
+   P-value: 0.7223
+   Degrees of Freedom: 4
+
+6. Overall Mean Laptop Price Across Brands
+   Overall Mean: $2009.66
+
+7. Regression Analysis (ClockSpeed vs PerformanceScore)
+   Slope: 283.717
+   Intercept: 1871.30
+
+8. Strongest Predictor
+   Variable: Cores
+   Standardized Coefficient: 964.9637
+
+9. Second-Order Regression with Interaction
+   Interaction Coefficient (ClockSpeed × MemoryBandwidth): 0.7020
+   R-squared (with interaction): 0.992
+
+==========================================
+DISCUSSION
+==========================================
+
+Performance Synergies Between Clock Speed and Memory Bandwidth:
+
+The interaction coefficient of 0.7020 between ClockSpeed and
+MemoryBandwidth reveals important performance synergies in processor architecture.
+This positive interaction suggests that increases in clock speed yield progressively
+greater performance gains when paired with higher memory bandwidth, indicating that
+these two specifications work multiplicatively rather than additively. Processors
+with both high clock speeds and substantial memory bandwidth can process instructions
+faster while simultaneously accessing data more efficiently, creating a synergistic
+effect that amplifies overall performance beyond what would be expected from the
+individual contributions of each component alone.
+
+==========================================
+OUTPUT FILES GENERATED
+==========================================
+- regression_plot.png: Scatter plot with regression line
+- analysis_results.txt: This summary file
+
+==========================================
