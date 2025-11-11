@@ -1,0 +1,15 @@
+{
+    "regression_r_squared": 0.9,
+    "anova_f_statistic": 50.794,
+    "anova_p_value": 0.0,
+    "granger_f_statistic": 0.402,
+    "granger_p_value": 0.526,
+    "causal_coefficient": 0.0733,
+    "association_rules_count": 0,
+    "optimal_clusters": 2,
+    "optimal_silhouette": 0.4382,
+    "radial_range": 11910.0,
+    "top_revenue_category": 6,
+    "top_revenue_amount": 2715079.53,
+    "top_revenue_percentage": 35.31
+}
