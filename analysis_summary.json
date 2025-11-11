@@ -1,0 +1,11 @@
+{
+    "regression_r_squared": 0.9,
+    "anova_f_statistic": 50.794,
+    "granger_f_statistic": 0.402,
+    "granger_p_value": 0.526,
+    "causal_coefficient": 1.0,
+    "association_rules_count": 0,
+    "optimal_clusters": 2,
+    "radial_range": 11910.0,
+    "top_revenue_category": 6
+}
