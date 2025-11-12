@@ -3,14 +3,14 @@ RETAIL PERFORMANCE ANALYSIS - RESULTS SUMMARY
 ============================================================
 
 1. MULTIPLE LINEAR REGRESSION (Revenue ~ Quantity + Price)
-   R-squared: 0.9
+   R-squared: 0.900
 
 2. ONE-WAY ANOVA (Price ~ Category)
    F-statistic: 50.794
 
 3. GRANGER CAUSALITY TEST (Price -> Revenue)
    F-statistic: 0.402
-   p-value: 0.526
+   p-value: 0.5260
 
 4. LINEAR CAUSAL MODEL (TotalPurchaseValue -> Revenue | Region)
    Causal coefficient: 0.6812
@@ -22,7 +22,7 @@ RETAIL PERFORMANCE ANALYSIS - RESULTS SUMMARY
    Optimal number of clusters: 10
 
 7. SPIRAL PLOT VISUALIZATION
-   Overall radial range: 11910.0
+   Overall radial range: 11910.00
 
 8. TOP REVENUE CATEGORY
    Category: 6

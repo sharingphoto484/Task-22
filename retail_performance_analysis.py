@@ -121,8 +121,8 @@ reg_model.fit(X_scaled, y)
 y_pred = reg_model.predict(X_scaled)
 r2 = r2_score(y, y_pred)
 
-print(f"R-squared: {r2:.3f}")
 regression_r2 = round(r2, 3)
+print(f"R-squared: {regression_r2:.3f}")
 
 # ---------- Analysis 2: One-Way ANOVA ----------
 print("\n" + "="*60)
@@ -139,9 +139,9 @@ for category in products_clean['Category'].unique():
 
 # Perform one-way ANOVA
 f_stat, p_val = stats.f_oneway(*category_groups)
-print(f"F-statistic: {f_stat:.3f}")
-print(f"p-value: {p_val:.6f}")
 anova_f_stat = round(f_stat, 3)
+print(f"F-statistic: {anova_f_stat:.3f}")
+print(f"p-value: {p_val:.6f}")
 
 # ---------- Analysis 3: Granger Causality Test ----------
 print("\n" + "="*60)
@@ -169,10 +169,11 @@ if len(granger_data) > 10:
     gc_f_stat = gc_result[1][0]['ssr_ftest'][0]
     gc_p_val = gc_result[1][0]['ssr_ftest'][1]
 
-    print(f"F-statistic (lag 1): {gc_f_stat:.3f}")
-    print(f"p-value (lag 1): {gc_p_val:.4f}")
     granger_f_stat = round(gc_f_stat, 3)
     granger_p_val = round(gc_p_val, 4)
+
+    print(f"F-statistic (lag 1): {granger_f_stat:.3f}")
+    print(f"p-value (lag 1): {granger_p_val:.4f}")
 else:
     print("Insufficient data for Granger causality test")
     granger_f_stat = None
@@ -218,8 +219,8 @@ causal_model.fit(X_causal, y_causal)
 
 # Get coefficient for TotalPurchaseValue (first coefficient)
 causal_coef = causal_model.coef_[0]
-print(f"Causal coefficient (TotalPurchaseValue): {causal_coef:.4f}")
 causal_coefficient = round(causal_coef, 4)
+print(f"Causal coefficient (TotalPurchaseValue): {causal_coefficient:.4f}")
 
 # ---------- Analysis 5: Association Rule Mining ----------
 print("\n" + "="*60)
@@ -324,7 +325,7 @@ print("Spiral plot saved as 'spiral_plot.png'")
 # Calculate radial range
 radial_range = spiral_data['Price'].max() - spiral_data['Price'].min()
 radial_range_rounded = round(radial_range, 2)
-print(f"Overall radial range: {radial_range_rounded}")
+print(f"Overall radial range: {radial_range_rounded:.2f}")
 
 # ---------- Analysis 8: Top Revenue Category ----------
 print("\n" + "="*60)
@@ -347,14 +348,14 @@ print("SAVING RESULTS")
 print("="*60)
 
 results_summary = {
-    "regression_r_squared": regression_r2,
-    "anova_f_statistic": anova_f_stat,
-    "granger_f_statistic": granger_f_stat,
-    "granger_p_value": granger_p_val,
-    "causal_coefficient": causal_coefficient,
+    "regression_r_squared": f"{regression_r2:.3f}",
+    "anova_f_statistic": f"{anova_f_stat:.3f}",
+    "granger_f_statistic": f"{granger_f_stat:.3f}",
+    "granger_p_value": f"{granger_p_val:.4f}",
+    "causal_coefficient": f"{causal_coefficient:.4f}",
     "association_rules_count": num_rules,
     "optimal_clusters": optimal_clusters,
-    "radial_range": radial_range_rounded,
+    "radial_range": f"{radial_range_rounded:.2f}",
     "top_revenue_category": int(top_category)
 }
 
@@ -370,17 +371,17 @@ with open('analysis_results.txt', 'w') as f:
     f.write("="*60 + "\n\n")
 
     f.write("1. MULTIPLE LINEAR REGRESSION (Revenue ~ Quantity + Price)\n")
-    f.write(f"   R-squared: {regression_r2}\n\n")
+    f.write(f"   R-squared: {regression_r2:.3f}\n\n")
 
     f.write("2. ONE-WAY ANOVA (Price ~ Category)\n")
-    f.write(f"   F-statistic: {anova_f_stat}\n\n")
+    f.write(f"   F-statistic: {anova_f_stat:.3f}\n\n")
 
     f.write("3. GRANGER CAUSALITY TEST (Price -> Revenue)\n")
-    f.write(f"   F-statistic: {granger_f_stat}\n")
-    f.write(f"   p-value: {granger_p_val}\n\n")
+    f.write(f"   F-statistic: {granger_f_stat:.3f}\n")
+    f.write(f"   p-value: {granger_p_val:.4f}\n\n")
 
     f.write("4. LINEAR CAUSAL MODEL (TotalPurchaseValue -> Revenue | Region)\n")
-    f.write(f"   Causal coefficient: {causal_coefficient}\n\n")
+    f.write(f"   Causal coefficient: {causal_coefficient:.4f}\n\n")
 
     f.write("5. ASSOCIATION RULE MINING\n")
     f.write(f"   Number of rules (support>=0.05, confidence>=0.6): {num_rules}\n\n")
@@ -389,7 +390,7 @@ with open('analysis_results.txt', 'w') as f:
     f.write(f"   Optimal number of clusters: {optimal_clusters}\n\n")
 
     f.write("7. SPIRAL PLOT VISUALIZATION\n")
-    f.write(f"   Overall radial range: {radial_range_rounded}\n\n")
+    f.write(f"   Overall radial range: {radial_range_rounded:.2f}\n\n")
 
     f.write("8. TOP REVENUE CATEGORY\n")
     f.write(f"   Category: {int(top_category)}\n")
@@ -401,11 +402,11 @@ print("\n" + "="*60)
 print("ANALYSIS COMPLETE")
 print("="*60)
 print("\nKey Findings:")
-print(f"  • Regression R²: {regression_r2}")
-print(f"  • ANOVA F-statistic: {anova_f_stat}")
-print(f"  • Granger F-statistic: {granger_f_stat}, p-value: {granger_p_val}")
-print(f"  • Causal coefficient: {causal_coefficient}")
+print(f"  • Regression R²: {regression_r2:.3f}")
+print(f"  • ANOVA F-statistic: {anova_f_stat:.3f}")
+print(f"  • Granger F-statistic: {granger_f_stat:.3f}, p-value: {granger_p_val:.4f}")
+print(f"  • Causal coefficient: {causal_coefficient:.4f}")
 print(f"  • Association rules: {num_rules}")
 print(f"  • Optimal clusters: {optimal_clusters}")
-print(f"  • Radial range: {radial_range_rounded}")
+print(f"  • Radial range: {radial_range_rounded:.2f}")
 print(f"  • Top category: {int(top_category)}")
