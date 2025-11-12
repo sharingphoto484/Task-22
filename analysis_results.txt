@@ -1,0 +1,29 @@
+============================================================
+RETAIL PERFORMANCE ANALYSIS - RESULTS SUMMARY
+============================================================
+
+1. MULTIPLE LINEAR REGRESSION (Revenue ~ Quantity + Price)
+   R-squared: 0.9
+
+2. ONE-WAY ANOVA (Price ~ Category)
+   F-statistic: 50.794
+
+3. GRANGER CAUSALITY TEST (Price -> Revenue)
+   F-statistic: 0.402
+   p-value: 0.526
+
+4. LINEAR CAUSAL MODEL (TotalPurchaseValue -> Revenue | Region)
+   Causal coefficient: 0.6812
+
+5. ASSOCIATION RULE MINING
+   Number of rules (support>=0.05, confidence>=0.6): 0
+
+6. HIERARCHICAL CLUSTERING
+   Optimal number of clusters: 10
+
+7. SPIRAL PLOT VISUALIZATION
+   Overall radial range: 11910.0
+
+8. TOP REVENUE CATEGORY
+   Category: 6
+   Total revenue: $2,715,079.53
