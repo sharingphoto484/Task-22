@@ -80,12 +80,16 @@ print(f"  Unique events: {players['Event'].unique()[:20]}")
 
 players['Event_str'] = players['Event'].astype(str).str.strip()
 
-# Count yellow cards (Event contains Y but not Y2)
-yellow_pattern = players['Event_str'].str.contains('Y', case=False, na=False) & ~players['Event_str'].str.contains('Y2', case=False, na=False)
+# Count yellow cards (Event starts with Y followed by digits)
+# Pattern: Y1', Y45', Y90', etc.
+yellow_pattern = players['Event_str'].str.match(r'^Y\d+', na=False)
 yellow_cards = players[yellow_pattern].groupby('MatchID').size().reset_index(name='yellow_cards')
 
-# Count red cards (Event contains R or Y2)
-red_pattern = players['Event_str'].str.contains('R', case=False, na=False) | players['Event_str'].str.contains('Y2', case=False, na=False)
+# Count red cards (Event starts with R, or is exactly Y2 for second yellow)
+# Pattern: R89', R71', or Y2' (not Y20-Y29)
+red_r_pattern = players['Event_str'].str.match(r'^R\d+', na=False)
+red_y2_pattern = players['Event_str'].str.match(r'^Y2\'', na=False)
+red_pattern = red_r_pattern | red_y2_pattern
 red_cards = players[red_pattern].groupby('MatchID').size().reset_index(name='red_cards')
 
 # Merge yellow and red cards
