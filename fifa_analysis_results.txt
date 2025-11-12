@@ -1,0 +1,17 @@
+FIFA WORLD CUP SCORING PATTERNS ANALYSIS - RESULTS
+================================================================================
+
+Total number of matches: 852
+Mean total goals: 2.8333
+Mean goal difference: 1.5117
+Pearson correlation (Year vs tournament goals per match): -0.7838
+
+Poisson Regression Results:
+  Coefficient for tournament_stage_intensity: 0.1139
+  Coefficient for total_cards: -0.0368
+  P-value for tournament_stage_intensity: 0.0007
+  McFadden pseudo R-squared: 0.0417
+
+Number of distinct referees: 366
+Maximum tournament attendance: 3587538
+Model-predicted mean goals (tournament_stage_intensity = 3): 3.3356
