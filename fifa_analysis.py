@@ -12,6 +12,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from statsmodels.discrete.discrete_model import Poisson
+from statsmodels.tools import add_constant
 from scipy.stats import pearsonr
 import warnings
 warnings.filterwarnings('ignore')
@@ -35,9 +36,11 @@ print(f"  After removing missing Year: {matches.shape}")
 
 # ---------- Clean Attendance Column ----------
 # Remove thousands separators (dots and commas) to make numeric
+# Use regex=False to avoid treating '.' as wildcard
 if 'Attendance' in matches.columns:
-    matches['Attendance'] = matches['Attendance'].astype(str).str.replace('.', '').str.replace(',', '')
+    matches['Attendance'] = matches['Attendance'].astype(str).str.replace('.', '', regex=False).str.replace(',', '', regex=False)
     matches['Attendance'] = pd.to_numeric(matches['Attendance'], errors='coerce')
+    print(f"  Attendance cleaned: {matches['Attendance'].notna().sum()} non-null values")
 
 # ---------- Convert Goals to Numeric ----------
 matches['Home Team Goals'] = pd.to_numeric(matches['Home Team Goals'], errors='coerce')
@@ -62,9 +65,11 @@ worldcups['Year'] = pd.to_numeric(worldcups['Year'], errors='coerce')
 
 # ---------- Clean Attendance Column ----------
 # Remove thousands separators to make numeric
+# Use regex=False to avoid treating '.' as wildcard
 if 'Attendance' in worldcups.columns:
-    worldcups['Attendance'] = worldcups['Attendance'].astype(str).str.replace('.', '').str.replace(',', '')
+    worldcups['Attendance'] = worldcups['Attendance'].astype(str).str.replace('.', '', regex=False).str.replace(',', '', regex=False)
     worldcups['Attendance'] = pd.to_numeric(worldcups['Attendance'], errors='coerce')
+    print(f"  Tournament attendance cleaned: {worldcups['Attendance'].notna().sum()} non-null values")
 
 # Rename to avoid conflict with matches Attendance
 worldcups = worldcups.rename(columns={'Attendance': 'tournament_attendance'})
@@ -97,6 +102,9 @@ cards_summary['total_cards'] = cards_summary['yellow_cards'] + cards_summary['re
 print(f"  Cards summary shape: {cards_summary.shape}")
 print(f"  Total yellow cards: {cards_summary['yellow_cards'].sum():.0f}")
 print(f"  Total red cards: {cards_summary['red_cards'].sum():.0f}")
+print(f"  Note: Exact matching (Event=='Y', Event=='Y2'|'R') used per prompt specification")
+if cards_summary['yellow_cards'].sum() == 0 and cards_summary['red_cards'].sum() == 0:
+    print(f"  Warning: Zero cards found - dataset contains timestamped events (e.g., 'Y45', 'R89')")
 
 # ============================================================================
 # STEP 4: Merge Datasets
@@ -150,13 +158,19 @@ print(f"  Features engineered successfully")
 # ============================================================================
 print("\n[6/11] Creating era classification and dummy variables...")
 
-# ---------- Define Era Bins ----------
+# ---------- Define Era with Explicit Conditions ----------
 # Four eras: 1930-1966, 1970-1989, 1990-2005, 2006-2018
-matches['era'] = pd.cut(
-    matches['Year'],
-    bins=[1929, 1966, 1989, 2005, 2018],
-    labels=['1930-1966', '1970-1989', '1990-2005', '2006-2018']
-)
+# Use explicit conditions to match exact ranges specified in prompt
+conditions = [
+    (matches['Year'] >= 1930) & (matches['Year'] <= 1966),
+    (matches['Year'] >= 1970) & (matches['Year'] <= 1989),
+    (matches['Year'] >= 1990) & (matches['Year'] <= 2005),
+    (matches['Year'] >= 2006) & (matches['Year'] <= 2018)
+]
+era_labels = ['1930-1966', '1970-1989', '1990-2005', '2006-2018']
+matches['era'] = np.select(conditions, era_labels, default='Unknown')
+# Replace 'Unknown' with NaN for proper handling
+matches['era'] = matches['era'].replace('Unknown', np.nan)
 
 # ---------- Create Dummy Variables (1930-1966 as reference) ----------
 era_dummies = pd.get_dummies(matches['era'], prefix='era', drop_first=True, dtype=int)
@@ -215,6 +229,10 @@ matches['tournament_stage_intensity'] = matches['stage_normalized'].apply(map_st
 print(f"  Stage intensity distribution:")
 print(matches['tournament_stage_intensity'].value_counts().sort_index())
 
+# Log any stages that were defaulted to 1
+stage_mapping_counts = matches.groupby(['stage_normalized', 'tournament_stage_intensity']).size()
+print(f"  Stage mappings applied: {len(stage_mapping_counts)} unique stage patterns")
+
 # ============================================================================
 # STEP 8: Prepare Data for Poisson Regression
 # ============================================================================
@@ -254,53 +272,50 @@ y = regression_data.loc[X.index, 'total_goals']
 # ---------- Remove Zero-Variance Predictors ----------
 # If total_cards is all zeros (exact match found no cards), remove it to avoid singular matrix
 X_cols = []
+removed_cols = []
 for col in X_cols_initial:
     if X[col].std() > 0:  # Only keep columns with variance
         X_cols.append(col)
     else:
-        print(f"  Warning: Removing '{col}' (zero variance)")
+        removed_cols.append(col)
+        print(f"  Warning: Removing '{col}' (zero variance - predictor is constant)")
 
 X = X[X_cols]
 
-# ---------- Convert to NumPy Arrays ----------
-X_array = X.values.astype(float)
-y_array = y.values.astype(float)
-
-# ---------- Add Constant Column ----------
-X_with_const = np.column_stack([X_array, np.ones(len(X_array))])
-
-# Create column names
-col_names = list(X.columns) + ['const']
+# ---------- Add Constant Using Statsmodels ----------
+# Use add_constant to avoid manual column ordering issues
+X_with_const = add_constant(X, has_constant='add')
 
 print(f"  Final X shape: {X_with_const.shape}")
-print(f"  Data types are all numeric: {X_with_const.dtype}")
+print(f"  Predictors in model: {list(X_with_const.columns)}")
+if removed_cols:
+    print(f"  Excluded predictors (zero variance): {removed_cols}")
 
 # ---------- Fit Poisson Model ----------
-poisson_model = Poisson(y_array, X_with_const).fit(maxiter=1000, disp=False)
+poisson_model = Poisson(y, X_with_const).fit(maxiter=1000, disp=False)
 
 # ---------- Calculate McFadden's Pseudo R-squared ----------
 # McFadden R² = 1 - (log-likelihood of full model / log-likelihood of null model)
-null_model = Poisson(y_array, np.ones((len(y_array), 1))).fit(maxiter=1000, disp=False)
+null_model = Poisson(y, add_constant(pd.DataFrame(np.zeros((len(y), 0))), has_constant='add')).fit(maxiter=1000, disp=False)
 mcfadden_r2 = 1 - (poisson_model.llf / null_model.llf)
 
 print(f"\n  Poisson Regression Results:")
 print(f"  McFadden's Pseudo R²: {mcfadden_r2:.4f}")
 print(f"\n  Coefficients:")
-for i, var in enumerate(col_names):
-    coef = poisson_model.params[i]
-    pval = poisson_model.pvalues[i]
+for var in X_with_const.columns:
+    coef = poisson_model.params[var]
+    pval = poisson_model.pvalues[var]
     print(f"    {var:35s}: {coef:10.4f} (p={pval:.4f})")
 
 # ---------- Extract Specific Coefficients and P-values ----------
-coef_stage_intensity = poisson_model.params[0]  # first column
-pval_stage_intensity = poisson_model.pvalues[0]
+coef_stage_intensity = poisson_model.params['tournament_stage_intensity']
+pval_stage_intensity = poisson_model.pvalues['tournament_stage_intensity']
 
 # Find total_cards coefficient if it exists in the model
-if 'total_cards' in col_names:
-    cards_idx = col_names.index('total_cards')
-    coef_total_cards = poisson_model.params[cards_idx]
+if 'total_cards' in X_with_const.columns:
+    coef_total_cards = poisson_model.params['total_cards']
 else:
-    coef_total_cards = 0.0  # Not in model (zero variance)
+    coef_total_cards = np.nan  # Not in model (zero variance)
 
 # ============================================================================
 # STEP 10: Model Prediction for tournament_stage_intensity = 3
@@ -309,21 +324,18 @@ print("\n[10/11] Calculating model prediction for tournament_stage_intensity = 3
 
 # ---------- Create Prediction Data ----------
 # Set tournament_stage_intensity = 3, use mean values for other predictors
-# Build prediction array based on actual columns in model
-pred_list = [3]  # tournament_stage_intensity = 3
+# Build prediction dataframe using actual model columns
+pred_data = pd.DataFrame({col: [X[col].mean()] for col in X.columns})
+pred_data['tournament_stage_intensity'] = 3  # Override with stage intensity = 3
 
-# Add other predictors in order based on col_names
-for i, col in enumerate(col_names[1:-1]):  # Skip first (stage_intensity, already added) and last (const)
-    if i < X_array.shape[1]:
-        pred_list.append(X_array[:, i+1].mean())
-    else:
-        pred_list.append(0)
+# Add constant using same method as training
+pred_data_with_const = add_constant(pred_data, has_constant='add')
 
-pred_list.append(1)  # const
-pred_array = np.array([pred_list])
+# Ensure column order matches model
+pred_data_with_const = pred_data_with_const[X_with_const.columns]
 
 # ---------- Predict Mean Goals ----------
-predicted_goals_stage3 = poisson_model.predict(pred_array)[0]
+predicted_goals_stage3 = poisson_model.predict(pred_data_with_const)[0]
 
 print(f"  Predicted mean goals when tournament_stage_intensity = 3: {predicted_goals_stage3:.4f}")
 
@@ -381,7 +393,10 @@ print(f"Mean goal difference: {mean_goal_diff:.4f}")
 print(f"Pearson correlation (Year vs tournament goals per match): {corr_year_goals:.4f}")
 print(f"\nPoisson Regression Results:")
 print(f"  Coefficient for tournament_stage_intensity: {coef_stage_intensity:.4f}")
-print(f"  Coefficient for total_cards: {coef_total_cards:.4f}")
+if pd.isna(coef_total_cards):
+    print(f"  Coefficient for total_cards: NA (excluded due to zero variance)")
+else:
+    print(f"  Coefficient for total_cards: {coef_total_cards:.4f}")
 print(f"  P-value for tournament_stage_intensity: {pval_stage_intensity:.4f}")
 print(f"  McFadden pseudo R-squared: {mcfadden_r2:.4f}")
 print(f"\nNumber of distinct referees: {distinct_referees}")
@@ -402,7 +417,10 @@ with open('fifa_analysis_results.txt', 'w') as f:
     f.write(f"Pearson correlation (Year vs tournament goals per match): {corr_year_goals:.4f}\n")
     f.write(f"\nPoisson Regression Results:\n")
     f.write(f"  Coefficient for tournament_stage_intensity: {coef_stage_intensity:.4f}\n")
-    f.write(f"  Coefficient for total_cards: {coef_total_cards:.4f}\n")
+    if pd.isna(coef_total_cards):
+        f.write(f"  Coefficient for total_cards: NA (excluded due to zero variance)\n")
+    else:
+        f.write(f"  Coefficient for total_cards: {coef_total_cards:.4f}\n")
     f.write(f"  P-value for tournament_stage_intensity: {pval_stage_intensity:.4f}\n")
     f.write(f"  McFadden pseudo R-squared: {mcfadden_r2:.4f}\n")
     f.write(f"\nNumber of distinct referees: {distinct_referees}\n")

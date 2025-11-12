@@ -8,7 +8,7 @@ Pearson correlation (Year vs tournament goals per match): -0.7838
 
 Poisson Regression Results:
   Coefficient for tournament_stage_intensity: 0.0933
-  Coefficient for total_cards: 0.0000
+  Coefficient for total_cards: NA (excluded due to zero variance)
   P-value for tournament_stage_intensity: 0.0051
   McFadden pseudo R-squared: 0.0384
 
