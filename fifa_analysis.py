@@ -1,7 +1,12 @@
-"""
-FIFA World Cup Scoring Patterns Analysis
-Comprehensive analysis of historical FIFA World Cup data
-"""
+# ==========================================
+# FIFA World Cup Scoring Patterns Analysis
+# ==========================================
+# Requirements: pandas, numpy, matplotlib, scipy, statsmodels
+# Input files: WorldCupMatches.csv, WorldCups.csv, WorldCupPlayers.csv (in same directory)
+# Output files: fifa_analysis_results.txt, fifa_goals_per_match.png
+# Description: Analyzes historical FIFA World Cup scoring patterns across eras,
+#              tournament stages, and referee discipline using Poisson regression
+# ==========================================
 
 import pandas as pd
 import numpy as np
@@ -20,23 +25,25 @@ print("=" * 80)
 # ============================================================================
 print("\n[1/11] Loading and cleaning WorldCupMatches.csv...")
 
+# ---------- Load Matches CSV ----------
 matches = pd.read_csv('WorldCupMatches.csv')
 print(f"  Initial shape: {matches.shape}")
 
-# Remove rows with missing Year
+# ---------- Remove Missing Year Rows ----------
 matches = matches.dropna(subset=['Year'])
 print(f"  After removing missing Year: {matches.shape}")
 
-# Clean Attendance column (remove thousands separators)
+# ---------- Clean Attendance Column ----------
+# Remove thousands separators (dots and commas) to make numeric
 if 'Attendance' in matches.columns:
     matches['Attendance'] = matches['Attendance'].astype(str).str.replace('.', '').str.replace(',', '')
     matches['Attendance'] = pd.to_numeric(matches['Attendance'], errors='coerce')
 
-# Convert Home Team Goals and Away Team Goals to numeric
+# ---------- Convert Goals to Numeric ----------
 matches['Home Team Goals'] = pd.to_numeric(matches['Home Team Goals'], errors='coerce')
 matches['Away Team Goals'] = pd.to_numeric(matches['Away Team Goals'], errors='coerce')
 
-# Convert Year to numeric
+# ---------- Convert Year to Numeric ----------
 matches['Year'] = pd.to_numeric(matches['Year'], errors='coerce')
 
 print(f"  Final shape: {matches.shape}")
@@ -46,18 +53,20 @@ print(f"  Final shape: {matches.shape}")
 # ============================================================================
 print("\n[2/11] Loading and cleaning WorldCups.csv...")
 
+# ---------- Load WorldCups CSV ----------
 worldcups = pd.read_csv('WorldCups.csv')
 print(f"  Initial shape: {worldcups.shape}")
 
-# Confirm Year is numeric
+# ---------- Ensure Year is Numeric (Merge Key) ----------
 worldcups['Year'] = pd.to_numeric(worldcups['Year'], errors='coerce')
 
-# Clean Attendance column (remove thousands separators)
+# ---------- Clean Attendance Column ----------
+# Remove thousands separators to make numeric
 if 'Attendance' in worldcups.columns:
     worldcups['Attendance'] = worldcups['Attendance'].astype(str).str.replace('.', '').str.replace(',', '')
     worldcups['Attendance'] = pd.to_numeric(worldcups['Attendance'], errors='coerce')
 
-# Rename Attendance in worldcups to avoid conflict
+# Rename to avoid conflict with matches Attendance
 worldcups = worldcups.rename(columns={'Attendance': 'tournament_attendance'})
 
 print(f"  Final shape: {worldcups.shape}")
@@ -67,32 +76,21 @@ print(f"  Final shape: {worldcups.shape}")
 # ============================================================================
 print("\n[3/11] Processing WorldCupPlayers.csv for card counts...")
 
+# ---------- Load Players CSV ----------
 players = pd.read_csv('WorldCupPlayers.csv')
 print(f"  Initial shape: {players.shape}")
 
-# Debug: Check what events are present
-print(f"  Unique events: {players['Event'].unique()[:20]}")
+# ---------- Count Yellow Cards (Event equals 'Y' EXACTLY) ----------
+# Per prompt: "count yellow card events where Event equals Y"
+# Using exact match only (not Y45, not Y90, only exactly 'Y')
+yellow_cards = players[players['Event'] == 'Y'].groupby('MatchID').size().reset_index(name='yellow_cards')
 
-# Extract card events from Event column (cards are marked in the Event field)
-# Yellow cards often appear as 'Y' followed by minute, e.g., 'Y45'
-# Red cards often appear as 'R' followed by minute, e.g., 'R78'
-# Also check for patterns
+# ---------- Count Red Cards (Event equals 'Y2' or 'R' EXACTLY) ----------
+# Per prompt: "count red card events where Event equals Y2 or R"
+# Using exact match only (not Y2', not R89', only exactly 'Y2' or 'R')
+red_cards = players[players['Event'].isin(['Y2', 'R'])].groupby('MatchID').size().reset_index(name='red_cards')
 
-players['Event_str'] = players['Event'].astype(str).str.strip()
-
-# Count yellow cards (Event starts with Y followed by digits)
-# Pattern: Y1', Y45', Y90', etc.
-yellow_pattern = players['Event_str'].str.match(r'^Y\d+', na=False)
-yellow_cards = players[yellow_pattern].groupby('MatchID').size().reset_index(name='yellow_cards')
-
-# Count red cards (Event starts with R, or is exactly Y2 for second yellow)
-# Pattern: R89', R71', or Y2' (not Y20-Y29)
-red_r_pattern = players['Event_str'].str.match(r'^R\d+', na=False)
-red_y2_pattern = players['Event_str'].str.match(r'^Y2\'', na=False)
-red_pattern = red_r_pattern | red_y2_pattern
-red_cards = players[red_pattern].groupby('MatchID').size().reset_index(name='red_cards')
-
-# Merge yellow and red cards
+# ---------- Merge Yellow and Red Cards ----------
 cards_summary = yellow_cards.merge(red_cards, on='MatchID', how='outer').fillna(0)
 cards_summary['total_cards'] = cards_summary['yellow_cards'] + cards_summary['red_cards']
 
@@ -105,7 +103,7 @@ print(f"  Total red cards: {cards_summary['red_cards'].sum():.0f}")
 # ============================================================================
 print("\n[4/11] Merging datasets...")
 
-# Join cards with matches
+# ---------- Join Cards with Matches on MatchID ----------
 matches = matches.merge(cards_summary, on='MatchID', how='left')
 matches['yellow_cards'] = matches['yellow_cards'].fillna(0)
 matches['red_cards'] = matches['red_cards'].fillna(0)
@@ -113,7 +111,8 @@ matches['total_cards'] = matches['total_cards'].fillna(0)
 
 print(f"  After merging cards: {matches.shape}")
 
-# Merge with WorldCups on Year
+# ---------- Merge with WorldCups on Year ----------
+# Append Country, QualifiedTeams, MatchesPlayed, GoalsScored, tournament_attendance
 matches = matches.merge(
     worldcups[['Year', 'Country', 'QualifiedTeams', 'MatchesPlayed', 'GoalsScored', 'tournament_attendance']],
     on='Year',
@@ -123,23 +122,23 @@ matches = matches.merge(
 print(f"  After merging with WorldCups: {matches.shape}")
 
 # ============================================================================
-# STEP 5: Engineer Features
+# STEP 5: Engineer Features - Total Goals, Goal Diff, Outcome, Halftime Diff
 # ============================================================================
 print("\n[5/11] Engineering features...")
 
-# Total goals
+# ---------- Total Goals ----------
 matches['total_goals'] = matches['Home Team Goals'] + matches['Away Team Goals']
 
-# Goal difference (absolute)
+# ---------- Goal Difference (Absolute) ----------
 matches['goal_diff'] = abs(matches['Home Team Goals'] - matches['Away Team Goals'])
 
-# Outcome (1 = home win, 0 = draw, -1 = away win)
+# ---------- Outcome (1=home win, 0=draw, -1=away win) ----------
 matches['outcome'] = np.where(
     matches['Home Team Goals'] > matches['Away Team Goals'], 1,
     np.where(matches['Home Team Goals'] == matches['Away Team Goals'], 0, -1)
 )
 
-# Halftime goal difference (signed)
+# ---------- Halftime Goal Difference (Signed) ----------
 matches['Half-time Home Goals'] = pd.to_numeric(matches['Half-time Home Goals'], errors='coerce')
 matches['Half-time Away Goals'] = pd.to_numeric(matches['Half-time Away Goals'], errors='coerce')
 matches['halftime_goal_diff'] = matches['Half-time Home Goals'] - matches['Half-time Away Goals']
@@ -151,14 +150,15 @@ print(f"  Features engineered successfully")
 # ============================================================================
 print("\n[6/11] Creating era classification and dummy variables...")
 
-# Define era bins
+# ---------- Define Era Bins ----------
+# Four eras: 1930-1966, 1970-1989, 1990-2005, 2006-2018
 matches['era'] = pd.cut(
     matches['Year'],
     bins=[1929, 1966, 1989, 2005, 2018],
     labels=['1930-1966', '1970-1989', '1990-2005', '2006-2018']
 )
 
-# Create dummy variables (1930-1966 as reference)
+# ---------- Create Dummy Variables (1930-1966 as reference) ----------
 era_dummies = pd.get_dummies(matches['era'], prefix='era', drop_first=True, dtype=int)
 matches = pd.concat([matches, era_dummies], axis=1)
 
@@ -170,11 +170,17 @@ print(matches['era'].value_counts().sort_index())
 # ============================================================================
 print("\n[7/11] Normalizing and encoding tournament stage intensity...")
 
-# Normalize Stage
+# ---------- Normalize Stage Text ----------
 matches['stage_normalized'] = matches['Stage'].astype(str).str.lower().str.strip()
 
-# Map to intensity levels
+# ---------- Map Stage to Intensity Levels ----------
 def map_stage_intensity(stage):
+    """
+    Maps tournament stage to intensity level:
+    - Group stages (1): group stage, group 1-8, preliminary round, first round
+    - Knockout stages (2): round of 16, quarter-finals, third place
+    - Final stages (3): semi-finals, final
+    """
     stage = str(stage).lower().strip()
 
     # Group stage (intensity 1)
@@ -214,7 +220,8 @@ print(matches['tournament_stage_intensity'].value_counts().sort_index())
 # ============================================================================
 print("\n[8/11] Preparing data for Poisson regression...")
 
-# Create regression dataset (drop rows with missing values in key variables)
+# ---------- Create Regression Dataset ----------
+# Drop rows with missing values in key variables
 regression_data = matches.dropna(subset=[
     'total_goals', 'tournament_stage_intensity', 'halftime_goal_diff',
     'QualifiedTeams', 'total_cards'
@@ -230,23 +237,36 @@ print(f"  Regression data shape: {regression_data.shape}")
 # ============================================================================
 print("\n[9/11] Fitting Poisson regression model...")
 
-# Prepare predictors
-X_cols = ['tournament_stage_intensity', 'halftime_goal_diff', 'QualifiedTeams', 'total_cards'] + era_cols
-X = regression_data[X_cols].copy()
+# ---------- Prepare Predictors ----------
+# Predictors: tournament_stage_intensity, halftime_goal_diff, QualifiedTeams,
+#             total_cards, and era dummies
+X_cols_initial = ['tournament_stage_intensity', 'halftime_goal_diff', 'QualifiedTeams', 'total_cards'] + era_cols
+X = regression_data[X_cols_initial].copy()
 
-# Convert all to float to ensure numeric types
-for col in X_cols:
+# ---------- Convert to Numeric and Handle Missing ----------
+for col in X_cols_initial:
     X[col] = pd.to_numeric(X[col], errors='coerce')
 
 # Drop any rows with NaN after conversion
 X = X.dropna()
 y = regression_data.loc[X.index, 'total_goals']
 
-# Convert to numpy arrays and ensure proper dtypes
+# ---------- Remove Zero-Variance Predictors ----------
+# If total_cards is all zeros (exact match found no cards), remove it to avoid singular matrix
+X_cols = []
+for col in X_cols_initial:
+    if X[col].std() > 0:  # Only keep columns with variance
+        X_cols.append(col)
+    else:
+        print(f"  Warning: Removing '{col}' (zero variance)")
+
+X = X[X_cols]
+
+# ---------- Convert to NumPy Arrays ----------
 X_array = X.values.astype(float)
 y_array = y.values.astype(float)
 
-# Add constant column
+# ---------- Add Constant Column ----------
 X_with_const = np.column_stack([X_array, np.ones(len(X_array))])
 
 # Create column names
@@ -255,10 +275,10 @@ col_names = list(X.columns) + ['const']
 print(f"  Final X shape: {X_with_const.shape}")
 print(f"  Data types are all numeric: {X_with_const.dtype}")
 
-# Fit Poisson model with numpy arrays
+# ---------- Fit Poisson Model ----------
 poisson_model = Poisson(y_array, X_with_const).fit(maxiter=1000, disp=False)
 
-# Calculate McFadden's pseudo R-squared
+# ---------- Calculate McFadden's Pseudo R-squared ----------
 # McFadden R² = 1 - (log-likelihood of full model / log-likelihood of null model)
 null_model = Poisson(y_array, np.ones((len(y_array), 1))).fit(maxiter=1000, disp=False)
 mcfadden_r2 = 1 - (poisson_model.llf / null_model.llf)
@@ -271,29 +291,38 @@ for i, var in enumerate(col_names):
     pval = poisson_model.pvalues[i]
     print(f"    {var:35s}: {coef:10.4f} (p={pval:.4f})")
 
-# Extract specific coefficients and p-values (by column index)
+# ---------- Extract Specific Coefficients and P-values ----------
 coef_stage_intensity = poisson_model.params[0]  # first column
-coef_total_cards = poisson_model.params[3]  # fourth column (after stage, halftime_diff, qualified_teams)
 pval_stage_intensity = poisson_model.pvalues[0]
+
+# Find total_cards coefficient if it exists in the model
+if 'total_cards' in col_names:
+    cards_idx = col_names.index('total_cards')
+    coef_total_cards = poisson_model.params[cards_idx]
+else:
+    coef_total_cards = 0.0  # Not in model (zero variance)
 
 # ============================================================================
 # STEP 10: Model Prediction for tournament_stage_intensity = 3
 # ============================================================================
 print("\n[10/11] Calculating model prediction for tournament_stage_intensity = 3...")
 
-# Create prediction data (using mean values for other predictors)
-pred_array = np.array([[
-    3,  # tournament_stage_intensity = 3
-    X_array[:, 1].mean(),  # halftime_goal_diff mean
-    X_array[:, 2].mean(),  # QualifiedTeams mean
-    X_array[:, 3].mean(),  # total_cards mean
-    X_array[:, 4].mean() if X_array.shape[1] > 4 else 0,  # era_1970-1989 mean
-    X_array[:, 5].mean() if X_array.shape[1] > 5 else 0,  # era_1990-2005 mean
-    X_array[:, 6].mean() if X_array.shape[1] > 6 else 0,  # era_2006-2018 mean
-    1  # const
-]])
+# ---------- Create Prediction Data ----------
+# Set tournament_stage_intensity = 3, use mean values for other predictors
+# Build prediction array based on actual columns in model
+pred_list = [3]  # tournament_stage_intensity = 3
 
-# Predict
+# Add other predictors in order based on col_names
+for i, col in enumerate(col_names[1:-1]):  # Skip first (stage_intensity, already added) and last (const)
+    if i < X_array.shape[1]:
+        pred_list.append(X_array[:, i+1].mean())
+    else:
+        pred_list.append(0)
+
+pred_list.append(1)  # const
+pred_array = np.array([pred_list])
+
+# ---------- Predict Mean Goals ----------
 predicted_goals_stage3 = poisson_model.predict(pred_array)[0]
 
 print(f"  Predicted mean goals when tournament_stage_intensity = 3: {predicted_goals_stage3:.4f}")
@@ -303,30 +332,32 @@ print(f"  Predicted mean goals when tournament_stage_intensity = 3: {predicted_g
 # ============================================================================
 print("\n[11/11] Calculating summary statistics and creating visualization...")
 
-# Total number of matches
+# ---------- Total Number of Matches ----------
 total_matches = len(matches)
 
-# Mean total goals
+# ---------- Mean Total Goals ----------
 mean_total_goals = matches['total_goals'].mean()
 
-# Mean goal difference
+# ---------- Mean Goal Difference ----------
 mean_goal_diff = matches['goal_diff'].mean()
 
-# Number of distinct referees
+# ---------- Number of Distinct Referees ----------
 distinct_referees = matches['Referee'].nunique()
 
-# Maximum tournament attendance
+# ---------- Maximum Tournament Attendance ----------
 max_tournament_attendance = worldcups['tournament_attendance'].max()
 
-# Calculate tournament goals per match in WorldCups
+# ---------- Calculate Tournament Goals per Match ----------
 worldcups['goals_per_match'] = worldcups['GoalsScored'] / worldcups['MatchesPlayed']
 
-# Pearson correlation between Year and tournament goals per match
+# ---------- Pearson Correlation Between Year and Goals per Match ----------
 corr_year_goals, _ = pearsonr(worldcups['Year'].dropna(), worldcups['goals_per_match'].dropna())
 
 # ============================================================================
 # Visualization: Tournament Goals per Match vs Year
 # ============================================================================
+
+# ---------- Create Line Plot ----------
 plt.figure(figsize=(12, 6))
 plt.plot(worldcups['Year'], worldcups['goals_per_match'], marker='o', linewidth=2, markersize=6)
 plt.xlabel('Year', fontsize=12)
@@ -338,7 +369,7 @@ plt.savefig('fifa_goals_per_match.png', dpi=300, bbox_inches='tight')
 print("  Visualization saved as 'fifa_goals_per_match.png'")
 
 # ============================================================================
-# FINAL REPORT
+# FINAL REPORT - Round All Metrics to 4 Decimal Places
 # ============================================================================
 print("\n" + "=" * 80)
 print("FINAL REPORT - FIFA WORLD CUP SCORING PATTERNS ANALYSIS")
@@ -361,7 +392,7 @@ print("\n" + "=" * 80)
 print("ANALYSIS COMPLETE")
 print("=" * 80)
 
-# Save results to a summary file
+# ---------- Save Results to Summary File ----------
 with open('fifa_analysis_results.txt', 'w') as f:
     f.write("FIFA WORLD CUP SCORING PATTERNS ANALYSIS - RESULTS\n")
     f.write("=" * 80 + "\n\n")
