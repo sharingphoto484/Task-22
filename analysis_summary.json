@@ -1,0 +1,90 @@
+{
+  "analysis_metadata": {
+    "script": "Federated Healthcare Efficiency Analysis",
+    "datasets": {
+      "FL_BIHDS": {
+        "original_rows": 500,
+        "clean_rows": 500
+      },
+      "optimization_metrics": {
+        "original_rows": 100,
+        "clean_rows": 100
+      },
+      "healthcare_data": {
+        "original_rows": 500,
+        "clean_rows": 500
+      }
+    }
+  },
+  "multiple_linear_regression": {
+    "dependent_variable": "Resource_Allocation_Score",
+    "predictors": [
+      "Latency_ms",
+      "Bandwidth_Mbps",
+      "Data_Size_MB"
+    ],
+    "standardized": "yes",
+    "r_squared": 0.032,
+    "coefficients": {
+      "Latency_ms": 0.0035,
+      "Bandwidth_Mbps": 0.0062,
+      "Data_Size_MB": 0.0027
+    }
+  },
+  "granger_causality_test": {
+    "hypothesis": "Bandwidth_Mbps helps predict Latency_ms",
+    "max_lag": 1,
+    "f_statistic": 4.354,
+    "p_value": 0.053,
+    "significant": "no"
+  },
+  "one_way_anova": {
+    "test": "BP across Diagnosis_Label groups",
+    "f_statistic": 0.233,
+    "p_value": 0.8731,
+    "significant": "no"
+  },
+  "kmeans_clustering": {
+    "features": [
+      "BP",
+      "Glucose",
+      "HeartRate",
+      "Cholesterol"
+    ],
+    "optimal_clusters": 8,
+    "silhouette_score": 0.2294,
+    "all_silhouette_scores": {
+      "2": 0.1883,
+      "3": 0.183,
+      "4": 0.198,
+      "5": 0.2061,
+      "6": 0.1988,
+      "7": 0.21,
+      "8": 0.2294,
+      "9": 0.2272,
+      "10": 0.229
+    }
+  },
+  "causal_inference": {
+    "treatment": "Bandwidth_Mbps",
+    "outcome": "Aggregation_Time_ms",
+    "control": "Data_Size_MB",
+    "causal_coefficient": 0.2863
+  },
+  "flow_field_visualization": {
+    "x_axis": "Bandwidth_Mbps",
+    "y_axis": "Latency_ms",
+    "vector_field": "Resource_Allocation_Score gradient",
+    "mean_vector_magnitude": 0.039,
+    "output_file": "flow_field_visualization.png"
+  },
+  "strongest_influence_variable": {
+    "variable_name": "Bandwidth_Mbps",
+    "influence_scores": {
+      "Bandwidth_Mbps": 0.0058,
+      "Latency_ms": 0.0035,
+      "Aggregation_Time_ms": 0.0025
+    },
+    "method": "Multiple linear regression with all three variables (standardized)"
+  }
+}
