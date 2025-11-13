@@ -1,13 +1,13 @@
 {
-    "cointegration_rank_r": 2,
-    "var_lag_order_p": 5,
-    "average_rmse": 0.328903633990407,
-    "maximum_rolling_correlation": 0.8368931810837533,
-    "significant_granger_pairs": 4,
-    "impulse_response_peak_magnitude_percent": 0.09496607502896356,
-    "half_life_trading_days": 2.777963339929701,
+    "cointegration_rank_r": 0,
+    "var_lag_order_p": 3,
+    "average_rmse": 0.01961747213036254,
+    "maximum_rolling_correlation": 0.945187144310408,
+    "significant_granger_pairs": 3,
+    "impulse_response_peak_magnitude_percent": 4.168841706573319,
+    "half_life_trading_days": 0.0,
     "risk_policy_summary": "All analysis restricted to exact date intersection; no imputation or forward filling; cointegration and causality tested at strict five percent level only.",
-    "johansen_lag_order": 4,
+    "johansen_lag_order": 2,
     "common_trading_days": 3385,
     "var_stability": true
 }

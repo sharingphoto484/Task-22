@@ -63,10 +63,13 @@ print("\n" + "=" * 60)
 print("COMPUTING LOG PRICES AND RETURNS")
 print("=" * 60)
 
-# Extract Adj Close prices
-amazon_prices = amazon_common['Adj Close'].values
-google_prices = google_common['Adj Close'].values
-meta_prices = meta_common['Adj Close'].values
+# NOTE: CSV columns are mislabeled - "Volume" column contains Adj Close, "Adj Close" contains Volume
+# Extract Adj Close prices from the "Volume" column (which actually contains Adj Close)
+amazon_prices = amazon_common['Volume'].values
+google_prices = google_common['Volume'].values
+meta_prices = meta_common['Volume'].values
+
+print(f"Sample prices - Amazon: {amazon_prices[:3]}, Google: {google_prices[:3]}, Meta: {meta_prices[:3]}")
 
 # Compute log prices
 amazon_log_prices = np.log(amazon_prices)
