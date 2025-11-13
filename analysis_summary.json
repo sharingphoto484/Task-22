@@ -1,0 +1,31 @@
+{
+  "common_period": {
+    "start": "2012-06-01 00:00:00",
+    "end": "2025-11-01 00:00:00",
+    "n_observations": 162
+  },
+  "dcc_analysis": {
+    "dcc_a_parameter": 0.01,
+    "dcc_b_parameter": 0.95,
+    "avg_dcc_correlation_24m": 0.44265150798477126
+  },
+  "adf_tests": {
+    "nonstationary_count_5pct": 2
+  },
+  "bai_perron": {
+    "netflix_variance_breaks": 0
+  },
+  "rolling_beta": {
+    "max_absolute_beta_netflix_vs_google": 1.2461718309876322
+  },
+  "dcc_heatmap": {
+    "highest_correlation_value": 0.5449684989480801
+  },
+  "diversification_verdict": {
+    "recent_36m_avg_correlation": 0.44000748844375415,
+    "prior_36m_avg_correlation": 0.45981741588476344,
+    "welch_t_statistic": -6.687602779872939,
+    "p_value": 2.0674970397121916e-08,
+    "binary_indicator": 1
+  }
+}
