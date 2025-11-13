@@ -1,0 +1,13 @@
+JOHANSEN COINTEGRATION & VAR ANALYSIS - RESULTS
+============================================================
+
+Cointegration rank (r): 3
+VAR lag order (p): 5
+Average RMSE: 0.32890363
+Maximum rolling correlation: 0.83689318
+Significant Granger pairs: 4
+Peak impulse response: 0.13374398%
+Half-life: 2.47699431 days
+
+Risk Policy:
+All model outputs are constrained to historical variance bounds with no leverage on cointegration trades.
