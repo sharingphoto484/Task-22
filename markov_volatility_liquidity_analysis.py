@@ -3,7 +3,7 @@
 # ==========================================
 # Requirements: pandas, numpy, matplotlib, seaborn, scipy, scikit-learn, statsmodels, hmmlearn
 # Input files: HDFCBANK.csv, ICICIBANK.csv, INDUSINDBK.csv (in same directory)
-# Output files: probability_heatmap.png, analysis_results.json
+# Output files: probability_heatmap.png
 # ==========================================
 
 import pandas as pd
@@ -15,7 +15,6 @@ from sklearn.preprocessing import StandardScaler
 import statsmodels.api as sm
 from statsmodels.stats.sandwich_covariance import cov_hac
 from scipy import stats
-import json
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -101,13 +100,45 @@ for bank_name, df in returns_data.items():
 
     try:
         # Use Gaussian HMM with 2 components
+        # Better initialization using variance-based splitting
+        returns_flat = y.flatten()
+        median_abs = np.median(np.abs(returns_flat))
+
+        # Split into low and high volatility groups
+        low_vol_mask = np.abs(returns_flat) <= median_abs
+        high_vol_mask = np.abs(returns_flat) > median_abs
+
+        # Initial means (close to zero for both states)
+        init_means = np.array([[0.0], [0.0]])
+
+        # Initial covariances based on empirical split
+        var_low = np.var(returns_flat[low_vol_mask])
+        var_high = np.var(returns_flat[high_vol_mask])
+        init_covars = np.array([[[var_low]], [[var_high]]])
+
+        # Initial transition matrix (moderate persistence)
+        init_transmat = np.array([[0.95, 0.05],
+                                  [0.10, 0.90]])
+
+        # Initial state probabilities
+        init_startprob = np.array([0.75, 0.25])
+
         model = hmm.GaussianHMM(
             n_components=2,
             covariance_type="full",
-            n_iter=1000,
+            n_iter=2000,
+            tol=1e-6,
             random_state=42,
-            verbose=False
+            verbose=False,
+            params="stmc",
+            init_params=""
         )
+
+        # Set initial parameters
+        model.startprob_ = init_startprob
+        model.transmat_ = init_transmat
+        model.means_ = init_means
+        model.covars_ = init_covars
 
         # Fit the model
         model.fit(y)
@@ -498,30 +529,15 @@ print("\n" + "=" * 60)
 print("FINAL RESULTS")
 print("=" * 60)
 
-results = {
-    'avg_expected_duration_high_vol_days': float(avg_expected_duration),
-    'avg_stationary_prob_high_vol': float(avg_stationary_prob),
-    'pca_variance_explained_pct': float(variance_explained),
-    'pca_min_loading': float(min_loading),
-    'parkinson_95th_percentile': float(percentile_95),
-    'mean_p_value_deliverble': float(mean_p_value),
-    'heatmap_max_probability': float(max_probability),
-    'liquidity_commonality_verdict': int(liquidity_verdict)
-}
-
 print(f"\n1. Cross-bank average expected duration (high vol state): {avg_expected_duration:.6f}")
 print(f"2. Cross-bank average stationary probability (high vol state): {avg_stationary_prob:.6f}")
 print(f"3. PCA variance explained by PC1: {variance_explained:.6f}%")
 print(f"4. Minimum PC1 loading: {min_loading:.6f}")
-print(f"5. 95th percentile of cross-bank avg Parkinson variance: {percentile_95:.6f}")
-print(f"6. Mean p-value on %Deliverble: {mean_p_value:.6f}")
+print(f"5. 95th percentile of cross-bank avg Parkinson variance: {percentile_95:.8f}")
+print(f"6. Mean p-value on %Deliverble: {mean_p_value:.10f}")
 print(f"7. Maximum probability in heatmap: {max_probability:.6f}")
 print(f"8. Liquidity commonality verdict: {liquidity_verdict}")
 
-# Save results to JSON
-with open('analysis_results.json', 'w') as f:
-    json.dump(results, f, indent=2)
-
 print("\n" + "=" * 60)
-print("Analysis complete! Results saved to 'analysis_results.json'")
+print("Analysis complete!")
 print("=" * 60)
