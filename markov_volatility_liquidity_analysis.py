@@ -433,6 +433,42 @@ if heatmap_matrix is not None:
     plt.savefig('probability_heatmap.png', dpi=150, bbox_inches='tight')
     print("Heatmap saved as 'probability_heatmap.png'")
     plt.close()
+
+    # Print detailed heatmap statistics
+    print("\n" + "=" * 60)
+    print("HEATMAP DETAILED STATISTICS")
+    print("=" * 60)
+    for i, bank in enumerate(successful_banks):
+        probs = heatmap_matrix[i]
+        print(f"\n{bank}:")
+        print(f"  Mean probability: {np.mean(probs):.6f}")
+        print(f"  Median probability: {np.median(probs):.6f}")
+        print(f"  Min probability: {np.min(probs):.6f}")
+        print(f"  Max probability: {np.max(probs):.6f}")
+        print(f"  Std deviation: {np.std(probs):.6f}")
+        print(f"  Days with P > 0.5: {np.sum(probs > 0.5)}")
+        print(f"  Days with P > 0.8: {np.sum(probs > 0.8)}")
+        print(f"  Days with P > 0.9: {np.sum(probs > 0.9)}")
+
+    # Print ASCII representation (simplified view)
+    print("\n" + "=" * 60)
+    print("HEATMAP ASCII VISUALIZATION (First 100 days)")
+    print("=" * 60)
+    print("Legend: . = Low (0-0.3), o = Medium (0.3-0.7), O = High (0.7-0.9), # = Very High (0.9-1.0)")
+    print()
+    for i, bank in enumerate(successful_banks):
+        probs = heatmap_matrix[i, :100]  # First 100 days
+        ascii_row = ""
+        for p in probs:
+            if p < 0.3:
+                ascii_row += "."
+            elif p < 0.7:
+                ascii_row += "o"
+            elif p < 0.9:
+                ascii_row += "O"
+            else:
+                ascii_row += "#"
+        print(f"{bank:12s}: {ascii_row}")
 else:
     print("Skipping heatmap creation (no data available)")
 
