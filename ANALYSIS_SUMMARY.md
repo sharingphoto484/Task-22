@@ -19,15 +19,15 @@ This analysis performs a comprehensive quantitative study of three Indian bank s
 ### 1. Markov Switching Volatility Analysis
 
 **Cross-bank Average Expected Duration (High Volatility State):**
-- **3.839117 trading days**
+- **8.574882 trading days**
 
 **Cross-bank Average Stationary Probability (High Volatility State):**
-- **0.084611** (8.46%)
+- **0.123429** (12.34%)
 
 #### Individual Bank Statistics:
-- **HDFCBANK**: High vol σ = 0.208, Expected duration = 1.00 days, Stationary prob = 1.63%
-- **ICICIBANK**: High vol σ = 0.221, Expected duration = 1.00 days, Stationary prob = 1.37%
-- **INDUSINDBK**: High vol σ = 0.060, Expected duration = 9.52 days, Stationary prob = 22.38%
+- **HDFCBANK**: High vol σ = 0.118, Expected duration = 4.83 days, Stationary prob = 5.54%
+- **ICICIBANK**: High vol σ = 0.098, Expected duration = 11.42 days, Stationary prob = 8.92%
+- **INDUSINDBK**: High vol σ = 0.060, Expected duration = 9.48 days, Stationary prob = 22.57%
 
 ### 2. Liquidity Commonality (PCA on Amihud Illiquidity)
 
@@ -56,7 +56,7 @@ This analysis performs a comprehensive quantitative study of three Indian bank s
 **Regression**: abs(log return_{t+1}) ~ β₁·%Deliverble_t + β₂·Turnover_t + intercept
 
 **Mean P-value on %Deliverble Coefficient:**
-- **0.000001** (highly statistically significant)
+- **0.0000011522** (highly statistically significant)
 
 #### Individual Bank Results:
 - **HDFCBANK**: Coef = -0.002072, NW SE = 0.000446, p-value = 0.000003
@@ -106,9 +106,9 @@ The heatmap visualizes the time-varying probability of being in the high volatil
 ## Files Generated
 
 1. **markov_volatility_liquidity_analysis.py** - Main analysis script
-2. **analysis_results.json** - Numerical results in JSON format
-3. **probability_heatmap.png** - Visualization of high volatility state probabilities
-4. **ANALYSIS_SUMMARY.md** - This summary document
+2. **probability_heatmap.png** - Visualization of high volatility state probabilities
+3. **ANALYSIS_SUMMARY.md** - This summary document
+4. **QC_NOTES.txt** - Quality control notes with prompt goals and step-by-step solution
 
 ## Software Requirements
 
@@ -133,13 +133,13 @@ Runtime: ~30-60 seconds on standard hardware
 
 ## Key Findings
 
-1. **Volatility Regimes**: Banks exhibit distinct high and low volatility states, with INDUSINDBK showing more persistent high volatility periods (9.5 days) compared to HDFCBANK and ICICIBANK (~1 day).
+1. **Volatility Regimes**: Banks exhibit distinct high and low volatility states, with all three banks showing moderate persistence in high volatility periods: ICICIBANK (11.4 days), INDUSINDBK (9.5 days), and HDFCBANK (4.8 days). The cross-bank average expected duration is 8.6 days.
 
-2. **Liquidity Commonality**: Strong evidence (72% variance explained) that the three banks share common liquidity dynamics, suggesting systemic liquidity risk factors in the Indian banking sector.
+2. **Liquidity Commonality**: Strong evidence (72% variance explained) that the three banks share common liquidity dynamics, suggesting systemic liquidity risk factors in the Indian banking sector. All three loadings are strictly positive, confirming the liquidity commonality verdict.
 
-3. **Delivery Percentage Effect**: Standardized delivery percentage is a highly significant predictor of next-day volatility (p < 0.000001), with negative coefficient suggesting higher delivery ratios correspond to lower future volatility.
+3. **Delivery Percentage Effect**: Standardized delivery percentage is a highly significant predictor of next-day volatility (p = 0.0000011522), with negative coefficients across all banks suggesting higher delivery ratios correspond to lower future volatility.
 
-4. **Tail Risk**: The 95th percentile of Parkinson variance (0.00248) indicates occasional extreme intraday price ranges across the banking sector.
+4. **Tail Risk**: The 95th percentile of Parkinson variance (0.00247556) indicates occasional extreme intraday price ranges across the banking sector.
 
 ---
 
