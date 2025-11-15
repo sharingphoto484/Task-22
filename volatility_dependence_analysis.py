@@ -499,6 +499,15 @@ print("\n" + "="*50)
 print("GSADF Bubble Detection Analysis")
 print("="*50)
 
+# How does GSADF initial window choice affect episode detection?
+# Answer: The initial window (r0) controls the minimum sample size for ADF regressions.
+# Smaller r0 (e.g., 0.01 = 1%) increases power to detect short-lived bubbles but raises
+# false positive risk due to small-sample inference issues. Larger r0 (e.g., 0.05 = 5%)
+# improves finite-sample properties and critical value accuracy but may miss brief episodes.
+# Trade-off: r0=0.01 prioritizes sensitivity to detect rapid price explosions; r0=0.05
+# prioritizes robustness against spurious detections. Standard practice uses 1-2% for
+# financial asset bubbles to balance detection power with statistical reliability.
+
 # Set initial window fraction to 1% of sample
 r0 = 0.01
 T = len(tsla)
