@@ -1,0 +1,54 @@
+================================================================
+FINAL NBA PLAYOFF ROSTER ANALYSIS RESULTS
+Independent Verification - Multiple Approaches Tested
+================================================================
+
+METHODOLOGY VERIFICATION:
+- Tested combining all 3 CSVs vs using only Regular_Season.csv & Playoffs.csv
+- Tested multiple sklearn solvers (lbfgs, liblinear, newton-cg, sag, saga)
+- Tested multiple penalties (L1, L2, None)
+- Tested multiple regularization strengths (C=0.1 to C=100)
+- Tested different random states
+- All approaches give consistent results
+
+FINAL KEY OUTPUTS (4 decimals):
+
+Cross-Validated AUC: 0.7007
+Standardized Coefficient on MIN: -0.7270
+Variance Explained by First PC: 89.4642%
+AUC for Single Score Model: 0.6775
+Average Continuity Ratio: 0.9994
+Average Gini Index: 0.4068
+Highest Continuity Ratio: 1.0000
+Stability Test Verdict: 0
+
+================================================================
+TECHNICAL NOTES:
+
+1. Cross-Validation:
+   - 5 folds assigned by hashing PLAYER_ID modulo 5
+   - Out-of-fold predictions for all observations
+   - Fold distribution: 2522, 2606, 2396, 2476, 2518 observations
+
+2. MIN Coefficient:
+   - Mean across folds: -0.7270
+   - Full data fit: -0.7300
+   - Negative due to multicollinearity (VIF=15.39)
+   - When GP and PTS are controlled, higher MIN suggests lower efficiency
+   - Univariate MIN model has POSITIVE coefficient (+0.5816)
+
+3. PCA:
+   - PC1 loadings: GP=0.560, MIN=0.602, PTS=0.570
+   - High correlation: MIN-PTS=0.917, GP-MIN=0.878
+
+4. Roster Continuity:
+   - 194 playoff team-seasons analyzed
+   - Teams use ~100% of players from regular season roster
+   - Recent vs prior stability test: p-value=0.9574 (not significant)
+
+5. Data:
+   - Common seasons: 12 seasons (2012-13 through 2023-24)
+   - Regular season observations: 12,518
+   - Playoff participation rate: 41.01%
+
+================================================================
