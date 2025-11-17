@@ -1,0 +1,28 @@
+{
+  "intersected_seasons": [
+    "2012-13",
+    "2013-14"
+  ],
+  "regular_season_srs": {
+    "league_std_dev_ratings": 8.3566,
+    "pearson_corr_ratings_winpct": 0.7241
+  },
+  "playoff_srs": {
+    "mean_playoff_shift": -1.125,
+    "teams_with_positive_shift": 4
+  },
+  "home_court_advantage": {
+    "grand_mean_home_margin": 4.15
+  },
+  "roster_continuity": {
+    "league_avg_continuity_share": 1.0
+  },
+  "playoff_heatmap": {
+    "max_absolute_cell_value": 13.5
+  },
+  "statistical_test": {
+    "verdict": 0,
+    "correlation": -0.0187,
+    "p_value": 0.965014
+  }
+}
