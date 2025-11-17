@@ -20,13 +20,11 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # ---------- Load CSVs Robustly ----------
-print("Loading CSV files...")
 nba = pd.read_csv('nba.csv')
 regular = pd.read_csv('Regular_Season.csv')
 playoffs = pd.read_csv('Playoffs.csv')
 
 # ---------- Normalize Season_type ----------
-print("Normalizing Season_type...")
 nba['Season_type'] = nba['Season_type'].str.replace('Regular%20Season', 'Regular_Season')
 nba['Season_type'] = nba['Season_type'].apply(lambda x: 'Playoffs' if x == 'Playoffs' else x)
 
@@ -34,22 +32,18 @@ regular['Season_type'] = 'Regular_Season'
 playoffs['Season_type'] = 'Playoffs'
 
 # ---------- Combine All Data ----------
-print("Combining datasets...")
 all_data = pd.concat([nba, regular, playoffs], ignore_index=True)
 all_data = all_data.drop_duplicates()
 
 # ---------- Intersect Seasons Across All Three Files ----------
-print("Intersecting seasons across files...")
 seasons_nba = set(nba['year'].unique())
 seasons_regular = set(regular['year'].unique())
 seasons_playoffs = set(playoffs['year'].unique())
 common_seasons = sorted(seasons_nba & seasons_regular & seasons_playoffs)
-print(f"Common seasons: {common_seasons}")
 
 all_data = all_data[all_data['year'].isin(common_seasons)].copy()
 
 # ---------- Prepare Regular Season Data for Modeling ----------
-print("\nPreparing Regular Season data for modeling...")
 regular_data = all_data[all_data['Season_type'] == 'Regular_Season'].copy()
 playoffs_data = all_data[all_data['Season_type'] == 'Playoffs'].copy()
 
@@ -58,7 +52,6 @@ required_cols = ['year', 'PLAYER_ID', 'PLAYER', 'TEAM', 'GP', 'MIN', 'PTS']
 regular_data = regular_data.dropna(subset=required_cols)
 
 # ---------- Create Playoff Participation Label ----------
-print("Creating playoff participation labels...")
 # Create set of player-team-year combinations that appeared in playoffs
 playoffs_appearances = set(
     playoffs_data[['year', 'PLAYER_ID', 'TEAM']].apply(
@@ -73,7 +66,6 @@ regular_data['playoff_label'] = regular_data.apply(
 )
 
 # ---------- Standardize Predictors Within Year ----------
-print("Standardizing predictors within year...")
 regular_data['GP_std'] = regular_data.groupby('year')['GP'].transform(
     lambda x: (x - x.mean()) / x.std() if x.std() > 0 else 0
 )
@@ -85,7 +77,6 @@ regular_data['PTS_std'] = regular_data.groupby('year')['PTS'].transform(
 )
 
 # ---------- Assign Folds by Hashing PLAYER_ID ----------
-print("Assigning cross-validation folds...")
 def hash_player_id(player_id):
     """Hash PLAYER_ID modulo 5 to assign fold"""
     return int(hashlib.md5(str(player_id).encode()).hexdigest(), 16) % 5
@@ -93,7 +84,6 @@ def hash_player_id(player_id):
 regular_data['fold'] = regular_data['PLAYER_ID'].apply(hash_player_id)
 
 # ---------- Cross-Validated Logistic Regression ----------
-print("\nPerforming 5-fold cross-validated logistic regression...")
 X_cols = ['GP_std', 'MIN_std', 'PTS_std']
 regular_data_clean = regular_data.dropna(subset=X_cols + ['playoff_label']).copy()
 regular_data_clean.reset_index(drop=True, inplace=True)
@@ -122,14 +112,7 @@ cv_auc = roc_auc_score(y_true, oof_predictions)
 # Average coefficient on MIN_std
 avg_coef_min = np.mean([c[1] for c in coefficients])  # MIN_std is second column
 
-print(f"\n{'='*50}")
-print(f"CROSS-VALIDATED LOGISTIC REGRESSION RESULTS")
-print(f"{'='*50}")
-print(f"Cross-Validated AUC: {cv_auc:.4f}")
-print(f"Standardized Coefficient on MIN: {avg_coef_min:.4f}")
-
 # ---------- PCA Analysis on Regular Season Data ----------
-print("\n\nPerforming PCA analysis...")
 pca_data = regular_data[['GP_std', 'MIN_std', 'PTS_std', 'playoff_label']].dropna()
 
 X_pca = pca_data[['GP_std', 'MIN_std', 'PTS_std']].values
@@ -155,14 +138,7 @@ lr_pca.fit(pca_scores, y_pca)
 pca_predictions = lr_pca.predict_proba(pca_scores)[:, 1]
 pca_auc = roc_auc_score(y_pca, pca_predictions)
 
-print(f"\n{'='*50}")
-print(f"PCA ANALYSIS RESULTS")
-print(f"{'='*50}")
-print(f"Variance Explained by First PC: {variance_explained_pct:.4f}%")
-print(f"AUC for Single Score Model: {pca_auc:.4f}")
-
 # ---------- Roster Continuity Analysis ----------
-print("\n\nAnalyzing roster continuity...")
 
 # Get playoff team-seasons from nba.csv
 nba_playoffs = nba[nba['Season_type'] == 'Playoffs'].copy()
@@ -212,7 +188,6 @@ for year in common_seasons:
 avg_continuity = np.mean(continuity_ratios)
 
 # ---------- Gini Index Calculation ----------
-print("Calculating Gini index...")
 
 def gini_index(values):
     """Calculate Gini coefficient"""
@@ -241,14 +216,7 @@ for year in common_seasons:
 
 avg_gini = np.mean(gini_values)
 
-print(f"\n{'='*50}")
-print(f"ROSTER CONTINUITY & CONCENTRATION RESULTS")
-print(f"{'='*50}")
-print(f"Average Continuity Ratio: {avg_continuity:.4f}")
-print(f"Average Gini Index: {avg_gini:.4f}")
-
 # ---------- Create Heatmap of Roster Continuity ----------
-print("\nCreating roster continuity heatmap...")
 
 # Create pivot table for heatmap
 continuity_df = pd.DataFrame(team_season_records)
@@ -269,15 +237,9 @@ plt.xlabel('Year')
 plt.ylabel('Team')
 plt.tight_layout()
 plt.savefig('roster_continuity_heatmap.png', dpi=300, bbox_inches='tight')
-print("Heatmap saved as 'roster_continuity_heatmap.png'")
-
-print(f"\n{'='*50}")
-print(f"HEATMAP ANALYSIS RESULTS")
-print(f"{'='*50}")
-print(f"Highest Continuity Ratio in Heatmap: {max_continuity:.4f}")
+plt.close()
 
 # ---------- Test for Recent Stability ----------
-print("\nTesting for recent stability...")
 
 if len(common_seasons) >= 6:
     # Sort seasons
@@ -304,23 +266,13 @@ if len(common_seasons) >= 6:
         stability_verdict = 0
 else:
     stability_verdict = 0
-    print(f"Fewer than 6 seasons available ({len(common_seasons)}), verdict set to 0 by rule")
 
-print(f"\n{'='*50}")
-print(f"RECENT STABILITY TEST RESULTS")
-print(f"{'='*50}")
-print(f"Stability Test Verdict: {stability_verdict}")
-
-# ---------- Final Summary ----------
-print(f"\n\n{'='*60}")
-print(f"FINAL KEY OUTPUTS SUMMARY")
-print(f"{'='*60}")
-print(f"Cross-Validated AUC: {cv_auc:.4f}")
+# ---------- Final Output ----------
+print(f"Cross-Validated AUC:             {cv_auc:.4f}")
 print(f"Standardized Coefficient on MIN: {avg_coef_min:.4f}")
-print(f"Variance Explained by First PC: {variance_explained_pct:.4f}%")
-print(f"AUC for Single Score Model: {pca_auc:.4f}")
-print(f"Average Continuity Ratio: {avg_continuity:.4f}")
-print(f"Average Gini Index: {avg_gini:.4f}")
-print(f"Highest Continuity Ratio in Heatmap: {max_continuity:.4f}")
-print(f"Stability Test Verdict: {stability_verdict}")
-print(f"{'='*60}")
+print(f"Variance Explained by First PC:  {variance_explained_pct:.4f}%")
+print(f"AUC for Single Score Model:      {pca_auc:.4f}")
+print(f"Average Continuity Ratio:        {avg_continuity:.4f}")
+print(f"Average Gini Index:              {avg_gini:.4f}")
+print(f"Highest Continuity Ratio:        {max_continuity:.4f}")
+print(f"Stability Test Verdict:          {stability_verdict}")
