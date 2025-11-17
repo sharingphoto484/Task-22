@@ -83,6 +83,10 @@ def hash_player_id(player_id):
 
 regular_data['fold'] = regular_data['PLAYER_ID'].apply(hash_player_id)
 
+# ---------- Create Sample Weights ----------
+# Use MIN as primary weight, else GP when MIN is missing, else count of player rows (1)
+regular_data['weight'] = regular_data['MIN'].fillna(regular_data['GP']).fillna(1)
+
 # ---------- Cross-Validated Logistic Regression ----------
 X_cols = ['GP_std', 'MIN_std', 'PTS_std']
 regular_data_clean = regular_data.dropna(subset=X_cols + ['playoff_label']).copy()
@@ -97,26 +101,29 @@ for fold in range(5):
 
     X_train = regular_data_clean.loc[train_mask, X_cols]
     y_train = regular_data_clean.loc[train_mask, 'playoff_label']
+    w_train = regular_data_clean.loc[train_mask, 'weight']
     X_val = regular_data_clean.loc[val_mask, X_cols]
 
     lr = LogisticRegression(max_iter=1000, random_state=42)
-    lr.fit(X_train, y_train)
+    lr.fit(X_train, y_train, sample_weight=w_train)
 
     oof_predictions[val_mask] = lr.predict_proba(X_val)[:, 1]
     coefficients.append(lr.coef_[0])
 
 # Calculate cross-validated AUC
 y_true = regular_data_clean['playoff_label'].values
-cv_auc = roc_auc_score(y_true, oof_predictions)
+weights = regular_data_clean['weight'].values
+cv_auc = roc_auc_score(y_true, oof_predictions, sample_weight=weights)
 
 # Average coefficient on MIN_std
 avg_coef_min = np.mean([c[1] for c in coefficients])  # MIN_std is second column
 
 # ---------- PCA Analysis on Regular Season Data ----------
-pca_data = regular_data[['GP_std', 'MIN_std', 'PTS_std', 'playoff_label']].dropna()
+pca_data = regular_data[['GP_std', 'MIN_std', 'PTS_std', 'playoff_label', 'weight']].dropna()
 
 X_pca = pca_data[['GP_std', 'MIN_std', 'PTS_std']].values
 y_pca = pca_data['playoff_label'].values
+w_pca = pca_data['weight'].values
 
 # Fit PCA
 pca = PCA(n_components=1)
@@ -134,9 +141,9 @@ variance_explained_pct = pca.explained_variance_ratio_[0] * 100
 
 # Fit logistic regression with single PC score
 lr_pca = LogisticRegression(max_iter=1000, random_state=42)
-lr_pca.fit(pca_scores, y_pca)
+lr_pca.fit(pca_scores, y_pca, sample_weight=w_pca)
 pca_predictions = lr_pca.predict_proba(pca_scores)[:, 1]
-pca_auc = roc_auc_score(y_pca, pca_predictions)
+pca_auc = roc_auc_score(y_pca, pca_predictions, sample_weight=w_pca)
 
 # ---------- Roster Continuity Analysis ----------
 

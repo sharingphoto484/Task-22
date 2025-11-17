@@ -1,6 +1,7 @@
 ================================================================
 FINAL NBA PLAYOFF ROSTER ANALYSIS RESULTS
 Independent Verification - Multiple Approaches Tested
+CORRECTED VERSION WITH SAMPLE WEIGHTING
 ================================================================
 
 METHODOLOGY VERIFICATION:
@@ -9,14 +10,15 @@ METHODOLOGY VERIFICATION:
 - Tested multiple penalties (L1, L2, None)
 - Tested multiple regularization strengths (C=0.1 to C=100)
 - Tested different random states
-- All approaches give consistent results
+- IMPORTANT: Applied sample weights using MIN as primary, GP as fallback, 1 as default
+- All approaches give consistent results with proper weighting
 
 FINAL KEY OUTPUTS (4 decimals):
 
-Cross-Validated AUC: 0.7007
-Standardized Coefficient on MIN: -0.7270
+Cross-Validated AUC: 0.6253
+Standardized Coefficient on MIN: -0.4127
 Variance Explained by First PC: 89.4642%
-AUC for Single Score Model: 0.6775
+AUC for Single Score Model: 0.6069
 Average Continuity Ratio: 0.9994
 Average Gini Index: 0.4068
 Highest Continuity Ratio: 1.0000
@@ -25,30 +27,53 @@ Stability Test Verdict: 0
 ================================================================
 TECHNICAL NOTES:
 
-1. Cross-Validation:
+1. Sample Weighting (CRITICAL):
+   - Weight = MIN if MIN is not missing
+   - Weight = GP if MIN is missing
+   - Weight = 1 if both MIN and GP are missing
+   - Applied to all logistic regression models using sample_weight parameter
+   - Applied to AUC calculation using sample_weight parameter
+
+2. Cross-Validation:
    - 5 folds assigned by hashing PLAYER_ID modulo 5
    - Out-of-fold predictions for all observations
    - Fold distribution: 2522, 2606, 2396, 2476, 2518 observations
+   - Sample weights applied during model fitting
 
-2. MIN Coefficient:
-   - Mean across folds: -0.7270
-   - Full data fit: -0.7300
+3. MIN Coefficient:
+   - Mean across folds with weighting: -0.4127
    - Negative due to multicollinearity (VIF=15.39)
    - When GP and PTS are controlled, higher MIN suggests lower efficiency
-   - Univariate MIN model has POSITIVE coefficient (+0.5816)
+   - Weighting reduces coefficient magnitude compared to unweighted (-0.7270)
 
-3. PCA:
+4. PCA:
    - PC1 loadings: GP=0.560, MIN=0.602, PTS=0.570
    - High correlation: MIN-PTS=0.917, GP-MIN=0.878
+   - Weighted logistic regression with PC1 score
 
-4. Roster Continuity:
+5. Roster Continuity:
    - 194 playoff team-seasons analyzed
    - Teams use ~100% of players from regular season roster
    - Recent vs prior stability test: p-value=0.9574 (not significant)
 
-5. Data:
+6. Data:
    - Common seasons: 12 seasons (2012-13 through 2023-24)
    - Regular season observations: 12,518
    - Playoff participation rate: 41.01%
 
+================================================================
+COMPARISON WITH UNWEIGHTED RESULTS:
+
+Unweighted (INCORRECT):
+- Cross-Validated AUC: 0.7007
+- MIN Coefficient: -0.7270
+- PC1 AUC: 0.6775
+
+Weighted (CORRECT):
+- Cross-Validated AUC: 0.6253
+- MIN Coefficient: -0.4127
+- PC1 AUC: 0.6069
+
+The weighting scheme emphasizes observations with more playing time,
+which changes model coefficients and predictive performance metrics.
 ================================================================
