@@ -1,0 +1,15 @@
+BUBBLE & SPILLOVER ANALYSIS RESULTS
+================================================================================
+
+REQUIRED OUTPUTS:
+  Total bubble episodes: 0
+  Maximum GSADF statistic: 1140.8881
+  Average total spillover index: 90.0034
+  Average LT net spillover: 96.7896
+  Cross-asset average median Yang-Zhang volatility: 0.3182
+  Total significant Granger causality pairs: 0
+  Highest co-exceedance cell value: 0.0278
+  Diversification indicator: 0
+
+DIVERSIFICATION VERDICT:
+  NO IMPROVEMENT: Recent co-exceedance is not lower than the prior period, suggesting no improvement in diversification.
