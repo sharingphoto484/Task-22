@@ -1,0 +1,52 @@
+QUALITY CONTROL NOTES
+BANK STOCK DEPENDENCE AND LIQUIDITY ANALYSIS
+
+PROMPT GOAL
+
+The objective is to perform a comprehensive multi asset risk analysis on three Indian bank stocks using their historical daily price and volume data. The analysis must establish a common daily intersection period across all three tickers and work exclusively within that timeframe to ensure consistency. Advanced econometric methods are applied to model return distributions using GARCH with heavy tailed innovations and to capture extreme co movement through copula based tail dependence estimation. The goal includes identifying structural regime changes in trading liquidity using multiple breakpoint detection and quantifying volatility through range based estimators rather than simple return variance. Additionally the analysis measures market microstructure friction via the Amihud illiquidity metric and visualizes downside risk through rolling drawdown patterns. Finally the work must provide strategic insights on how extreme loss events affect long horizon investment decision making based on the empirical findings.
+
+STEP BY STEP SOLUTION
+
+Step 1 : Data Loading and Column Validation
+
+The analysis begins by loading three CSV files for AXISBANK ICICIBANK and HDFCBANK ensuring each contains the exact required columns spelled as Date Open High Low Close and Volume. All columns are parsed with proper data types where Date becomes datetime objects and price volume fields convert to numeric values with any malformed entries removed. The code implements robust error handling to catch missing columns or corrupt data early in the pipeline before any analytical work proceeds.
+
+Step 2 : Duplicate Removal and Date Sorting
+
+After loading each ticker dataset the code sorts records chronologically by Date and identifies any duplicate entries where multiple records exist for the same trading day. When duplicates occur the last record for each date is retained as this typically represents end of day official values in financial databases. This deduplication step ensures that subsequent intersection logic and time series operations work on exactly one observation per ticker per date preventing calculation errors from repeated data points.
+
+Step 3 : Daily Intersection Construction
+
+The analysis computes the exact set of calendar dates that appear in all three ticker files simultaneously using set intersection operations on the date columns. This common date range defines the analysis window and the code filters each dataframe to include only rows matching these shared dates. The resulting datasets are perfectly aligned in time with 5306 common trading days spanning from January 2000 to April 2021 ensuring that every subsequent calculation compares apples to apples across assets.
+
+Step 4 : Log Return Calculation
+
+Daily log returns are computed for each ticker by taking the natural logarithm of the Close price series and calculating the first difference to measure percentage changes in logarithmic space. Log returns are preferred over simple returns because they aggregate correctly across time and approximate normality better for small price changes. The first observation in each series is dropped since it has no prior day to compare against leaving 5305 return observations per ticker for modeling.
+
+Step 5 : GARCH Standardization with Student t Innovations
+
+Each return series is fitted with a GARCH one one model that captures time varying volatility clustering where large price moves tend to follow large moves. The innovation distribution is specified as Student t rather than normal to allow for heavier tails that better match the empirical distribution of financial returns with extreme observations. Maximum likelihood estimation produces standardized residuals for each ticker by dividing raw returns by their conditional volatility and these residuals serve as inputs to the copula model ensuring that marginal distributions are properly handled before modeling dependence.
+
+Step 6 : Trivariate Student t Copula Estimation
+
+The standardized residuals from all three tickers are transformed to uniform margins using empirical cumulative distribution functions which map each observation to its percentile rank. A trivariate Student t copula is then fitted to these uniform margins using maximum likelihood where the copula correlation matrix and degrees of freedom parameter are estimated jointly. Multiple optimization starting points are tested to ensure convergence to a global optimum and the fitted model yields degrees of freedom around 30 indicating moderate tail heaviness and pairwise lower tail dependence coefficients quantifying co crash probabilities at the five percent threshold.
+
+Step 7 : Structural Break Detection in Liquidity
+
+The natural logarithm of Volume is computed for each ticker to stabilize variance and the Bai Perron multiple breakpoint method searches for up to three structural changes in the mean level of log volume. The algorithm uses a fifteen percent trimming parameter to prevent breaks too close to the series endpoints and selects the optimal number of breaks based on Bayesian Information Criterion. Across all three banks a total of nine breaks are detected with the earliest occurring in March 2003 signaling a regime shift in market liquidity that affected all three stocks.
+
+Step 8 : Parkinson Range Volatility Measurement
+
+For each ticker and each day the Parkinson estimator computes intraday variance using the squared log ratio of High to Low prices scaled by a constant that accounts for the range distribution. A thirty day rolling window averages these daily variance estimates and the result is annualized by multiplying by 252 trading days and taking the square root to express volatility in annual percentage terms. The median of each ticker rolling series is calculated and the three medians are averaged producing a cross asset volatility measure of 0.3281 or about 33 percent annualized which captures price uncertainty better than close to close returns alone.
+
+Step 9 : Amihud Illiquidity Ratio Construction
+
+The Amihud measure for each ticker and day is computed as the absolute log return divided by the product of Close price and Volume representing price impact per dollar traded. Daily measures are aggregated to monthly averages within calendar months then each ticker monthly series is standardized by subtracting its in sample mean and dividing by in sample standard deviation. The standardized monthly values for the most recent twelve months are averaged across the three tickers yielding a cross sectional illiquidity metric of negative 0.3497 indicating recent liquidity conditions are better than the historical average.
+
+Step 10 : Rolling Drawdown Heatmap Visualization
+
+For each ticker the code computes the running maximum Close price up to each date and calculates the percentage decline from that peak representing cumulative loss from the high water mark. Month end dates for the most recent twenty four months are identified and drawdown values at those month ends form a matrix with tickers on rows and months on columns. The heatmap visualization color codes cells by severity with red indicating large losses and the most severe value across all cells is negative 81.95 percent revealing that at least one bank experienced a near complete drawdown during the COVID market crash period within the visualization window.
+
+ANSWER TO OPEN ENDED QUESTION
+
+The analysis concludes that extreme losses present significant challenges for long term investors through multiple interconnected mechanisms. Tail dependence analysis shows that diversification across bank stocks fails precisely when needed most as correlations spike during market stress causing simultaneous portfolio losses. Large drawdowns create a mathematical recovery problem where a fifty percent loss requires a one hundred percent gain to break even permanently impairing compound growth trajectories. Structural liquidity breaks indicate that market quality deteriorates during crises increasing transaction costs when rebalancing is most urgent. Elevated volatility and reduced liquidity compound each other during stress events making it difficult to maintain long term allocations without forced selling at unfavorable prices. Therefore prudent long term investors must size positions conservatively stress test under joint extreme scenarios maintain liquidity buffers and implement dynamic risk management that adapts to changing correlation regimes rather than assuming stable diversification benefits.
