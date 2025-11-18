@@ -44,3 +44,43 @@ Testing ITC...
   GSADF statistic: 734.6972 (from 16471 windows)
   Running 1000 Monte Carlo simulations...
     Simulation 0/1000
+    Simulation 250/1000
+    Simulation 500/1000
+    Simulation 750/1000
+  GSADF statistic: 734.6972
+  Critical values: 90%=2490.7396, 95%=2838.4425, 99%=3566.3982
+  Number of bubble episodes: 0
+
+Total bubble episodes across all tickers: 0
+Maximum GSADF statistic: 1140.8881
+
+============================================================
+PERFORMING VAR ESTIMATION AND SPILLOVER ANALYSIS
+============================================================
+
+Return observations for VAR: 4183
+
+Selecting VAR lag order by AIC...
+  Lag 1: max root=47.2274 (unstable, excluded)
+  Lag 2: max root=12.1687 (unstable, excluded)
+  Lag 3: max root=3.8756 (unstable, excluded)
+  Lag 4: max root=6.1709 (unstable, excluded)
+  Lag 5: max root=11.6555 (unstable, excluded)
+  Lag 6: max root=5.6160 (unstable, excluded)
+  Lag 7: max root=42.8980 (unstable, excluded)
+  Lag 8: max root=2.0558 (unstable, excluded)
+  Lag 9: max root=2.8266 (unstable, excluded)
+  Lag 10: max root=3.8879 (unstable, excluded)
+ERROR: No stable VAR model found!
+
+VAR Model Summary:
+  Lag order: 1
+  Number of observations: 4182
+  AIC: -20.4167
+
+Computing 10-period FEVD...
+Traceback (most recent call last):
+  File "/home/user/Task-22/bubble_spillover_analysis.py", line 322, in <module>
+    fevd_10 = fevd.decomp[9, :, :]  # 10-step ahead (index 9)
+              ~~~~~~~~~~~^^^^^^^^^
+IndexError: index 9 is out of bounds for axis 0 with size 3
