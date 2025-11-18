@@ -1,0 +1,46 @@
+Loading data files...
+LT: 4184 rows, IOC: 5306 rows, ITC: 5306 rows
+
+Forming exact daily intersection...
+Common date range: 2004-06-23 00:00:00 to 2021-04-30 00:00:00
+Total common days: 4184
+
+Calculating log prices and returns...
+After differencing: 4183 return observations
+
+============================================================
+PERFORMING GSADF BUBBLE DETECTION
+============================================================
+
+Testing LT...
+  Computing ADF statistics for sample of windows...
+  Dataset size: 4184, sampling every 23 points
+  GSADF statistic: 767.2761 (from 16471 windows)
+  Running 1000 Monte Carlo simulations...
+    Simulation 0/1000
+    Simulation 250/1000
+    Simulation 500/1000
+    Simulation 750/1000
+  GSADF statistic: 767.2761
+  Critical values: 90%=2467.8830, 95%=2798.1073, 99%=3579.7253
+  Number of bubble episodes: 0
+
+Testing IOC...
+  Computing ADF statistics for sample of windows...
+  Dataset size: 4184, sampling every 23 points
+  GSADF statistic: 1140.8881 (from 16471 windows)
+  Running 1000 Monte Carlo simulations...
+    Simulation 0/1000
+    Simulation 250/1000
+    Simulation 500/1000
+    Simulation 750/1000
+  GSADF statistic: 1140.8881
+  Critical values: 90%=2388.0743, 95%=2811.4623, 99%=3456.5748
+  Number of bubble episodes: 0
+
+Testing ITC...
+  Computing ADF statistics for sample of windows...
+  Dataset size: 4184, sampling every 23 points
+  GSADF statistic: 734.6972 (from 16471 windows)
+  Running 1000 Monte Carlo simulations...
+    Simulation 0/1000
