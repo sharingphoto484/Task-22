@@ -3,7 +3,7 @@
 # ==========================================
 # Requirements: pandas, numpy, matplotlib, scipy, statsmodels
 # Input files: EICHERMOT.csv, HCLTECH.csv, BPCL.csv (in same directory)
-# Output files: analysis_output.json (key outputs only)
+# Output files: analysis_output.json, rolling_seasonality_heatmap.png
 #
 # Analysis includes:
 # - Johansen cointegration test with VECM
@@ -353,13 +353,15 @@ def rolling_seasonality_heatmap():
     recent_data = all_returns[all_returns['Date'] >= start_date_24m].copy()
 
     if len(recent_data) == 0:
-        return 0.0
+        return 0.0, None
 
     # Get unique year-months in the period
     recent_data['YearMonth'] = recent_data['Date'].dt.to_period('M')
     unique_months = sorted(recent_data['YearMonth'].unique())
 
-    heatmap_values = []
+    # Initialize heatmap matrix: rows = days (Mon-Fri), columns = months
+    heatmap_matrix = []
+    month_labels = []
 
     for month in unique_months:
         month_end = month.to_timestamp('M')
@@ -370,19 +372,58 @@ def rolling_seasonality_heatmap():
         if len(data_before_month) < 10:
             continue
 
+        month_labels.append(month.strftime('%Y-%m'))
+        month_values = []
+
         # Compute median return for each day of week (0-4)
         for dow in range(5):
             dow_data = data_before_month[data_before_month['DayOfWeek'] == dow]['Return']
             if len(dow_data) > 0:
                 median_return_pct = dow_data.median() * 100  # Convert to percentage
-                heatmap_values.append(median_return_pct)
+                month_values.append(median_return_pct)
+            else:
+                month_values.append(0.0)
 
-    if len(heatmap_values) == 0:
-        return 0.0
+        heatmap_matrix.append(month_values)
 
-    return max(heatmap_values)
+    if len(heatmap_matrix) == 0:
+        return 0.0, None
 
-max_heatmap_value = rolling_seasonality_heatmap()
+    # Transpose to get proper orientation: rows=days, columns=months
+    heatmap_array = np.array(heatmap_matrix).T
+
+    # Create heatmap plot
+    fig, ax = plt.subplots(figsize=(16, 6))
+    im = ax.imshow(heatmap_array, cmap='RdYlGn', aspect='auto')
+
+    # Set ticks and labels
+    ax.set_yticks(np.arange(5))
+    ax.set_yticklabels(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'])
+    ax.set_xticks(np.arange(len(month_labels)))
+    ax.set_xticklabels(month_labels, rotation=45, ha='right')
+
+    # Add colorbar
+    cbar = plt.colorbar(im, ax=ax)
+    cbar.set_label('Median Return (%)', rotation=270, labelpad=20)
+
+    # Add title
+    ax.set_title('Rolling Seasonality Heatmap: Median Returns by Month and Day of Week\n(252-day lookback window)',
+                 fontsize=12, fontweight='bold')
+
+    # Add values in cells
+    for i in range(5):
+        for j in range(len(month_labels)):
+            text = ax.text(j, i, f'{heatmap_array[i, j]:.2f}',
+                          ha='center', va='center', color='black', fontsize=6)
+
+    plt.tight_layout()
+    plt.savefig('rolling_seasonality_heatmap.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+    max_value = np.max(heatmap_array)
+    return max_value, heatmap_array
+
+max_heatmap_value, heatmap_data = rolling_seasonality_heatmap()
 
 # ---------- Drift Assessment with Newey-West ----------
 print("\nPerforming drift assessment...")
