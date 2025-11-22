@@ -1,0 +1,10 @@
+{
+  "cointegration_rank": 2,
+  "count_significant_negative_adjustment_speed": 2,
+  "avg_expected_duration_high_vol_state_days": 6.4447,
+  "avg_stationary_prob_high_vol_state": 0.0995,
+  "avg_median_annualized_rogers_satchell_vol": 0.3982,
+  "day_of_week_seasonality_indicator": 0,
+  "max_rolling_seasonality_heatmap_value": 0.9429,
+  "drift_assessment_indicator": 0
+}
