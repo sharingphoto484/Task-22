@@ -1,0 +1,64 @@
+QUALITY CONTROL NOTES FOR BUSINESS ACTIVITY AND SUPPORT ANALYSIS
+
+
+PROMPT GOAL
+
+This analysis conducts a formal quantitative assessment of commercial activity and support interactions across three datasets containing deals contacts and tickets information. The primary objective is to examine ticket closure behavior resolution speed temporal patterns and forecasting using statistical methods including logistic regression linear regression ARIMA modeling and correlation analysis. The assessment links datasets through contact identifiers and company identifiers to explore relationships between customer engagement measured by ticket counts and commercial value measured by deal amounts. All date fields are standardized to datetime format and missing or invalid values are removed to ensure data quality. Multiple statistical tests and visualizations are generated to understand ticket priority relationships deal value variability rolling averages and stage performance. The final deliverable includes key numerical outputs rounded to specified decimal places and corresponding visualization plots for each analysis component.
+
+
+STEP BY STEP SOLUTION
+
+Step 1 : Data Loading and Initial Preparation
+
+The analysis begins by loading three CSV files containing deals contacts and tickets using pandas dataframe operations. Each dataset is read into memory and basic information about row counts is displayed to confirm successful loading. This foundational step ensures all required data is available before proceeding with transformations and statistical modeling.
+
+Step 2 : Date Field Standardization
+
+All date columns including close date from deals and createdate and closed date from tickets are converted to a consistent datetime format using pandas datetime conversion functions. Any values that cannot be parsed as valid dates are coerced to missing values to maintain data integrity. This standardization is essential for calculating date differences and performing temporal analysis throughout the remaining steps.
+
+Step 3 : Data Cleaning and Validation
+
+Rows with missing or non numeric values in critical fields such as deal amount are identified and removed from the dataset. The tickets dataset retains all rows with valid creation dates as these are necessary for temporal analysis even if closure dates are missing. This cleaning process ensures that subsequent statistical models receive only valid complete records for accurate computation.
+
+Step 4 : Ticket Closure Behavior Analysis Using Logistic Regression
+
+A binary outcome variable called ClosedWithin30 is created indicating whether tickets were closed within zero to thirty days inclusive based on the difference between closed date and createdate. Priority is encoded as an ordered categorical variable with Low equal to zero Medium equal to one and High equal to two while a binary indicator for company association is also created. Logistic regression is fitted with these two predictors and the coefficient for priority is extracted and rounded to three decimal places representing the log odds change in closure probability per priority level increase.
+
+Step 5 : Predicted Probability Visualization
+
+Using the fitted logistic regression model predicted probabilities of closure within thirty days are calculated for each priority level assuming presence of an associated company. These predictions are plotted as a scatter plot with priority on the x axis and predicted probability on the y axis. The visualization shows how closure likelihood varies across Low Medium and High priority categories providing interpretable insights from the regression coefficients.
+
+Step 6 : Resolution Speed Calculation
+
+For tickets containing both createdate and closed date the resolution duration is calculated as the difference in whole days. Only tickets with non negative duration values are retained to exclude data quality issues such as closure dates preceding creation dates. The mean of these resolution durations is computed and rounded to two decimal places representing the average time required to resolve support tickets and a histogram visualizes the distribution of resolution times across all qualifying tickets.
+
+Step 7 : Temporal Trend Analysis With Linear Regression
+
+Daily ticket counts are aggregated by grouping tickets by their creation date and counting occurrences per day. A time index variable is constructed starting at one for the earliest date and incrementing sequentially for each subsequent day. Linear regression fits a model with daily ticket count as the dependent variable and time index as the independent variable producing a slope coefficient rounded to four decimals that quantifies the average daily change in ticket volume over the observed period.
+
+Step 8 : ARIMA Forecasting for Future Ticket Demand
+
+An autoregressive integrated moving average model with order one one one is estimated on the chronologically ordered daily ticket count series. The fitted model generates forecasts for the next thirty days beyond the observed data range. The mean of these thirty forecasted values is calculated and rounded to two decimals representing the expected average daily ticket volume for short term planning and an area chart displays both historical data and the forecasted values.
+
+Step 9 : Customer Engagement and Commercial Value Correlation
+
+Ticket counts per contact are computed by aggregating tickets using the associated contact id field and total deal amounts per contact are summed from the deals dataset using contact id as the linking key. Contacts without tickets receive a count of zero and contacts without deals receive a total amount of zero through left merge operations. Spearman rank correlation is calculated between these two variables and rounded to three decimals measuring the monotonic relationship between support engagement and revenue contribution and a bar chart shows mean deal amounts across different ticket count groups.
+
+Step 10 : Chi Square Test for Priority and Status Independence
+
+A contingency table is constructed with ticket priority as rows and ticket status as columns containing the frequency counts for each combination. The chi square test of independence is applied to this table to assess whether priority and status are statistically independent variables. The resulting chi square test statistic is extracted and rounded to three decimals and a heatmap visualization displays the contingency table with color intensity representing frequency counts.
+
+Step 11 : Deal Value Variability Assessment
+
+The standard deviation and mean of deal amounts are calculated across all deals in the dataset. The coefficient of variation is computed as the ratio of standard deviation to mean providing a normalized measure of relative variability that is unit free. This metric rounded to four decimals quantifies the dispersion in deal sizes and a density plot illustrates the probability distribution of deal amounts showing concentration and spread.
+
+Step 12 : Seven Day Rolling Average Peak Identification
+
+The daily ticket count series is reindexed to cover all calendar dates within the observed range with missing days assigned a count of zero. A rolling window of seven days is applied to calculate the moving average at each point in the series. The maximum value attained by this seven day rolling average is identified and rounded to two decimals representing the highest sustained ticket volume over any weekly period and a spiral plot using polar coordinates visualizes the rolling average progression.
+
+Step 13 : Deal Stage Performance Comparison
+
+Deals are grouped by their stage values and the mean deal amount is calculated for each distinct stage. The stage associated with the largest mean amount is identified as the best performing stage in terms of average deal size. This categorical result is reported as the stage name and a boxplot displays the distribution of deal amounts across all stages ordered by descending mean values to facilitate visual comparison.
+
+
+END OF QC NOTES
