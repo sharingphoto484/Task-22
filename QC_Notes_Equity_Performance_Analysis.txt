@@ -1,0 +1,54 @@
+QUALITY CONTROL NOTES
+Equity Performance Quantitative Analysis
+
+PROMPT GOAL
+
+This analysis conducts a formal and extensive quantitative assessment of equity performance using three stock datasets containing Uber Zoom and Tesla historical trading data. The primary objective is to merge these datasets by common dates perform rigorous data cleaning and calculate daily log returns while removing zero volume entries. The analysis implements ARIMA time series modeling for Tesla including thirty day ahead forecasting and rolling one step ahead forecast evaluation to measure predictive accuracy. Statistical operations include calculating thirty day rolling volatility across all stocks quantile regression at the ninetieth percentile with log volume as predictor and two sample t tests comparing return distributions. Additional metrics involve Spearman rank correlations between volume and absolute returns tail spread analysis across return distributions and comprehensive visualizations to identify volume sensitivity patterns. The final deliverable identifies which stock exhibits the strongest sensitivity of high quantile returns to trading volume based on individual quantile regression coefficients.
+
+
+STEP BY STEP SOLUTION
+
+Step 1 : Data Loading and Initial Validation
+
+The analysis begins by loading three CSV files containing Uber Zoom and Tesla stock data into separate dataframes using pandas read csv function. Each dataset contains seven fields including Date Open High Low Close Adj Close and Volume representing standard financial time series information. The Date column is converted to datetime format to enable proper chronological operations and date based merging across the three datasets.
+
+Step 2 : Data Cleaning and Type Conversion
+
+All numeric columns including Open High Low Close Adj Close and Volume are converted to numeric data types using pandas to numeric with coerce option to handle any non numeric entries. Rows containing missing values or non numeric entries in any of the required fields are completely removed using dropna to ensure data integrity. This preprocessing step guarantees that all subsequent calculations operate on valid numeric data without encountering type errors or missing value issues.
+
+Step 3 : Merging Datasets on Common Dates
+
+The three datasets are merged by identifying dates that appear in all three files simultaneously using set intersection operations. Only the six hundred sixty six trading days that exist across all three stocks are retained to ensure temporal alignment. Each dataset is filtered to these common dates and sorted in ascending chronological order creating synchronized time series for fair comparison.
+
+Step 4 : Daily Return Calculation and Volume Filtering
+
+Daily returns are calculated as natural logarithm of current day Adj Close minus natural logarithm of previous day Adj Close representing continuous compounding returns. The first row of each dataset is removed because it lacks a previous day for return calculation resulting in undefined values. Trading days where Volume equals zero are eliminated from each stock separately because zero volume indicates no actual trading activity and such days would distort return based analyses.
+
+Step 5 : ARIMA Model Specification and Thirty Day Forecast
+
+An autoregressive integrated moving average model with order one one one is specified and fitted to Tesla Adj Close price series using the statsmodels ARIMA implementation. The model uses all in sample data to learn patterns and generate a thirty day ahead forecast producing thirty predicted future Adj Close values. The mean of these thirty forecasted values is calculated and reported as one thousand eighty six point twenty representing the average expected price level over the next month.
+
+Step 6 : Rolling One Step Ahead Forecast Evaluation
+
+The ARIMA model predictive accuracy is evaluated using a rolling window approach over the final thirty in sample trading days for Tesla. For each of these thirty days the model is retrained using only data up to that point and generates a one step ahead forecast which is compared to the actual observed value. Root mean squared error and mean absolute error are calculated across these thirty predictions yielding RMSE of thirty seven point eight five two two and MAE of thirty one point three one three one.
+
+Step 7 : Rolling Volatility Calculation and Aggregation
+
+Thirty day rolling standard deviation of daily returns is calculated separately for Uber Zoom and Tesla creating time varying volatility measures. The time average of each rolling volatility series is computed by taking the mean across all valid windows excluding initial undefined values. The overall volatility level is derived by averaging these three time averaged values resulting in zero point zero three seven two representing aggregate market volatility.
+
+Step 8 : Quantile Regression at Ninetieth Percentile
+
+Daily returns and volumes from all three stocks are pooled into a single combined dataset and log Volume is calculated as the natural logarithm of trading volume. A quantile regression model is fitted at the ninetieth percentile using sklearn QuantileRegressor with return as dependent variable and log Volume as predictor. The coefficient of log Volume is zero point zero one one eight indicating the marginal effect of volume on high quantile returns in the pooled data.
+
+Step 9 : Individual Stock Sensitivity and Statistical Tests
+
+Separate quantile regressions are performed for each stock individually at the ninetieth percentile to measure volume sensitivity with Tesla showing the highest absolute coefficient of zero point zero three eight seven. A two sample independent t test compares mean daily returns between Uber and Zoom yielding a t statistic of negative zero point five six one indicating no statistically significant difference. Spearman rank correlations between volume and absolute return are calculated for each stock with values of zero point three eight three one for Uber zero point four one zero one for Zoom and zero point four six one one for Tesla averaging to zero point four one eight one.
+
+Step 10 : Distribution Analysis and Visualization Outputs
+
+Tail spread is measured as the difference between ninetieth and tenth percentiles of return distributions for each stock averaging to zero point zero eight four seven across all three equities. Mean trading volume is calculated for each stock and averaged to twenty six million five hundred seventy three thousand nine hundred ninety five point zero four shares. Three visualizations are generated showing multi stock price trends with minimum Adj Close of fourteen point eight two Tesla rolling volatility with maximum of zero point zero eight eight six and Zoom volume return scatter with highest absolute return of zero point three four two one.
+
+
+FINAL DETERMINATION
+
+Based on individual quantile regression analysis at the ninetieth percentile Tesla exhibits the strongest sensitivity of high quantile returns to trading volume with an absolute coefficient of zero point zero three eight seven compared to Uber at zero point zero two one three and Zoom at zero point zero two three five. This finding indicates that for Tesla extreme positive returns in the upper tail of the distribution are most responsive to changes in trading volume. The analysis successfully integrates ARIMA forecasting rolling volatility measurement quantile regression and comprehensive statistical testing to provide a complete quantitative assessment of equity performance across the three stocks.
