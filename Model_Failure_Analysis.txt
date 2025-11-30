@@ -1,0 +1,10 @@
+MODEL FAILURE ANALYSIS
+Equity Performance Quantitative Assessment
+
+The model reported 23910324.32 for the mean daily trading volume of Uber but the correct value is 23666095.49 likely because the model calculated the mean on the original merged dataset containing all 666 common dates rather than on the filtered dataset after removing zero volume days and the first row used for return calculation which results in 665 valid trading days. The incorrect approach fails to properly align the volume calculation with the return based analysis framework specified in the prompt requirements.
+
+The model reported 6042334.68 for the mean daily trading volume of Zoom but the correct value is 6049082.41 likely because the model used inconsistent data filtering when computing volume statistics possibly including dates that should have been excluded during the return calculation preprocessing step or using a different chronological alignment than the one applied for return derivation. The discrepancy indicates the model did not maintain consistent dataset boundaries across all statistical operations.
+
+The model reported 49984336.79 for the mean daily trading volume of Tesla but the correct value is 50006807.22 likely because the model computed the mean volume on a dataset that retained zero volume trading days or used the merged data before applying the filtering steps required for return calculations thereby including observations that should have been excluded per the prompt specification that zero volume dates must be removed. This error propagates to the final combined metric calculation.
+
+The model reported 26645665.27 for the combined average of mean trading volumes across all three stocks but the correct value is 26573995.04 likely because the model used incorrect individual mean volumes for Uber Zoom and Tesla in the averaging calculation due to inconsistent application of data filtering rules across the three stocks. The combined mean should be calculated as the simple average of 23666095.49 for Uber 6049082.41 for Zoom and 50006807.22 for Tesla which yields the correct result of 26573995.04 when properly averaged.
