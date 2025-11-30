@@ -1,0 +1,32 @@
+============================================================
+BUSINESS ACTIVITY & SUPPORT ANALYSIS - KEY OUTPUTS
+============================================================
+
+1. TICKET CLOSURE BEHAVIOR (LOGISTIC REGRESSION)
+   Priority Coefficient: -0.178
+
+2. RESOLUTION SPEED
+   Mean Resolution Duration: 71.23 days
+
+3. TEMPORAL PATTERNS (LINEAR REGRESSION)
+   Temporal Slope: 0.0003 tickets/day
+
+4. ARIMA FORECASTING
+   Mean Forecast (30 days): 2.39 tickets/day
+
+5. CUSTOMER ENGAGEMENT vs COMMERCIAL VALUE
+   Spearman Correlation: -0.044
+
+6. PRIORITY vs STATUS RELATIONSHIP
+   Chi-Square Statistic: 8.204
+
+7. DEAL VALUE VARIABILITY
+   Coefficient of Variation: 0.556
+
+8. ROLLING AVERAGE ANALYSIS
+   Maximum 7-Day Rolling Average: 3.57 tickets/day
+
+9. DEAL STAGE PERFORMANCE
+   Best Performing Stage: Closed Won
+
+============================================================
