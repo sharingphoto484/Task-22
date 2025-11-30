@@ -1,0 +1,12 @@
+MODEL FAILURE ANALYSIS
+
+
+IDENTIFICATION OF INCORRECT VALUES FROM ALTERNATIVE MODEL RESPONSE
+
+
+The model reported negative 0.187 for the logistic regression priority coefficient, but the correct value is negative 0.178, likely because the model used different preprocessing of the priority encoding or applied a different solver algorithm such as liblinear instead of the default lbfgs solver with varying convergence tolerances or regularization parameters. The discrepancy could also stem from different handling of the has company indicator variable or from including tickets with missing priority values that should have been excluded during the dropna operation. Additionally the model may have used a different random state or failed to standardize the feature scaling leading to slightly different coefficient estimates during the iterative optimization process.
+
+The model reported 2.06 for the mean ARIMA forecast of daily ticket counts over the next 30 days, but the correct value is 2.39, likely because the model used incorrect ARIMA specification such as different starting parameters for the autoregressive moving average or integrated components or employed a different optimization method like css instead of mle for parameter estimation. The error could also result from improper handling of the time series index where the model may have failed to properly sort the daily counts chronologically before fitting or used a different frequency specification in the date range construction. Furthermore the model might have applied different forecast extraction methods or included confidence interval bounds instead of point forecasts or used a different number of periods despite the specification calling for exactly 30 days ahead.
+
+
+END OF MODEL FAILURE ANALYSIS
