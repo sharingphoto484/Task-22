@@ -61,4 +61,17 @@ Step 13 : Deal Stage Performance Comparison
 Deals are grouped by their stage values and the mean deal amount is calculated for each distinct stage. The stage associated with the largest mean amount is identified as the best performing stage in terms of average deal size. This categorical result is reported as the stage name and a boxplot displays the distribution of deal amounts across all stages ordered by descending mean values to facilitate visual comparison.
 
 
+CALCULATED VALUES
+
+logistic_priority_coefficient: negative 0.178
+mean_resolution_duration: 71.23
+temporal_slope: 0.0003
+mean_arima_forecast: 2.39
+spearman_correlation: negative 0.044
+chi_square_statistic: 8.204
+coefficient_of_variation: 0.556
+max_rolling_average: 3.57
+best_performing_stage: Closed Won
+
+
 END OF QC NOTES
