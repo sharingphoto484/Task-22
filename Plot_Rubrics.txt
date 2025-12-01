@@ -1,0 +1,103 @@
+DETAILED PLOT RUBRICS WITH THREE STEP CRITERIA
+
+
+PLOT 1: PREDICTED CLOSURE PROBABILITY SCATTER PLOT
+
+Includes a scatter plot for predicted closure probability that is semantically similar to the attached visualization.
+
+Includes a scatter plot for predicted closure probability with x axis representing ticket priority.
+
+Includes a scatter plot for predicted closure probability with y axis representing predicted probability of closure within thirty days.
+
+Saved as: predicted_closure_probability.png
+
+
+PLOT 2: RESOLUTION DURATION HISTOGRAM
+
+Includes a histogram for resolution duration that is semantically similar to the attached visualization.
+
+Includes a histogram for resolution duration with x axis representing resolution time in days.
+
+Includes a histogram for resolution duration with y axis representing count of tickets.
+
+Saved as: resolution_duration_histogram.png
+
+
+PLOT 3: DAILY TICKET VOLUME LINE PLOT
+
+Includes a line plot for daily ticket volume that is semantically similar to the attached visualization.
+
+Includes a line plot for daily ticket volume with x axis representing date.
+
+Includes a line plot for daily ticket volume with y axis representing number of tickets created.
+
+Saved as: daily_ticket_volume.png
+
+
+PLOT 4: TICKET VOLUME FORECAST AREA CHART
+
+Includes an area chart for ticket volume forecast that is semantically similar to the attached visualization.
+
+Includes an area chart for ticket volume forecast with x axis representing date.
+
+Includes an area chart for ticket volume forecast with y axis representing daily ticket count.
+
+Saved as: ticket_volume_forecast.png
+
+
+PLOT 5: TICKET LOAD AND DEAL VALUE BAR CHART
+
+Includes a bar chart for ticket load and deal value that is semantically similar to the attached visualization.
+
+Includes a bar chart for ticket load and deal value with x axis representing ticket count groups.
+
+Includes a bar chart for ticket load and deal value with y axis representing mean total deal amount for each group.
+
+Saved as: ticket_load_deal_value.png
+
+
+PLOT 6: PRIORITY STATUS HEATMAP
+
+Includes a heatmap for priority status relationship that is semantically similar to the attached visualization.
+
+Includes a heatmap for priority status relationship with x axis representing ticket status.
+
+Includes a heatmap for priority status relationship with y axis representing ticket priority.
+
+Saved as: priority_status_heatmap.png
+
+
+PLOT 7: DEAL AMOUNT DENSITY PLOT
+
+Includes a density plot for deal amount that is semantically similar to the attached visualization.
+
+Includes a density plot for deal amount with x axis representing deal amount.
+
+Includes a density plot for deal amount with y axis representing density.
+
+Saved as: deal_amount_density.png
+
+
+PLOT 8: ROLLING TICKET VOLUME SPIRAL PLOT
+
+Includes a spiral plot for rolling ticket volume that is semantically similar to the attached visualization.
+
+Includes a spiral plot for rolling ticket volume with x axis representing angular index of days.
+
+Includes a spiral plot for rolling ticket volume with y axis representing daily ticket count.
+
+Saved as: rolling_ticket_volume_spiral.png
+
+
+PLOT 9: DEAL AMOUNT BY STAGE BOXPLOT
+
+Includes a boxplot for deal amount by stage that is semantically similar to the attached visualization.
+
+Includes a boxplot for deal amount by stage with x axis representing deal stage.
+
+Includes a boxplot for deal amount by stage with y axis representing deal amount.
+
+Saved as: deal_amount_by_stage.png
+
+
+END OF PLOT RUBRICS
