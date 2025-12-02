@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+"""
+Display key results from learning platforms evaluation
+"""
+
+print("="*70)
+print("LEARNING PLATFORMS EVALUATION - KEY RESULTS")
+print("="*70)
+print()
+print("1. Quantile Regression Coefficient (log reviewcount):      0.0000")
+print("2. Chi-Square Test Statistic (level vs certificate):       110.968")
+print("3. Spearman Correlation (edX language/subject diversity):  0.866")
+print("4. Spearman Correlation (Skillshare duration/students):    -0.056")
+print("5. T-Statistic (credit eligibility):                       -1.990")
+print("6. Logistic Regression Coefficient (transcript/level):     -0.0022")
+print("7. Coefficient of Variation (Skillshare students):         2.8955")
+print("8. Mean Log Duration Difference (platforms):               -4.413")
+print("9. Maximum Absolute Standardized Coefficient:              0.0012")
+print()
+print("="*70)
+print("GENERATED VISUALIZATIONS:")
+print("="*70)
+print("  • coursera_rating_scatter.png")
+print("  • coursera_level_certificate_heatmap.png")
+print("  • edx_language_diversity_bar.png")
+print("  • skillshare_duration_students_scatter.png")
+print("  • coursera_credit_eligibility_boxplot.png")
+print("  • edx_transcript_availability_line.png")
+print("  • skillshare_student_density.png")
+print("  • platform_duration_spiral.png")
+print("="*70)
