@@ -1,0 +1,69 @@
+NEGATIVE RUBRICS: 10 DISTINCT INTERPRETIVE FAILURES
+
+=========================================================================
+ATOMIC NICE-TO-HAVE CRITERIA (10 Different Conclusions)
+=========================================================================
+
+1. States that higher trading volume causes larger absolute price movements.
+   -12 points · nice to have criteria
+   Rationale: Confuses regression correlation with causal directional mechanism
+
+2. States that the ARIMA forecast establishes ABNB will trade at 133.37.
+   -15 points · nice to have criteria
+   Rationale: Treats conditional statistical projection as certain future outcome
+
+3. States that the Spearman correlation establishes permanent association strength between stocks.
+   -12 points · nice to have criteria
+   Rationale: Assumes sample correlation parameter is time-invariant across regimes
+
+4. States that the rolling volatility maxima identify distinct market regimes across stocks.
+   -12 points · nice to have criteria
+   Rationale: Interprets statistical peaks as evidence of structural regime transitions
+
+5. States that the weak correlation eliminates systematic risk factors across the stocks.
+   -12 points · nice to have criteria
+   Rationale: Treats bivariate correlation as comprehensive test of common factor exposure
+
+6. States that the average volatility measure applies to all future trading periods.
+   -11 points · nice to have criteria
+   Rationale: Generalizes sample-based statistic as universal expectation beyond valid scope
+
+7. States that the ARIMA model captures structural trends in ABNB pricing mechanism.
+   -11 points · nice to have criteria
+   Rationale: Confuses statistical model specification with discovery of true data process
+
+8. States that the tail width parameters represent invariant distributional properties.
+   -12 points · nice to have criteria
+   Rationale: Treats sample percentile differences as permanent across all market conditions
+
+9. States that the ARIMA model predicts ABNB price trajectory beyond sample period.
+   -12 points · nice to have criteria
+   Rationale: Assumes in-sample fitted model provides reliable out-of-sample predictions
+
+10. States that the volume-return slopes confirm ABNB is a speculative growth stock.
+    -11 points · nice to have criteria
+    Rationale: Infers fundamental stock classification from statistical regression coefficient
+
+=========================================================================
+SUMMARY
+=========================================================================
+
+Total Criteria: 10
+Total Maximum Deduction: -120 points
+
+Each criterion represents a distinct reasoning failure:
+1. Causation (correlation → causation)
+2. Certainty (forecast → guaranteed outcome)
+3. Permanence (sample stat → invariant parameter)
+4. Regime Discovery (peaks → structural breaks)
+5. Independence Testing (bivariate → comprehensive)
+6. Universal Generalization (sample → all periods)
+7. Model Truth (specification → reality)
+8. Distributional Invariance (percentiles → permanent)
+9. Out-of-Sample Validity (in-sample → future)
+10. Fundamental Attribution (coefficient → classification)
+
+Weight Distribution:
+- 15 points: 1 criterion (certainty error)
+- 12 points: 6 criteria (high severity)
+- 11 points: 3 criteria (medium severity)
