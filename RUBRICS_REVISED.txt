@@ -1,0 +1,143 @@
+# OUTPUT-BASED RUBRICS: EQUITY BEHAVIOR ANALYSIS (REVISED)
+
+## **CATEGORY 1: CORE NUMERICAL RESULTS (220 points total)**
+
+**1. Reports that the ARIMA(1,1,1) forecast mean for ABNB over thirty trading days is 133.37 rounded to two decimal places.**
+*30 points · Must Have*
+**Proof of Ask:** *"A forecast for the subsequent thirty trading days is produced, and the arithmetic mean of these thirty forecasted Adj Close values is obtained. Report this forecast mean rounded to two decimals."*
+
+**2. States that the Spearman rank correlation coefficient between ABBV and AAL daily returns is 0.1910 rounded to four decimal places.**
+*25 points · Must Have*
+**Proof of Ask:** *"A Spearman rank correlation coefficient is obtained from these aligned series. Report this coefficient rounded to four decimals."*
+
+**3. Reports that the overall volatility measure (unified intraday dispersion) is 2.9262 rounded to four decimal places.**
+*30 points · Must Have*
+**Proof of Ask:** *"The mean of this proxy for each dataset is obtained, and these three means are then averaged to produce a unified volatility measure. Report this overall volatility measure rounded to four decimals."*
+
+**4. States that the mean slope across the three volume-return regressions is 0.0141 rounded to four decimal places.**
+*25 points · Must Have*
+**Proof of Ask:** *"A simple regression of absolute return on logarithm of Volume is fitted for each dataset independently, and the mean slope across the three fitted regressions is derived. Report this mean slope rounded to four decimals."*
+
+**5. Reports that the mean of three median Adj Close values across the shared date range is 97.91 rounded to two decimal places.**
+*20 points · Must Have*
+**Proof of Ask:** *"The mean of these three medians is reported. Report this mean of medians rounded to two decimals."*
+
+**6. States that the average of maximum thirty-day rolling standard deviations is 0.0823 rounded to four decimal places.**
+*25 points · Must Have*
+**Proof of Ask:** *"The maximum value attained by each rolling standard deviation series is extracted, and the three maxima are then averaged. Report this average of maximum rolling standard deviations rounded to four decimals."*
+
+**7. Reports that the average trading volume across the three stocks is 9704683.44 rounded to two decimal places.**
+*20 points · Must Have*
+**Proof of Ask:** *"Temporal trading behavior is examined by deriving the mean daily Volume for each dataset and then averaging these three mean Volume values. Report this average trading volume rounded to two decimals."*
+
+**8. States that the average tail width (90th minus 10th percentile) across aligned returns is 0.0603 rounded to four decimal places.**
+*25 points · Must Have*
+**Proof of Ask:** *"These three tail-widths are averaged. Report this average tail width rounded to four decimals."*
+
+**9. Reports that the maximum absolute regression slope relating absolute return to log Volume is 0.0231 rounded to four decimal places.**
+*20 points · Must Have*
+**Proof of Ask:** *"Using the absolute values of the three regression slopes derived earlier that relate absolute return to logarithm of Volume for ABNB.csv, ABBV.csv, and AAL.csv, identify the largest of these absolute slopes and Report this value rounded to four decimals."*
+
+---
+
+## **CATEGORY 2: PRIMARY VISUALIZATIONS (90 points total)**
+
+**10. Includes a line plot displaying the ABNB adjusted price series over time.**
+*15 points · Must Have*
+**Proof of Ask:** *"This component generates a line plot for the ABNB adjusted price series with x axis represents date and y axis represents adjusted closing value."*
+
+**11. The line plot for ABNB contains date values on the x-axis.**
+*10 points · Must Have*
+**Proof of Ask:** *"This component generates a line plot for the ABNB adjusted price series with x axis represents date and y axis represents adjusted closing value."*
+
+**12. The line plot for ABNB contains adjusted closing values on the y-axis.**
+*10 points · Must Have*
+**Proof of Ask:** *"This component generates a line plot for the ABNB adjusted price series with x axis represents date and y axis represents adjusted closing value."*
+
+**13. Includes a scatter plot showing aligned ABBV and AAL daily returns.**
+*15 points · Must Have*
+**Proof of Ask:** *"This component generates a scatter plot for aligned ABBV and AAL returns with x axis represents ABBV daily return and y axis represents AAL daily return."*
+
+**14. The scatter plot contains ABBV daily return values on the x-axis.**
+*10 points · Must Have*
+**Proof of Ask:** *"This component generates a scatter plot for aligned ABBV and AAL returns with x axis represents ABBV daily return and y axis represents AAL daily return."*
+
+**15. The scatter plot contains AAL daily return values on the y-axis.**
+*10 points · Must Have*
+**Proof of Ask:** *"This component generates a scatter plot for aligned ABBV and AAL returns with x axis represents ABBV daily return and y axis represents AAL daily return."*
+
+**16. Includes a boxplot displaying daily price ranges for all three stocks.**
+*15 points · Must Have*
+**Proof of Ask:** *"This component generates a boxplot for daily price ranges with x axis represents ticker symbol and y axis represents daily high minus low value."*
+
+**17. The boxplot contains ticker symbols (ABNB, ABBV, AAL) on the x-axis.**
+*10 points · Must Have*
+**Proof of Ask:** *"This component generates a boxplot for daily price ranges with x axis represents ticker symbol and y axis represents daily high minus low value."*
+
+**18. The boxplot contains daily high minus low values on the y-axis.**
+*5 points · Must Have*
+**Proof of Ask:** *"This component generates a boxplot for daily price ranges with x axis represents ticker symbol and y axis represents daily high minus low value."*
+
+---
+
+## **CATEGORY 3: MARKET BEHAVIOR INTERPRETATION (50 points total)**
+
+**19. Provides an interpretation addressing what market behavior the overall pattern suggests, for example discussing liquidity characteristics, volatility clustering, systematic risk factors, co-movement patterns, or information aggregation mechanisms.**
+*30 points · Must Have*
+**Proof of Ask:** *"What market behavior does this overall pattern suggest?"*
+
+**20. States observations about cross-sectional relationships among the three stocks, for example describing the strength or weakness of co-movement between different sectors.**
+*10 points · Nice to Have*
+**Proof of Ask:** *"What market behavior does this overall pattern suggest?"* (implicit requirement to interpret the Spearman correlation and cross-stock patterns)
+
+**21. Discusses the relationship between trading volume and price volatility, for example referencing the volume-return regression results or information arrival dynamics.**
+*10 points · Nice to Have*
+**Proof of Ask:** *"What market behavior does this overall pattern suggest?"* (implicit requirement to interpret the volume-return regression findings)
+
+---
+
+## **CATEGORY 4: METHODOLOGICAL SPECIFICATIONS (40 points total)**
+
+**22. States that daily returns are calculated using the natural logarithm of Adj Close ratios.**
+*8 points · Nice to Have*
+**Proof of Ask:** *"Daily returns for each stock shall be expressed as the natural logarithm of Adj Close on the current trading day minus the natural logarithm of Adj Close on the previous trading day."*
+
+**23. Indicates that the ARIMA model specification is order (1,1,1).**
+*8 points · Nice to Have*
+**Proof of Ask:** *"A modeling framework is established using ABNB.csv by specifying an autoregressive integrated moving average model of order one one one for the Adj Close series sorted by Date."*
+
+**24. States that the volatility proxy is derived from the High minus Low range for each date.**
+*8 points · Nice to Have*
+**Proof of Ask:** *"The intraday dispersion characteristics of each stock are examined by forming the range between High and Low for each Date and converting this range into a volatility proxy."*
+
+**25. Indicates that median Adj Close values are computed over the shared date range (common dates across all three datasets).**
+*8 points · Nice to Have*
+**Proof of Ask:** *"A comparison of general price levels is conducted by deriving the median Adj Close for each dataset across the shared date range formed by intersecting all Date values that appear in each file."*
+
+**26. States that the tail width calculation uses the 90th percentile minus the 10th percentile of daily returns.**
+*8 points · Nice to Have*
+**Proof of Ask:** *"Distinctive tail behavior is assessed for each dataset by deriving the difference between the ninetieth percentile and the tenth percentile of daily returns for each stock using the aligned sample."*
+
+---
+
+## **SCORING SUMMARY**
+
+**Total Possible Points: 400**
+
+- **Category 1 (Core Numerical Results):** 220 points
+- **Category 2 (Primary Visualizations):** 90 points
+- **Category 3 (Market Behavior Interpretation):** 50 points
+- **Category 4 (Methodological Specifications):** 40 points
+
+**Must Have Criteria:** 305 points (76.25%)
+**Nice to Have Criteria:** 95 points (23.75%)
+
+---
+
+## **GRADING SCALE**
+
+- **A (360-400 points / 90-100%):** All core results correct, all visualizations present, comprehensive market interpretation
+- **B (320-359 points / 80-89%):** Most core results correct, visualizations present, adequate interpretation
+- **C (280-319 points / 70-79%):** Majority of core results correct, some visualizations present
+- **D (240-279 points / 60-69%):** Some core results correct, minimal visualizations
+- **F (<240 points / <60%):** Significant missing results or incorrect values
