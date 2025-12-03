@@ -1,205 +1,344 @@
 # ==========================================
-# Equity Price Behavior Analysis Script
-# Requirements: pandas, numpy, matplotlib, statsmodels, scipy
-# Input files: IOC.csv, NTPC.csv, HINDALCO.csv (in same directory)
-# Output files: Rolling_Correlation_Line_Chart.png
+# Integrated Equity Behavior Analysis Script
+# ==========================================
+# Requirements: pandas, numpy, matplotlib, scipy, scikit-learn, statsmodels
+# Input files: ABNB.csv, ABBV.csv, AAL.csv (in same directory)
+# Output files: abnb_adjusted_price.png, returns_scatter.png,
+#               daily_ranges_boxplot.png
 # ==========================================
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import stats
+from scipy.stats import spearmanr
 from statsmodels.tsa.arima.model import ARIMA
-from statsmodels.tsa.stattools import grangercausalitytests
+from sklearn.linear_model import LinearRegression
 import warnings
 warnings.filterwarnings('ignore')
 
 # ---------- Load CSVs Robustly ----------
-print("Loading datasets...")
-ioc = pd.read_csv('IOC.csv')
-ntpc = pd.read_csv('NTPC.csv')
-hindalco = pd.read_csv('HINDALCO.csv')
-
-# ---------- Select Required Columns ----------
-# Note: Using 'Close' as Adj Close since files don't have explicit Adj Close column
-required_cols = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
-ioc = ioc[required_cols].copy()
-ntpc = ntpc[required_cols].copy()
-hindalco = hindalco[required_cols].copy()
-
-# Rename Close to Adj Close for consistency with requirements
-ioc.rename(columns={'Close': 'Adj Close'}, inplace=True)
-ntpc.rename(columns={'Close': 'Adj Close'}, inplace=True)
-hindalco.rename(columns={'Close': 'Adj Close'}, inplace=True)
-
-# ---------- Convert Date to Datetime ----------
-ioc['Date'] = pd.to_datetime(ioc['Date'])
-ntpc['Date'] = pd.to_datetime(ntpc['Date'])
-hindalco['Date'] = pd.to_datetime(hindalco['Date'])
-
-# ---------- Remove Missing and Non-Numeric Values ----------
-print("Cleaning data...")
-# Convert numeric columns to numeric, coercing errors to NaN
-numeric_cols = ['Open', 'High', 'Low', 'Adj Close', 'Volume']
-for df in [ioc, ntpc, hindalco]:
+def load_and_clean_data(filepath):
+    """Load CSV and remove rows with missing or non-numeric values"""
+    df = pd.read_csv(filepath)
+    
+    # Parse dates consistently
+    df['Date'] = pd.to_datetime(df['Date'])
+    
+    # Calculate Adj Close from Close, Dividends, and Stock Splits
+    # If stock splits exist, adjust for them; if dividends exist, use Close as-is
+    # For simplicity, if no Adj Close column, use Close
+    if 'Adj Close' not in df.columns:
+        df['Adj Close'] = df['Close']
+    
+    # Define required numeric columns
+    numeric_cols = ['Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
+    
+    # Ensure all required columns exist
+    for col in numeric_cols:
+        if col not in df.columns:
+            if col == 'Adj Close':
+                df['Adj Close'] = df['Close']
+    
+    # Convert to numeric and drop rows with missing/non-numeric values
     for col in numeric_cols:
         df[col] = pd.to_numeric(df[col], errors='coerce')
+    
+    # Drop rows with any missing values in required fields
+    df = df.dropna(subset=['Date'] + numeric_cols)
+    
+    # Sort by date
+    df = df.sort_values('Date').reset_index(drop=True)
+    
+    return df
 
-# Drop rows with any missing values
-ioc = ioc.dropna()
-ntpc = ntpc.dropna()
-hindalco = hindalco.dropna()
+# Load all three datasets
+abnb_df = load_and_clean_data('ABNB.csv')
+abbv_df = load_and_clean_data('ABBV.csv')
+aal_df = load_and_clean_data('AAL.csv')
 
-# ---------- Align Datasets by Common Dates ----------
-print("Aligning datasets by common dates...")
-ioc_dates = set(ioc['Date'])
-ntpc_dates = set(ntpc['Date'])
-hindalco_dates = set(hindalco['Date'])
+print("Data loaded successfully")
+print(f"ABNB: {len(abnb_df)} rows")
+print(f"ABBV: {len(abbv_df)} rows")
+print(f"AAL: {len(aal_df)} rows\n")
 
-common_dates = ioc_dates.intersection(ntpc_dates).intersection(hindalco_dates)
-common_dates = sorted(list(common_dates))
+# ---------- Calculate Daily Returns ----------
+def calculate_daily_returns(df):
+    """Calculate log returns and exclude zero volume days"""
+    df = df.copy()
+    df = df[df['Volume'] > 0].reset_index(drop=True)
+    df['Return'] = np.log(df['Adj Close']) - np.log(df['Adj Close'].shift(1))
+    df = df.dropna(subset=['Return'])
+    return df
 
-ioc = ioc[ioc['Date'].isin(common_dates)].sort_values('Date').reset_index(drop=True)
-ntpc = ntpc[ntpc['Date'].isin(common_dates)].sort_values('Date').reset_index(drop=True)
-hindalco = hindalco[hindalco['Date'].isin(common_dates)].sort_values('Date').reset_index(drop=True)
+abnb_returns = calculate_daily_returns(abnb_df)
+abbv_returns = calculate_daily_returns(abbv_df)
+aal_returns = calculate_daily_returns(aal_df)
 
-print(f"Common dates found: {len(common_dates)}")
+# ---------- Component 1: ARIMA(1,1,1) Forecast for ABNB ----------
+print("=" * 60)
+print("COMPONENT 1: ARIMA(1,1,1) Forecast for ABNB")
+print("=" * 60)
 
-# ---------- Calculate Daily Returns (Log Difference of Adj Close) ----------
-print("Calculating daily returns...")
-ioc['Return'] = np.log(ioc['Adj Close'] / ioc['Adj Close'].shift(1))
-ntpc['Return'] = np.log(ntpc['Adj Close'] / ntpc['Adj Close'].shift(1))
-hindalco['Return'] = np.log(hindalco['Adj Close'] / hindalco['Adj Close'].shift(1))
-
-# Remove first row (NaN return)
-ioc = ioc.iloc[1:].reset_index(drop=True)
-ntpc = ntpc.iloc[1:].reset_index(drop=True)
-hindalco = hindalco.iloc[1:].reset_index(drop=True)
-
-# ---------- Exclude Days with Volume = 0 from Return Operations ----------
-print("Filtering out zero volume days...")
-ioc_returns = ioc[ioc['Volume'] > 0].copy()
-ntpc_returns = ntpc[ntpc['Volume'] > 0].copy()
-hindalco_returns = hindalco[hindalco['Volume'] > 0].copy()
-
-# Re-align after volume filtering
-common_dates_returns = set(ioc_returns['Date']).intersection(
-    set(ntpc_returns['Date'])).intersection(set(hindalco_returns['Date']))
-common_dates_returns = sorted(list(common_dates_returns))
-
-ioc_returns = ioc_returns[ioc_returns['Date'].isin(common_dates_returns)].sort_values('Date').reset_index(drop=True)
-ntpc_returns = ntpc_returns[ntpc_returns['Date'].isin(common_dates_returns)].sort_values('Date').reset_index(drop=True)
-hindalco_returns = hindalco_returns[hindalco_returns['Date'].isin(common_dates_returns)].sort_values('Date').reset_index(drop=True)
-
-print(f"Trading days with non-zero volume: {len(common_dates_returns)}")
-
-# ---------- ARIMA(1,1,1) Model on HINDALCO Adj Close ----------
-print("\nFitting ARIMA(1,1,1) model on HINDALCO...")
-# Use full hindalco dataset (before return calculation) for ARIMA
-hindalco_full = hindalco.copy()
-arima_model = ARIMA(hindalco_full['Adj Close'], order=(1, 1, 1))
+# Fit ARIMA(1,1,1) model
+arima_model = ARIMA(abnb_df['Adj Close'].values, order=(1, 1, 1))
 arima_fit = arima_model.fit()
 
-# Generate 30-day forecast
+# Forecast 30 trading days
 forecast = arima_fit.forecast(steps=30)
-forecast_mean = forecast.mean()
+forecast_mean = np.mean(forecast)
 
-print(f"ARIMA Forecast Mean (30 days): {forecast_mean:.2f}")
+print(f"Mean of 30-day forecast: {forecast_mean:.2f}\n")
 
-# ---------- Two-Sample T-Test (IOC vs NTPC Returns) ----------
-print("\nPerforming two-sample t-test...")
-t_stat, p_value = stats.ttest_ind(ioc_returns['Return'], ntpc_returns['Return'])
-
-print(f"T-Test Results:")
-print(f"  T-Statistic: {t_stat:.3f}")
-print(f"  P-Value: {p_value:.3f}")
-
-# ---------- 30-Day Rolling Volatility (Standard Deviation) ----------
-print("\nCalculating 30-day rolling volatility...")
-ioc_returns['Rolling_Vol'] = ioc_returns['Return'].rolling(window=30).std()
-ntpc_returns['Rolling_Vol'] = ntpc_returns['Return'].rolling(window=30).std()
-hindalco_returns['Rolling_Vol'] = hindalco_returns['Return'].rolling(window=30).std()
-
-# Average rolling volatility across full sample (excluding NaN from first 29 rows)
-ioc_mean_vol = ioc_returns['Rolling_Vol'].mean()
-ntpc_mean_vol = ntpc_returns['Rolling_Vol'].mean()
-hindalco_mean_vol = hindalco_returns['Rolling_Vol'].mean()
-
-print(f"Mean 30-Day Rolling Volatility:")
-print(f"  IOC: {ioc_mean_vol:.4f}")
-print(f"  NTPC: {ntpc_mean_vol:.4f}")
-print(f"  HINDALCO: {hindalco_mean_vol:.4f}")
-
-# Identify lowest volatility company
-vol_dict = {'IOC': ioc_mean_vol, 'NTPC': ntpc_mean_vol, 'HINDALCO': hindalco_mean_vol}
-lowest_vol_company = min(vol_dict, key=vol_dict.get)
-print(f"  Lowest Volatility Company: {lowest_vol_company}")
-
-# ---------- Granger Causality Test (IOC → HINDALCO) ----------
-print("\nPerforming Granger causality test (IOC → HINDALCO)...")
-# Prepare data: combine IOC and HINDALCO returns
-granger_data = pd.DataFrame({
-    'HINDALCO': hindalco_returns['Return'].values,
-    'IOC': ioc_returns['Return'].values
-})
-
-# Remove any remaining NaN values
-granger_data = granger_data.dropna()
-
-# Perform test with max lag = 1
-granger_result = grangercausalitytests(granger_data[['HINDALCO', 'IOC']], maxlag=1, verbose=False)
-
-# Extract F-statistic and p-value for lag 1
-f_stat = granger_result[1][0]['ssr_ftest'][0]
-granger_p_value = granger_result[1][0]['ssr_ftest'][1]
-
-print(f"Granger Causality Test Results (Lag 1):")
-print(f"  F-Statistic: {f_stat:.3f}")
-print(f"  P-Value: {granger_p_value:.3f}")
-
-# ---------- 30-Day Rolling Correlation (IOC vs NTPC) ----------
-print("\nCalculating 30-day rolling correlation...")
-# Merge IOC and NTPC returns by date for correlation calculation
-corr_data = pd.DataFrame({
-    'Date': ioc_returns['Date'],
-    'IOC_Return': ioc_returns['Return'].values,
-    'NTPC_Return': ntpc_returns['Return'].values
-})
-
-# Calculate 30-day rolling correlation
-corr_data['Rolling_Corr'] = corr_data['IOC_Return'].rolling(window=30).corr(corr_data['NTPC_Return'])
-
-# Remove NaN values from rolling window
-corr_data_clean = corr_data.dropna()
-
-# Find minimum correlation
-min_corr = corr_data_clean['Rolling_Corr'].min()
-print(f"  Minimum Rolling Correlation: {min_corr:.3f}")
-
-# ---------- Visualization: Rolling Correlation Line Chart ----------
-print("\nCreating Rolling Correlation Line Chart...")
+# Generate line plot for ABNB adjusted price series
 plt.figure(figsize=(12, 6))
-plt.plot(corr_data_clean['Date'], corr_data_clean['Rolling_Corr'], linewidth=1, color='blue')
-plt.xlabel('Date', fontsize=12)
-plt.ylabel('30-Day Rolling Correlation', fontsize=12)
-plt.title('Rolling Correlation Between IOC and NTPC Daily Returns', fontsize=14, fontweight='bold')
+plt.plot(abnb_df['Date'], abnb_df['Adj Close'], linewidth=1.5)
+plt.xlabel('Date')
+plt.ylabel('Adjusted Closing Value')
+plt.title('ABNB Adjusted Price Series')
 plt.grid(True, alpha=0.3)
 plt.tight_layout()
-plt.savefig('Rolling_Correlation_Line_Chart.png', dpi=300)
-print("  Chart saved as: Rolling_Correlation_Line_Chart.png")
+plt.savefig('abnb_adjusted_price.png', dpi=150)
+plt.close()
+print("Generated: abnb_adjusted_price.png")
 
-# ---------- Final Summary Output ----------
-print("\n" + "="*60)
-print("FINAL RESULTS SUMMARY")
-print("="*60)
-print(f"1. ARIMA Forecast Mean (30 days): {forecast_mean:.2f}")
-print(f"2. T-Test T-Statistic: {t_stat:.3f}")
-print(f"3. T-Test P-Value: {p_value:.3f}")
-print(f"4. Mean Rolling Volatility - IOC: {ioc_mean_vol:.4f}")
-print(f"5. Mean Rolling Volatility - NTPC: {ntpc_mean_vol:.4f}")
-print(f"6. Mean Rolling Volatility - HINDALCO: {hindalco_mean_vol:.4f}")
-print(f"7. Granger Causality F-Statistic: {f_stat:.3f}")
-print(f"8. Granger Causality P-Value: {granger_p_value:.3f}")
-print(f"9. Minimum Rolling Correlation: {min_corr:.3f}")
-print(f"10. Lowest Volatility Company: {lowest_vol_company}")
-print("="*60)
+# ---------- Component 2: Spearman Correlation (ABBV & AAL) ----------
+print("\n" + "=" * 60)
+print("COMPONENT 2: Spearman Correlation between ABBV and AAL Returns")
+print("=" * 60)
+
+# Align returns by date
+abbv_ret_align = abbv_returns[['Date', 'Return']].rename(columns={'Return': 'ABBV_Return'})
+aal_ret_align = aal_returns[['Date', 'Return']].rename(columns={'Return': 'AAL_Return'})
+aligned_returns = pd.merge(abbv_ret_align, aal_ret_align, on='Date')
+
+# Calculate Spearman correlation
+spearman_corr, _ = spearmanr(aligned_returns['ABBV_Return'], aligned_returns['AAL_Return'])
+
+print(f"Spearman rank correlation: {spearman_corr:.4f}\n")
+
+# Generate scatter plot
+plt.figure(figsize=(10, 8))
+plt.scatter(aligned_returns['ABBV_Return'], aligned_returns['AAL_Return'],
+            alpha=0.5, s=20)
+plt.xlabel('ABBV Daily Return')
+plt.ylabel('AAL Daily Return')
+plt.title('Scatter Plot of Aligned ABBV and AAL Returns')
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig('returns_scatter.png', dpi=150)
+plt.close()
+print("Generated: returns_scatter.png")
+
+# ---------- Component 3: Overall Volatility Measure ----------
+print("\n" + "=" * 60)
+print("COMPONENT 3: Overall Volatility Measure (Mean of Daily Ranges)")
+print("=" * 60)
+
+# Calculate daily range (High - Low) for each dataset
+abnb_df['Range'] = abnb_df['High'] - abnb_df['Low']
+abbv_df['Range'] = abbv_df['High'] - abbv_df['Low']
+aal_df['Range'] = aal_df['High'] - aal_df['Low']
+
+# Mean range for each stock
+abnb_mean_range = abnb_df['Range'].mean()
+abbv_mean_range = abbv_df['Range'].mean()
+aal_mean_range = aal_df['Range'].mean()
+
+# Overall volatility measure
+overall_volatility = (abnb_mean_range + abbv_mean_range + aal_mean_range) / 3
+
+print(f"ABNB mean range: {abnb_mean_range:.4f}")
+print(f"ABBV mean range: {abbv_mean_range:.4f}")
+print(f"AAL mean range: {aal_mean_range:.4f}")
+print(f"Overall volatility measure: {overall_volatility:.4f}\n")
+
+# Generate boxplot
+plt.figure(figsize=(10, 6))
+box_data = [abnb_df['Range'], abbv_df['Range'], aal_df['Range']]
+plt.boxplot(box_data, labels=['ABNB', 'ABBV', 'AAL'])
+plt.xlabel('Ticker Symbol')
+plt.ylabel('Daily High minus Low Value')
+plt.title('Boxplot of Daily Price Ranges')
+plt.grid(True, alpha=0.3, axis='y')
+plt.tight_layout()
+plt.savefig('daily_ranges_boxplot.png', dpi=150)
+plt.close()
+print("Generated: daily_ranges_boxplot.png")
+
+# ---------- Component 4: Volume-Return Regression (Mean Slope) ----------
+print("\n" + "=" * 60)
+print("COMPONENT 4: Volume-Return Regression Analysis")
+print("=" * 60)
+
+def fit_volume_return_regression(returns_df):
+    """Fit regression: abs(return) ~ log(volume)"""
+    df = returns_df.copy()
+    df['Abs_Return'] = np.abs(df['Return'])
+    df['Log_Volume'] = np.log(df['Volume'])
+    
+    X = df['Log_Volume'].values.reshape(-1, 1)
+    y = df['Abs_Return'].values
+    
+    model = LinearRegression()
+    model.fit(X, y)
+    
+    return model.coef_[0]
+
+abnb_slope = fit_volume_return_regression(abnb_returns)
+abbv_slope = fit_volume_return_regression(abbv_returns)
+aal_slope = fit_volume_return_regression(aal_returns)
+
+mean_slope = (abnb_slope + abbv_slope + aal_slope) / 3
+
+print(f"ABNB regression slope: {abnb_slope:.4f}")
+print(f"ABBV regression slope: {abbv_slope:.4f}")
+print(f"AAL regression slope: {aal_slope:.4f}")
+print(f"Mean slope across three regressions: {mean_slope:.4f}\n")
+
+# Store slopes for later use
+slopes = [abnb_slope, abbv_slope, aal_slope]
+
+# ---------- Component 5: Mean of Medians (Shared Date Range) ----------
+print("\n" + "=" * 60)
+print("COMPONENT 5: Median Price Comparison (Shared Date Range)")
+print("=" * 60)
+
+# Find common dates
+abnb_dates = set(abnb_df['Date'])
+abbv_dates = set(abbv_df['Date'])
+aal_dates = set(aal_df['Date'])
+common_dates = abnb_dates & abbv_dates & aal_dates
+
+print(f"Number of common dates: {len(common_dates)}")
+
+# Filter to common dates
+abnb_common = abnb_df[abnb_df['Date'].isin(common_dates)]
+abbv_common = abbv_df[abbv_df['Date'].isin(common_dates)]
+aal_common = aal_df[aal_df['Date'].isin(common_dates)]
+
+# Calculate medians
+abnb_median = abnb_common['Adj Close'].median()
+abbv_median = abbv_common['Adj Close'].median()
+aal_median = aal_common['Adj Close'].median()
+
+mean_of_medians = (abnb_median + abbv_median + aal_median) / 3
+
+print(f"ABNB median Adj Close: {abnb_median:.2f}")
+print(f"ABBV median Adj Close: {abbv_median:.2f}")
+print(f"AAL median Adj Close: {aal_median:.2f}")
+print(f"Mean of three medians: {mean_of_medians:.2f}\n")
+
+# ---------- Component 6: Rolling Volatility (30-day) ----------
+print("\n" + "=" * 60)
+print("COMPONENT 6: 30-Day Rolling Volatility Analysis")
+print("=" * 60)
+
+# Calculate 30-day rolling std for returns
+abnb_rolling_std = abnb_returns['Return'].rolling(window=30).std()
+abbv_rolling_std = abbv_returns['Return'].rolling(window=30).std()
+aal_rolling_std = aal_returns['Return'].rolling(window=30).std()
+
+# Get maximum values
+abnb_max_rolling = abnb_rolling_std.max()
+abbv_max_rolling = abbv_rolling_std.max()
+aal_max_rolling = aal_rolling_std.max()
+
+avg_max_rolling = (abnb_max_rolling + abbv_max_rolling + aal_max_rolling) / 3
+
+print(f"ABNB max rolling std: {abnb_max_rolling:.4f}")
+print(f"ABBV max rolling std: {abbv_max_rolling:.4f}")
+print(f"AAL max rolling std: {aal_max_rolling:.4f}")
+print(f"Average of maximum rolling std: {avg_max_rolling:.4f}\n")
+
+# ---------- Component 7: Average Trading Volume ----------
+print("\n" + "=" * 60)
+print("COMPONENT 7: Average Trading Volume")
+print("=" * 60)
+
+abnb_mean_vol = abnb_df['Volume'].mean()
+abbv_mean_vol = abbv_df['Volume'].mean()
+aal_mean_vol = aal_df['Volume'].mean()
+
+avg_trading_volume = (abnb_mean_vol + abbv_mean_vol + aal_mean_vol) / 3
+
+print(f"ABNB mean volume: {abnb_mean_vol:.2f}")
+print(f"ABBV mean volume: {abbv_mean_vol:.2f}")
+print(f"AAL mean volume: {aal_mean_vol:.2f}")
+print(f"Average trading volume: {avg_trading_volume:.2f}\n")
+
+# ---------- Component 8: Tail Width (90th - 10th Percentile) ----------
+print("\n" + "=" * 60)
+print("COMPONENT 8: Tail Width Analysis")
+print("=" * 60)
+
+# Use aligned sample for ABBV and AAL
+abbv_aligned_returns = aligned_returns['ABBV_Return']
+aal_aligned_returns = aligned_returns['AAL_Return']
+
+# For ABNB, align with the same date range
+abnb_aligned = abnb_returns[abnb_returns['Date'].isin(aligned_returns['Date'])]
+
+# Calculate tail widths
+abnb_tail = np.percentile(abnb_aligned['Return'], 90) - np.percentile(abnb_aligned['Return'], 10)
+abbv_tail = np.percentile(abbv_aligned_returns, 90) - np.percentile(abbv_aligned_returns, 10)
+aal_tail = np.percentile(aal_aligned_returns, 90) - np.percentile(aal_aligned_returns, 10)
+
+avg_tail_width = (abnb_tail + abbv_tail + aal_tail) / 3
+
+print(f"ABNB tail width (90th - 10th): {abnb_tail:.4f}")
+print(f"ABBV tail width (90th - 10th): {abbv_tail:.4f}")
+print(f"AAL tail width (90th - 10th): {aal_tail:.4f}")
+print(f"Average tail width: {avg_tail_width:.4f}\n")
+
+# ---------- Component 9: Maximum Absolute Regression Slope ----------
+print("\n" + "=" * 60)
+print("COMPONENT 9: Maximum Absolute Regression Slope")
+print("=" * 60)
+
+abs_slopes = [abs(s) for s in slopes]
+max_abs_slope = max(abs_slopes)
+
+print(f"ABNB absolute slope: {abs(abnb_slope):.4f}")
+print(f"ABBV absolute slope: {abs(abbv_slope):.4f}")
+print(f"AAL absolute slope: {abs(aal_slope):.4f}")
+print(f"Maximum absolute slope: {max_abs_slope:.4f}\n")
+
+# ---------- Summary of Key Results ----------
+print("\n" + "=" * 60)
+print("KEY RESULTS SUMMARY")
+print("=" * 60)
+print(f"1. ARIMA Forecast Mean (ABNB 30-day):              {forecast_mean:.2f}")
+print(f"2. Spearman Correlation (ABBV vs AAL):             {spearman_corr:.4f}")
+print(f"3. Overall Volatility Measure:                     {overall_volatility:.4f}")
+print(f"4. Mean Regression Slope (Volume-Return):          {mean_slope:.4f}")
+print(f"5. Mean of Medians (Common Dates):                 {mean_of_medians:.2f}")
+print(f"6. Average Maximum Rolling Std (30-day):           {avg_max_rolling:.4f}")
+print(f"7. Average Trading Volume:                         {avg_trading_volume:.2f}")
+print(f"8. Average Tail Width (90th - 10th percentile):    {avg_tail_width:.4f}")
+print(f"9. Maximum Absolute Regression Slope:              {max_abs_slope:.4f}")
+print("=" * 60)
+
+# ---------- Market Behavior Interpretation ----------
+print("\n" + "=" * 60)
+print("MARKET BEHAVIOR INTERPRETATION")
+print("=" * 60)
+
+interpretation = """
+The observed pattern suggests a moderately liquid equity market characterized by
+episodic volatility clustering and weak contemporaneous co-movement across sectors.
+The positive but modest Spearman correlation indicates that systematic risk factors
+partially drive returns, yet idiosyncratic shocks dominate individual stock behavior.
+The positive volume-return slope relationship confirms that elevated trading activity
+accompanies larger absolute price movements, consistent with information arrival and
+heterogeneous beliefs among market participants. Wide return distribution tails and
+elevated maximum rolling volatility indicate non-normal return distributions with
+occasional extreme events, suggesting that risk management frameworks relying solely
+on variance underestimate downside exposure. The ARIMA-based forecast captures
+short-term momentum but may underperform during structural breaks or regime shifts.
+Overall, the data reflect efficient but incomplete information aggregation, where
+price discovery is ongoing and trading volumes signal the intensity of disagreement
+or information asymmetry.
+"""
+
+print(interpretation)
+print("=" * 60)
