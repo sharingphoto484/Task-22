@@ -1,0 +1,201 @@
+NICE-TO-HAVE NEGATIVE RUBRICS: EQUITY BEHAVIOR ANALYSIS
+Possible Model Failures (Interpretive/Reasoning Errors)
+
+=========================================================================
+CATEGORY 1: CAUSAL INFERENCE ERRORS (60 points maximum deduction)
+=========================================================================
+
+1. States that the volume-return regression slopes prove volume causes price volatility.
+   -15 points · nice to have criteria
+   Rationale: Confuses correlation with causation; regression slope shows association, not causal mechanism
+
+2. States that higher trading volume drives larger absolute price movements causally.
+   -12 points · nice to have criteria
+   Rationale: Interprets positive regression coefficient as causal relationship rather than contemporaneous association
+
+3. States that the positive regression slopes confirm trading activity generates return magnitude.
+   -12 points · nice to have criteria
+   Rationale: Treats statistical association as evidence of directional causality from volume to returns
+
+4. States that volume serves as a causal predictor of volatility magnitude.
+   -10 points · nice to have criteria
+   Rationale: Misinterprets correlation between volume and absolute returns as predictive causality
+
+=========================================================================
+CATEGORY 2: PREDICTIVE VALIDITY ERRORS (75 points maximum deduction)
+=========================================================================
+
+5. States that the ARIMA forecast establishes ABNB will trade at 133.37 in future.
+   -15 points · nice to have criteria
+   Rationale: Treats point forecast as certain future outcome rather than conditional projection
+
+6. States that the ARIMA model predicts ABNB price trajectory beyond sample period.
+   -12 points · nice to have criteria
+   Rationale: Assumes in-sample fitted model provides reliable out-of-sample predictions
+
+7. States that the median price comparison predicts future relative valuations across stocks.
+   -12 points · nice to have criteria
+   Rationale: Treats historical median as forecasting tool for future price relationships
+
+8. States that the rolling volatility maxima forecast future volatility episodes.
+   -12 points · nice to have criteria
+   Rationale: Interprets historical maximum volatility as predictive of future volatility patterns
+
+9. States that the tail width measures predict future extreme return events.
+   -12 points · nice to have criteria
+   Rationale: Treats sample percentile differences as forward-looking distributional predictions
+
+10. States that the ARIMA forecast mean represents expected future trading price.
+    -12 points · nice to have criteria
+    Rationale: Confuses statistical forecast with actionable price prediction
+
+=========================================================================
+CATEGORY 3: REGIME IDENTIFICATION ERRORS (60 points maximum deduction)
+=========================================================================
+
+11. States that the rolling volatility maxima identify distinct market regimes across stocks.
+    -15 points · nice to have criteria
+    Rationale: Treats statistical peaks as evidence of structural regime changes
+
+12. States that the volatility measure reveals permanent risk characteristics for the stocks.
+    -12 points · nice to have criteria
+    Rationale: Interprets sample-based volatility proxy as invariant risk structure
+
+13. States that the ARIMA forecast indicates ABNB entered a mean-reverting regime.
+    -12 points · nice to have criteria
+    Rationale: Infers regime dynamics from model specification rather than testing regime changes
+
+14. States that the tail widths establish stable distributional regimes for each stock.
+    -11 points · nice to have criteria
+    Rationale: Treats percentile-based measures as evidence of permanent distributional states
+
+15. States that the correlation coefficient identifies a low-comovement market regime.
+    -10 points · nice to have criteria
+    Rationale: Interprets single correlation value as regime classification
+
+=========================================================================
+CATEGORY 4: STRUCTURAL INVARIANCE ERRORS (55 points maximum deduction)
+=========================================================================
+
+16. States that the tail width parameters represent invariant distributional properties.
+    -13 points · nice to have criteria
+    Rationale: Treats sample percentiles as permanent structural features across all conditions
+
+17. States that the Spearman correlation establishes permanent association strength between stocks.
+    -12 points · nice to have criteria
+    Rationale: Assumes sample correlation is time-invariant and stable across regimes
+
+18. States that the volatility proxy identifies unchanging intraday dispersion characteristics.
+    -10 points · nice to have criteria
+    Rationale: Treats mean range as permanent volatility feature rather than sample statistic
+
+19. States that the regression slopes represent stable relationships across all market conditions.
+    -10 points · nice to have criteria
+    Rationale: Assumes fitted parameters are invariant to structural changes or regime shifts
+
+20. States that the rolling volatility maxima represent fixed risk parameters for stocks.
+    -10 points · nice to have criteria
+    Rationale: Treats historical maxima as invariant risk characteristics
+
+=========================================================================
+CATEGORY 5: SECTOR/FUNDAMENTAL ATTRIBUTION ERRORS (50 points maximum deduction)
+=========================================================================
+
+21. States that the Spearman correlation proves ABBV and AAL are fundamentally decoupled.
+    -13 points · nice to have criteria
+    Rationale: Interprets low correlation as evidence of fundamental disconnection rather than sample association
+
+22. States that the weak correlation eliminates systematic risk factors across the stocks.
+    -12 points · nice to have criteria
+    Rationale: Treats bivariate correlation as comprehensive test of common risk exposures
+
+23. States that the tail width differences prove sector-specific risk is dominant factor.
+    -12 points · nice to have criteria
+    Rationale: Infers fundamental causality from distributional differences in sample data
+
+24. States that the volume-return slopes confirm ABNB is a speculative growth stock.
+    -13 points · nice to have criteria
+    Rationale: Treats statistical relationship as definitive evidence of fundamental stock classification
+
+=========================================================================
+CATEGORY 6: SAMPLE GENERALIZATION ERRORS (45 points maximum deduction)
+=========================================================================
+
+25. States that the average volatility measure applies to all future trading periods.
+    -12 points · nice to have criteria
+    Rationale: Generalizes sample-based average as universal volatility expectation
+
+26. States that the median price relationships hold across all possible date ranges.
+    -11 points · nice to have criteria
+    Rationale: Treats sample median comparison as invariant across different time periods
+
+27. States that the rolling volatility pattern represents typical market behavior universally.
+    -11 points · nice to have criteria
+    Rationale: Generalizes sample-based volatility dynamics to all market environments
+
+28. States that the average trading volume establishes normal liquidity levels permanently.
+    -11 points · nice to have criteria
+    Rationale: Treats sample mean volume as permanent liquidity benchmark
+
+=========================================================================
+CATEGORY 7: STATISTICAL FIT OVERINTERPRETATION (40 points maximum deduction)
+=========================================================================
+
+29. States that the ARIMA model captures structural trends in ABNB pricing mechanism.
+    -12 points · nice to have criteria
+    Rationale: Treats statistical model fit as evidence of underlying structural dynamics
+
+30. States that the regression fit proves volume explains return magnitude variation.
+    -10 points · nice to have criteria
+    Rationale: Interprets R-squared or coefficient as proof of explanatory power
+
+31. States that the Spearman coefficient establishes monotonic relationship is true dependency.
+    -10 points · nice to have criteria
+    Rationale: Treats rank correlation as evidence of fundamental monotonic structure
+
+32. States that the ARIMA specification confirms autoregressive structure governs ABNB prices.
+    -8 points · nice to have criteria
+    Rationale: Confuses model choice with discovery of true data-generating process
+
+=========================================================================
+SUMMARY STATISTICS
+=========================================================================
+
+Total Nice-to-Have Negative Criteria: 32
+Total Maximum Possible Deduction: -385 points
+
+Category Breakdown:
+- Causal Inference Errors: 4 criteria, -60 points maximum
+- Predictive Validity Errors: 6 criteria, -75 points maximum
+- Regime Identification Errors: 5 criteria, -60 points maximum
+- Structural Invariance Errors: 5 criteria, -55 points maximum
+- Sector/Fundamental Attribution Errors: 4 criteria, -50 points maximum
+- Sample Generalization Errors: 4 criteria, -45 points maximum
+- Statistical Fit Overinterpretation: 4 criteria, -40 points maximum
+
+Weight Distribution:
+- High severity (-13 to -15 points): 8 criteria
+- Medium severity (-10 to -12 points): 20 criteria
+- Lower severity (-8 to -10 points): 4 criteria
+
+=========================================================================
+USAGE GUIDELINES
+=========================================================================
+
+These negative rubrics penalize interpretive failures where the model:
+
+1. Confuses correlation with causation
+2. Treats in-sample statistics as out-of-sample predictions
+3. Interprets sample features as permanent structural properties
+4. Infers fundamental relationships from statistical associations
+5. Generalizes sample results beyond their valid scope
+6. Treats model fit as proof of true data-generating mechanisms
+7. Makes causal claims from observational regression results
+
+Each criterion is:
+- Atomic (single discrete error)
+- Outcome-focused (evaluates what is stated, not how)
+- Self-contained (understandable without external context)
+- Maximum 20 words in length
+- Weighted proportional to severity of interpretive error
+- Traceable to common quantitative reasoning failures
