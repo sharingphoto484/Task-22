@@ -1,0 +1,125 @@
+NEGATIVE RUBRICS: EQUITY BEHAVIOR ANALYSIS (FINAL - NO REDUNDANCIES)
+
+=========================================================================
+MUST-HAVE CRITERIA (Numerical/Factual Errors)
+=========================================================================
+
+1. States that the average tail width is 0.0620 rounded to four decimal places.
+   -25 points · must have criteria
+   Rationale: Incorrect value; correct answer is 0.0603
+
+=========================================================================
+NICE-TO-HAVE CRITERIA (Interpretive/Reasoning Errors)
+=========================================================================
+
+CAUSAL INFERENCE ERRORS
+
+2. States that higher trading volume causes larger absolute price movements.
+   -12 points · nice to have criteria
+   Rationale: Confuses regression association with causal mechanism from volume to volatility
+
+3. States that the ARIMA forecast establishes ABNB will trade at 133.37.
+   -15 points · nice to have criteria
+   Rationale: Treats conditional point forecast as certain future outcome
+
+STRUCTURAL PERMANENCE ERRORS
+
+4. States that the Spearman correlation establishes permanent association strength between stocks.
+   -12 points · nice to have criteria
+   Rationale: Treats sample correlation as time-invariant structural parameter
+
+5. States that the tail width parameters represent invariant distributional properties.
+   -12 points · nice to have criteria
+   Rationale: Assumes sample percentiles are permanent features across all conditions
+
+6. States that the volatility proxy identifies unchanging intraday dispersion characteristics.
+   -10 points · nice to have criteria
+   Rationale: Treats mean range as permanent rather than sample-dependent measure
+
+PREDICTIVE VALIDITY ERRORS
+
+7. States that the ARIMA model predicts ABNB price trajectory beyond sample period.
+   -12 points · nice to have criteria
+   Rationale: Assumes in-sample fit provides reliable out-of-sample predictions
+
+8. States that the rolling volatility maxima forecast future volatility episodes.
+   -11 points · nice to have criteria
+   Rationale: Interprets historical maximum as predictive of future patterns
+
+REGIME IDENTIFICATION ERRORS
+
+9. States that the rolling volatility maxima identify distinct market regimes across stocks.
+   -12 points · nice to have criteria
+   Rationale: Treats statistical peaks as evidence of structural regime breaks
+
+10. States that the correlation coefficient identifies a low-comovement market regime.
+    -10 points · nice to have criteria
+    Rationale: Interprets single correlation value as regime classification
+
+FUNDAMENTAL ATTRIBUTION ERRORS
+
+11. States that the weak correlation eliminates systematic risk factors across the stocks.
+    -12 points · nice to have criteria
+    Rationale: Treats bivariate correlation as comprehensive test of common factor exposures
+
+12. States that the volume-return slopes confirm ABNB is a speculative growth stock.
+    -11 points · nice to have criteria
+    Rationale: Infers fundamental stock classification from statistical regression coefficient
+
+SAMPLE GENERALIZATION ERRORS
+
+13. States that the average volatility measure applies to all future trading periods.
+    -11 points · nice to have criteria
+    Rationale: Generalizes sample-based average as universal volatility expectation
+
+14. States that the median price relationships hold across all possible date ranges.
+    -10 points · nice to have criteria
+    Rationale: Extends sample median comparison beyond valid temporal scope
+
+STATISTICAL FIT OVERINTERPRETATION
+
+15. States that the ARIMA model captures structural trends in ABNB pricing mechanism.
+    -11 points · nice to have criteria
+    Rationale: Treats statistical model fit as evidence of true data-generating process
+
+16. States that the regression fit proves volume explains return magnitude variation.
+    -10 points · nice to have criteria
+    Rationale: Confuses R-squared or coefficient significance with explanatory causality
+
+=========================================================================
+SUMMARY STATISTICS
+=========================================================================
+
+Total Criteria: 16 (1 must-have, 15 nice-to-have)
+Total Maximum Deduction: -186 points
+
+Must-Have Criteria: 1 criterion, -25 points
+Nice-to-Have Criteria: 15 criteria, -161 points
+
+Category Breakdown:
+- Causal Inference Errors: 2 criteria, -27 points
+- Structural Permanence Errors: 3 criteria, -34 points
+- Predictive Validity Errors: 2 criteria, -23 points
+- Regime Identification Errors: 2 criteria, -22 points
+- Fundamental Attribution Errors: 2 criteria, -23 points
+- Sample Generalization Errors: 2 criteria, -21 points
+- Statistical Fit Overinterpretation: 2 criteria, -21 points
+
+Weight Distribution:
+- High severity (15 points): 1 criterion
+- Medium-high severity (12 points): 5 criteria
+- Medium severity (11 points): 5 criteria
+- Lower severity (10 points): 5 criteria
+
+=========================================================================
+KEY PRINCIPLES APPLIED
+=========================================================================
+
+✓ Each criterion is atomic (tests one discrete error)
+✓ No overlapping or redundant criteria
+✓ All criteria are outcome-focused (what is stated, not how)
+✓ Self-contained (understandable without external context)
+✓ Maximum 20 words per criterion
+✓ Start with "States"
+✓ Weighted proportionally to severity
+✓ Traceable to specific reasoning failures
