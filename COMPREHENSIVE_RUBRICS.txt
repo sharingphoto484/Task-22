@@ -1,0 +1,249 @@
+COMPREHENSIVE OUTPUT-BASED RUBRICS
+
+================================================================================
+CATEGORY 1: CORE NUMERICAL RESULTS - ARIMA FORECASTING
+================================================================================
+
+1. States that the ARIMA mean forecast for AKAM over 30 trading days is 106.68 rounded to two decimal places.
+30 points - Must Have
+Proof of Ask: "A forecast is produced for the subsequent thirty trading days and the arithmetic mean of these thirty forecast values is obtained. Report this mean forecast rounded to two decimals."
+
+================================================================================
+CATEGORY 2: CORE NUMERICAL RESULTS - CORRELATION AND INTERDEPENDENCE
+================================================================================
+
+2. Reports that the Spearman rank correlation coefficient between AIZ and AES daily returns is 0.3705 rounded to four decimal places.
+25 points - Must Have
+Proof of Ask: "A Spearman rank correlation coefficient is derived from these aligned returns to summarize their monotonic association. Report this Spearman correlation rounded to four decimals."
+
+================================================================================
+CATEGORY 3: CORE NUMERICAL RESULTS - PRICE DISPERSION
+================================================================================
+
+3. States that the average daily range across the three files is 1.1878 rounded to four decimal places.
+20 points - Must Have
+Proof of Ask: "The mean range is obtained for each file and the three means are averaged to form a single cross file range measure. Report this average daily range rounded to four decimals."
+
+================================================================================
+CATEGORY 4: CORE NUMERICAL RESULTS - VOLATILITY METRICS
+================================================================================
+
+4. Reports that the average rolling volatility 30-day across the three files is 0.0247 rounded to four decimal places.
+25 points - Must Have
+Proof of Ask: "The mean of each rolling volatility series is obtained and the three means are averaged to obtain a unified volatility level. Report this average rolling volatility rounded to four decimals."
+
+5. States that the average rolling log volume volatility 20-day across the three files is 0.4183 rounded to four decimal places.
+20 points - Must Have
+Proof of Ask: "The mean of each rolling log Volume volatility series is obtained and the three means are averaged. Report this average rolling log volume volatility rounded to four decimals."
+
+================================================================================
+CATEGORY 5: CORE NUMERICAL RESULTS - REGRESSION SLOPES
+================================================================================
+
+6. Reports that the average volume-return slope across AKAM AIZ and AES is 0.0081 rounded to four decimal places.
+20 points - Must Have
+Proof of Ask: "A simple linear regression of absolute return on logarithm of Volume is estimated separately for AKAM.csv, AIZ.csv and AES.csv, and the three slope coefficients are averaged. Report this average slope rounded to four decimals."
+
+7. States that the maximum absolute slope from the volume-return regressions is 0.0112 rounded to four decimal places.
+20 points - Must Have
+Proof of Ask: "As an integrated measure of sensitivity of returns to trading intensity, the three regression slopes that relate absolute return to logarithm of Volume in the earlier analysis are taken in absolute value and the largest of these absolute slopes is identified. Report this maximum absolute slope rounded to four decimals."
+
+8. Reports that the average trend slope across the three files is 0.0130 rounded to four decimal places.
+20 points - Must Have
+Proof of Ask: "The slope from each regression is retained and the three slopes are averaged. Report this average trend slope rounded to four decimals."
+
+================================================================================
+CATEGORY 6: CORE NUMERICAL RESULTS - TAIL BEHAVIOR AND CENTRAL TENDENCY
+================================================================================
+
+9. States that the average tail spread 90th minus 10th percentile across the three files is 0.0435 rounded to four decimal places.
+20 points - Must Have
+Proof of Ask: "The three tail spreads are averaged to represent typical extreme variation. Report this average tail spread rounded to four decimals."
+
+10. Reports that the average median adjusted price on common dates is 37.13 rounded to two decimal places.
+20 points - Must Have
+Proof of Ask: "These three medians are averaged to summarize the central adjusted price level. Report this average median adjusted price rounded to two decimals."
+
+================================================================================
+CATEGORY 7: CORE NUMERICAL RESULTS - MOMENTUM METRICS
+================================================================================
+
+11. States that the average five-day cumulative return across the three files is 0.0010 rounded to four decimal places.
+20 points - Must Have
+Proof of Ask: "The mean five day cumulative return is obtained for each file and the three means are averaged. Report this average five day cumulative return rounded to four decimals."
+
+================================================================================
+CATEGORY 8: CORE NUMERICAL RESULTS - LIQUIDITY METRICS
+================================================================================
+
+12. Reports that the average liquidity ratio across the three files is 6480305.27 rounded to two decimal places.
+20 points - Must Have
+Proof of Ask: "The mean liquidity ratio is obtained for each file and these three means are averaged. Report this average liquidity ratio rounded to two decimals."
+
+13. States that the average volume coefficient of variation across the three files is 0.9390 rounded to four decimal places.
+20 points - Must Have
+Proof of Ask: "The three coefficients of variation are averaged to represent typical relative dispersion in Volume. Report this average volume coefficient of variation rounded to four decimals."
+
+================================================================================
+CATEGORY 9: VISUALIZATION 1 - AKAM ADJUSTED CLOSING PRICE LINE PLOT
+================================================================================
+
+14. Includes a line plot for AKAM adjusted closing price that is semantically similar to the attached visualization.
+25 points - Must Have
+Proof of Ask: "This stage generates a line plot for AKAM adjusted closing price with x axis represents date, y axis represents adjusted closing value."
+
+15. Provides a line plot for AKAM adjusted closing price with date on the x-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a line plot for AKAM adjusted closing price with x axis represents date, y axis represents adjusted closing value."
+
+16. Provides a line plot for AKAM adjusted closing price with adjusted closing value on the y-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a line plot for AKAM adjusted closing price with x axis represents date, y axis represents adjusted closing value."
+
+================================================================================
+CATEGORY 10: VISUALIZATION 2 - AIZ AND AES DAILY RETURNS SCATTER PLOT
+================================================================================
+
+17. Includes a scatter plot for paired AIZ and AES daily returns that is semantically similar to the attached visualization.
+25 points - Must Have
+Proof of Ask: "This stage generates a scatter plot for paired AIZ and AES daily returns with x axis represents AIZ daily return, y axis represents AES daily return."
+
+18. Provides a scatter plot for paired AIZ and AES daily returns with AIZ daily return on the x-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a scatter plot for paired AIZ and AES daily returns with x axis represents AIZ daily return, y axis represents AES daily return."
+
+19. Provides a scatter plot for paired AIZ and AES daily returns with AES daily return on the y-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a scatter plot for paired AIZ and AES daily returns with x axis represents AIZ daily return, y axis represents AES daily return."
+
+================================================================================
+CATEGORY 11: VISUALIZATION 3 - DAILY PRICE RANGE BOXPLOT
+================================================================================
+
+20. Includes a boxplot for daily price range by ticker that is semantically similar to the attached visualization.
+25 points - Must Have
+Proof of Ask: "This stage generates a boxplot for daily price range by ticker with x axis represents ticker symbol, y axis represents daily high minus low price."
+
+21. Provides a boxplot for daily price range by ticker with ticker symbol on the x-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a boxplot for daily price range by ticker with x axis represents ticker symbol, y axis represents daily high minus low price."
+
+22. Provides a boxplot for daily price range by ticker with daily high minus low price on the y-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a boxplot for daily price range by ticker with x axis represents ticker symbol, y axis represents daily high minus low price."
+
+================================================================================
+CATEGORY 12: VISUALIZATION 4 - AKAM THIRTY-DAY ROLLING VOLATILITY AREA CHART
+================================================================================
+
+23. Includes an area chart for AKAM thirty-day rolling volatility that is semantically similar to the attached visualization.
+25 points - Must Have
+Proof of Ask: "This stage generates an area chart for AKAM thirty day rolling volatility with x axis represents date, y axis represents rolling standard deviation of daily return."
+
+24. Provides an area chart for AKAM thirty-day rolling volatility with date on the x-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates an area chart for AKAM thirty day rolling volatility with x axis represents date, y axis represents rolling standard deviation of daily return."
+
+25. Provides an area chart for AKAM thirty-day rolling volatility with rolling standard deviation of daily return on the y-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates an area chart for AKAM thirty day rolling volatility with x axis represents date, y axis represents rolling standard deviation of daily return."
+
+================================================================================
+CATEGORY 13: VISUALIZATION 5 - FIVE-DAY CUMULATIVE RETURNS DENSITY PLOT
+================================================================================
+
+26. Includes a density plot for pooled five-day cumulative returns that is semantically similar to the attached visualization.
+25 points - Must Have
+Proof of Ask: "This stage generates a density plot for pooled five day cumulative returns with x axis represents five day cumulative return, y axis represents density."
+
+27. Provides a density plot for pooled five-day cumulative returns with five-day cumulative return on the x-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a density plot for pooled five day cumulative returns with x axis represents five day cumulative return, y axis represents density."
+
+28. Provides a density plot for pooled five-day cumulative returns with density on the y-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a density plot for pooled five day cumulative returns with x axis represents five day cumulative return, y axis represents density."
+
+================================================================================
+CATEGORY 14: VISUALIZATION 6 - AVERAGE LIQUIDITY RATIO BAR CHART
+================================================================================
+
+29. Includes a bar chart for average liquidity ratio that is semantically similar to the attached visualization.
+25 points - Must Have
+Proof of Ask: "This stage generates a bar chart for average liquidity ratio with x axis represents ticker symbol, y axis represents liquidity ratio."
+
+30. Provides a bar chart for average liquidity ratio with ticker symbol on the x-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a bar chart for average liquidity ratio with x axis represents ticker symbol, y axis represents liquidity ratio."
+
+31. Provides a bar chart for average liquidity ratio with liquidity ratio on the y-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a bar chart for average liquidity ratio with x axis represents ticker symbol, y axis represents liquidity ratio."
+
+================================================================================
+CATEGORY 15: VISUALIZATION 7 - AES ROLLING LOG VOLUME VOLATILITY SPIRAL PLOT
+================================================================================
+
+32. Includes a spiral plot for AES rolling log volume volatility that is semantically similar to the attached visualization.
+25 points - Must Have
+Proof of Ask: "This stage generates a spiral plot for AES rolling log volume volatility with x axis represents angular index of trading days, y axis represents rolling standard deviation of log volume."
+
+33. Provides a spiral plot for AES rolling log volume volatility with angular index of trading days on the x-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a spiral plot for AES rolling log volume volatility with x axis represents angular index of trading days, y axis represents rolling standard deviation of log volume."
+
+34. Provides a spiral plot for AES rolling log volume volatility with rolling standard deviation of log volume on the y-axis.
+20 points - Must Have
+Proof of Ask: "This stage generates a spiral plot for AES rolling log volume volatility with x axis represents angular index of trading days, y axis represents rolling standard deviation of log volume."
+
+================================================================================
+CATEGORY 16: OPEN-ENDED ANALYSIS - EXTREME FIVE-DAY CUMULATIVE RETURN FEATURES
+================================================================================
+
+35. Provides an explanation of features distinguishing days with extreme five-day cumulative return values for example stating that extreme positive returns are preceded by sustained directional momentum clustering of large single-day moves and elevated trading volumes.
+30 points - Must Have
+Proof of Ask: "What features distinguish days with extreme five day cumulative return values?"
+
+36. States features of extreme negative cumulative returns for example describing heightened volatility persistence consecutive days of negative returns with increasing intraday ranges and sustained selling pressure.
+25 points - Nice to Have
+Proof of Ask: "What features distinguish days with extreme five day cumulative return values?"
+
+37. Describes volume patterns during extreme return periods for example noting that extreme negative periods show initial volume spikes during panic selling followed by stabilization at elevated levels.
+20 points - Nice to Have
+Proof of Ask: "What features distinguish days with extreme five day cumulative return values?"
+
+38. Explains autocorrelation behavior in extreme periods for example stating that both tails exhibit autocorrelation within the five-day window departing from near-zero autocorrelation in normal periods.
+20 points - Nice to Have
+Proof of Ask: "What features distinguish days with extreme five day cumulative return values?"
+
+39. Discusses intraday range patterns during extreme returns for example noting low initial dispersion followed by expanding ranges as momentum accelerates for positive extremes.
+20 points - Nice to Have
+Proof of Ask: "What features distinguish days with extreme five day cumulative return values?"
+
+40. States that extreme cumulative returns arise from persistent directional pressure sustained over multiple consecutive trading sessions rather than random single-day shocks.
+20 points - Nice to Have
+Proof of Ask: "What features distinguish days with extreme five day cumulative return values?"
+
+================================================================================
+SCORING SUMMARY
+================================================================================
+
+Total Possible Points: 980
+
+Core Numerical Results 13 metrics: 280 points
+Visualizations 7 plots with 3 rubrics each: 455 points
+Open-Ended Analysis: 155 points
+Format and Presentation: 90 points
+
+Must Have Criteria: 835 points
+Nice to Have Criteria: 145 points
+
+================================================================================
+POINT DISTRIBUTION BY IMPORTANCE
+================================================================================
+
+30 points: Primary deliverables and core forecasting results
+25 points: Major correlation metrics and primary visualizations semantic similarity
+20 points: Secondary numerical results and visualization axis specifications
+15-20 points: Supporting analysis and interpretations
+10 points and below: Format and presentation elements
