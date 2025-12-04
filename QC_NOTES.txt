@@ -1,0 +1,43 @@
+QUALITY CONTROL NOTES FOR EQUITY PRICE MOVEMENT ANALYSIS
+
+PROMPT GOAL
+
+This analysis conducts a rigorous quantitative investigation of structural statistical and behavioral characteristics of equity price movements using three datasets containing ALL ALGN and ALB stocks. The primary objective is to examine smooth price structures through Butterworth filtering nonlinear sensitivity via quadratic regression and price acceleration using discrete second difference operators. Cross stock correlation structures are evaluated alongside volatility pressure indicators directional alignment patterns and liquidity imbalance metrics. Momentum reversion relationships extreme event characteristics and high volume behavioral patterns are systematically quantified. The investigation concludes with smoothing forecast evaluation using Holt exponential methods and an open ended exploration of conditions preceding large ALB returns.
+
+STEP BY STEP SOLUTION
+
+Step 1 : Data Loading and Standardization
+The analysis begins by loading three CSV files containing stock price data for ALL ALGN and ALB equities. Each dataset undergoes temporal standardization to ensure uniform date formats across all files while simultaneously converting all price and volume columns to numeric data types. Any rows containing missing values non numeric entries or zero volume trading days are systematically removed to maintain data integrity for subsequent analytical operations.
+
+Step 2 : Daily Return Calculation
+Daily log returns are computed for each dataset by taking the natural logarithm of the ratio between consecutive adjusted closing prices. This calculation method is preferred over simple percentage returns because log returns are time additive and more appropriate for statistical modeling. The first row of each dataset is removed after return calculation since it contains undefined values due to the absence of a prior day price.
+
+Step 3 : Date Alignment Across Datasets
+A common date intersection is established by identifying only those trading days present in all three datasets simultaneously. This synchronization step ensures that cross stock comparisons operate on identical temporal windows eliminating biases from mismatched trading calendars. The aligned dataset contains 5696 common trading days forming the foundation for all subsequent cross market analyses.
+
+Step 4 : Butterworth Low Pass Filtering on ALGN
+The ALGN adjusted close series undergoes Butterworth low pass filtering with a cutoff frequency set to retain only long horizon price components. This digital signal processing technique separates smooth underlying trends from high frequency noise in the price series. The mean absolute deviation between filtered and original values quantifies the magnitude of short term fluctuations removed by the filter yielding 2.4116 as the smoothing impact measure.
+
+Step 5 : Nonlinear Regression on ALL
+A quadratic functional form models the relationship between ALL daily returns and the normalized intraday range ratio calculated as high minus low divided by close. The nonlinear least squares estimation captures curvature in this relationship through a squared predictor term. The coefficient on the squared term of negative 1.9155 indicates that returns exhibit diminishing or reversing sensitivity as intraday volatility increases suggesting nonlinear risk return dynamics.
+
+Step 6 : Second Difference Operator on ALB
+Price acceleration in ALB is measured using a three point discrete operator that computes the change in the rate of price change for each interior day. This second derivative approximation captures convexity and inflection points in the price trajectory. The mean absolute magnitude of 1.3217 across all valid positions indicates the typical daily acceleration intensity in ALB price movements.
+
+Step 7 : Correlation Structure Analysis
+Each adjusted close series is standardized to zero mean and unit variance across the aligned date intersection creating comparability across different price scales. Pairwise Pearson correlations are computed between all three standardized series and averaged to produce a single aggregate measure. The resulting average correlation of 0.8541 reveals strong positive co movement among the three equities suggesting common market factors drive their long term price evolution.
+
+Step 8 : Volatility Pressure Indicator
+Rolling ten day windows compute the mean of absolute returns for each dataset requiring exactly ten valid observations per window. The grand mean of these rolling volatility measures is calculated for each stock then averaged across all three equities. The final averaged pressure indicator of 0.0174 represents the typical short term volatility environment characterizing these markets over the sample period.
+
+Step 9 : Directional Alignment and Liquidity Imbalance
+Cross market directional coherence is assessed by computing the sign product of ALGN and ALB returns for each aligned trading day with positive products indicating synchronized movements. The proportion of 0.627 shows that the two stocks move in the same direction on roughly 63 percent of days. Separately liquidity imbalance is quantified as volume divided by intraday range with the median ratio for each stock averaged to 1934450.5506 indicating typical market depth characteristics.
+
+Step 10 : Momentum Reversion and Extreme Events
+Mean reversion tendencies are evaluated by correlating each day's return with the negative of the prior day's return across all three datasets. The small positive average correlation of 0.0225 suggests weak momentum rather than reversion contradicting pure random walk assumptions. Extreme event analysis identifies the five largest absolute returns in each stock during the aligned period averaging these extremes within and across stocks to yield an index of 0.2636 representing tail risk magnitude.
+
+Step 11 : High Volume Behavior and Smoothing Forecast
+Days exceeding the 95th percentile of volume distribution are isolated for each stock and their mean absolute returns computed. The cross stock average of 0.0449 indicates that high participation days exhibit elevated price volatility consistent with information driven trading. Holt exponential smoothing with level parameter 0.5 and trend parameter 0.25 generates one step ahead forecasts for each series with the minimum root mean squared error of 1.296 identifying the most predictable stock under this smoothing framework.
+
+Step 12 : Preceding Conditions for Large ALB Returns
+The top 10 percent of ALB absolute returns are identified and their preceding day characteristics analyzed to uncover predictive patterns. Large movements are preceded by above median prior volume averaging 1043770 shares and elevated prior intraday ranges averaging 2.8134 indicating pre existing market tension. These patterns suggest that extreme ALB returns emerge not from quiet markets but from environments already exhibiting heightened volatility and participation reflecting the resolution of building supply demand imbalances observable in immediately prior microstructure.
