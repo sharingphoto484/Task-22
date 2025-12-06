@@ -301,21 +301,48 @@ unique_states = orders_transitions['status_encoded'].unique()
 n_states = len(unique_states)
 
 # Build second-order transition frequency matrix
-# For simplicity, we'll approximate by building first-order transition matrix
-# and computing stationary distribution
-transition_matrix = np.zeros((n_states, n_states))
+# State space is all pairs (s_t-1, s_t), transitions to s_t+1
+# Create mapping from state pairs to indices
+state_pairs = {}
+pair_to_idx = {}
+idx_to_pair = {}
+idx_counter = 0
 
-for from_state, to_state in transitions:
-    transition_matrix[from_state, to_state] += 1
+for (state_pair, next_state) in second_order_transitions:
+    if state_pair not in pair_to_idx:
+        pair_to_idx[state_pair] = idx_counter
+        idx_to_pair[idx_counter] = state_pair
+        idx_counter += 1
 
-# Normalize to get probabilities
-row_sums = transition_matrix.sum(axis=1, keepdims=True)
+n_state_pairs = len(pair_to_idx)
+
+# Build transition matrix: rows are state pairs, columns are next states
+second_order_matrix = np.zeros((n_state_pairs, n_states))
+
+for (state_pair, next_state) in second_order_transitions:
+    pair_idx = pair_to_idx[state_pair]
+    second_order_matrix[pair_idx, next_state] += 1
+
+# Normalize to get transition probabilities
+row_sums = second_order_matrix.sum(axis=1, keepdims=True)
 row_sums[row_sums == 0] = 1  # Avoid division by zero
-transition_matrix = transition_matrix / row_sums
+second_order_matrix = second_order_matrix / row_sums
 
-# Compute stationary distribution
-# Eigenvalue approach
-eigenvalues, eigenvectors = np.linalg.eig(transition_matrix.T)
+# Compute stationary distribution for second-order Markov chain
+# Build expanded state transition matrix for pairs
+pair_transition_matrix = np.zeros((n_state_pairs, n_state_pairs))
+
+for from_pair_idx in range(n_state_pairs):
+    from_pair = idx_to_pair[from_pair_idx]
+    # From pair (s1, s2), we can transition to pairs (s2, s3) for any s3
+    for next_state in range(n_states):
+        to_pair = (from_pair[1], next_state)
+        if to_pair in pair_to_idx:
+            to_pair_idx = pair_to_idx[to_pair]
+            pair_transition_matrix[from_pair_idx, to_pair_idx] = second_order_matrix[from_pair_idx, next_state]
+
+# Compute stationary distribution using eigenvalue approach
+eigenvalues, eigenvectors = np.linalg.eig(pair_transition_matrix.T)
 stationary_idx = np.argmax(np.abs(eigenvalues - 1) < 1e-8)
 stationary_dist = np.abs(eigenvectors[:, stationary_idx].real)
 stationary_dist = stationary_dist / stationary_dist.sum()
