@@ -38,7 +38,7 @@
 
 ## **CATEGORY 2: TEMPORAL DEVIATION VISUALIZATION (60 points total)**
 
-**9. Includes a line plot for deviation sequences that is semantically similar to the attached visualization.**
+**9. Includes a line plot for deviation sequences (saved as deviation_sequence_plot.png) that is semantically similar to the attached visualization.**
 *25 points · Must Have*
 **Proof of Ask:** *"This stage generates a line plot for deviation sequences with x axis represents order_date, y axis represents deviation in days."*
 
@@ -54,7 +54,7 @@
 
 ## **CATEGORY 3: SPENDING-INTENSITY VISUALIZATION (60 points total)**
 
-**12. Includes a scatter plot for discount versus extended value that is semantically similar to the attached visualization.**
+**12. Includes a scatter plot for discount versus extended value (saved as discount_extended_value_scatter.png) that is semantically similar to the attached visualization.**
 *25 points · Must Have*
 **Proof of Ask:** *"This stage generates a scatter plot for discount versus extended value with x axis represents discount, y axis represents extended value."*
 
@@ -64,13 +64,13 @@
 
 **14. Provides a scatter plot for discount versus extended value with extended value on the y-axis.**
 *15 points · Must Have*
-**Proof of Ask:** *"This stage generates a scatter plot for discount versus extended value with x axis represents discount, y axis represents extended value."*
+**Proof of Ask:** *"This stage generates a scatter plot for discount versus extended value with x axis represents discount, y axis extends extended value."*
 
 ---
 
 ## **CATEGORY 4: CONCENTRATION DIAGNOSTIC VISUALIZATION (60 points total)**
 
-**15. Includes a line plot for rolling Herfindahl averages that is semantically similar to the attached visualization.**
+**15. Includes a line plot for rolling Herfindahl averages (saved as rolling_herfindahl_plot.png) that is semantically similar to the attached visualization.**
 *25 points · Must Have*
 **Proof of Ask:** *"This stage generates a line plot for rolling Herfindahl averages with x axis represents order index, y axis represents concentration measure."*
 
@@ -86,7 +86,7 @@
 
 ## **CATEGORY 5: CUSTOMER-LOCATION EMBEDDING VISUALIZATION (60 points total)**
 
-**18. Includes a heatmap for encoded state distances that is semantically similar to the attached visualization.**
+**18. Includes a heatmap for encoded state distances (saved as state_distance_heatmap.png) that is semantically similar to the attached visualization.**
 *25 points · Must Have*
 **Proof of Ask:** *"This stage generates a heatmap for encoded state distances with x axis represents encoded state, y axis represents encoded state."*
 
@@ -102,7 +102,7 @@
 
 ## **CATEGORY 6: FULFILLMENT-REGULARITY VISUALIZATION (60 points total)**
 
-**21. Includes a bar chart for monthly mean deviations that is semantically similar to the attached visualization.**
+**21. Includes a bar chart for monthly mean deviations (saved as monthly_deviation_bar.png) that is semantically similar to the attached visualization.**
 *25 points · Must Have*
 **Proof of Ask:** *"This stage generates a bar chart for monthly mean deviations with x axis represents month index, y axis represents deviation magnitude."*
 
@@ -118,7 +118,7 @@
 
 ## **CATEGORY 7: PRODUCT EXPENDITURE VISUALIZATION (60 points total)**
 
-**24. Includes a scatter plot for product-level mean extended value that is semantically similar to the attached visualization.**
+**24. Includes a scatter plot for product-level mean extended value (saved as product_mean_value_scatter.png) that is semantically similar to the attached visualization.**
 *25 points · Must Have*
 **Proof of Ask:** *"This stage generates a scatter plot for product-level mean extended value with x axis represents product_id, y axis represents mean extended value."*
 
@@ -134,7 +134,7 @@
 
 ## **CATEGORY 8: ORDER STATUS TRANSITIONS VISUALIZATION (60 points total)**
 
-**27. Includes a line plot for transition frequencies that is semantically similar to the attached visualization.**
+**27. Includes a line plot for transition frequencies (saved as transition_frequencies_plot.png) that is semantically similar to the attached visualization.**
 *25 points · Must Have*
 **Proof of Ask:** *"This stage generates a line plot for transition frequencies with x axis represents order_date, y axis represents transition intensity."*
 
@@ -150,7 +150,7 @@
 
 ## **CATEGORY 9: CUSTOMER-ORDER ALIGNMENT VISUALIZATION (60 points total)**
 
-**30. Includes a density plot for customer order counts that is semantically similar to the attached visualization.**
+**30. Includes a density plot for customer order counts (saved as customer_order_density.png) that is semantically similar to the attached visualization.**
 *25 points · Must Have*
 **Proof of Ask:** *"This stage generates a density plot for customer order counts with x axis represents order count, y axis represents density."*
 
