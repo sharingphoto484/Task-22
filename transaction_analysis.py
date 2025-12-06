@@ -252,12 +252,14 @@ order_items_extended['extended_value'] = (
 product_means = order_items_extended.groupby('product_id')['extended_value'].mean().reset_index()
 product_means.columns = ['product_id', 'mean_extended_value']
 
-# Fit regression tree
-X_tree = product_means[['product_id']].values
+# Fit regression tree with one-hot encoded product_id
+from sklearn.preprocessing import OneHotEncoder
+encoder = OneHotEncoder(sparse_output=False)
+X_tree_encoded = encoder.fit_transform(product_means[['product_id']])
 y_tree = product_means['mean_extended_value'].values
 
 tree_model = DecisionTreeRegressor(random_state=42)
-tree_model.fit(X_tree, y_tree)
+tree_model.fit(X_tree_encoded, y_tree)
 
 # Count terminal leaves
 n_leaves = tree_model.get_n_leaves()
@@ -288,36 +290,58 @@ orders_sorted = orders.sort_values('order_date').copy()
 status_encoder = LabelEncoder()
 orders_sorted['status_encoded'] = status_encoder.fit_transform(orders_sorted['order_status'].astype(str))
 
-# Derive one-step transitions
-transitions = []
+# Derive second-order transitions (state pairs)
+# For second-order Markov: P(X_t+1 | X_t, X_t-1)
+second_order_transitions = []
 dates = []
-for i in range(len(orders_sorted) - 1):
-    from_state = orders_sorted.iloc[i]['status_encoded']
-    to_state = orders_sorted.iloc[i + 1]['status_encoded']
-    transitions.append((from_state, to_state))
+for i in range(len(orders_sorted) - 2):
+    state_t_minus_1 = orders_sorted.iloc[i]['status_encoded']
+    state_t = orders_sorted.iloc[i + 1]['status_encoded']
+    state_t_plus_1 = orders_sorted.iloc[i + 2]['status_encoded']
+    second_order_transitions.append(((state_t_minus_1, state_t), state_t_plus_1))
     dates.append(orders_sorted.iloc[i]['order_date'])
 
 # Count transition frequencies
 from collections import Counter
-transition_counts = Counter(transitions)
+transition_counts = Counter(second_order_transitions)
 
-# Build transition matrix for first-order Markov
+# Build second-order transition matrix
+# State space is all pairs (s_i, s_j)
 n_states = len(status_encoder.classes_)
-transition_matrix = np.zeros((n_states, n_states))
+state_pairs = [(i, j) for i in range(n_states) for j in range(n_states)]
+pair_to_idx = {pair: idx for idx, pair in enumerate(state_pairs)}
+n_pair_states = len(state_pairs)
 
-for (from_state, to_state), count in transition_counts.items():
-    transition_matrix[from_state, to_state] = count
+# Transition tensor: from state pair to next state
+transition_matrix_2nd = np.zeros((n_pair_states, n_states))
+
+for ((s_t_minus_1, s_t), s_t_plus_1), count in transition_counts.items():
+    pair_idx = pair_to_idx.get((s_t_minus_1, s_t))
+    if pair_idx is not None:
+        transition_matrix_2nd[pair_idx, s_t_plus_1] += count
 
 # Normalize to get probabilities
-row_sums = transition_matrix.sum(axis=1, keepdims=True)
+row_sums = transition_matrix_2nd.sum(axis=1, keepdims=True)
 row_sums[row_sums == 0] = 1  # Avoid division by zero
-transition_matrix = transition_matrix / row_sums
+transition_matrix_2nd = transition_matrix_2nd / row_sums
 
-# Calculate stationary distribution (eigenvector with eigenvalue 1)
-eigenvalues, eigenvectors = np.linalg.eig(transition_matrix.T)
+# Convert to first-order equivalent for stationary distribution
+# Aggregate over second state in pair to get marginal transition matrix
+transition_matrix_1st = np.zeros((n_states, n_states))
+for pair_idx, (s_i, s_j) in enumerate(state_pairs):
+    for s_next in range(n_states):
+        transition_matrix_1st[s_j, s_next] += transition_matrix_2nd[pair_idx, s_next]
+
+# Normalize the aggregated matrix
+row_sums_1st = transition_matrix_1st.sum(axis=1, keepdims=True)
+row_sums_1st[row_sums_1st == 0] = 1
+transition_matrix_1st = transition_matrix_1st / row_sums_1st
+
+# Calculate stationary distribution from aggregated matrix
+eigenvalues, eigenvectors = np.linalg.eig(transition_matrix_1st.T)
 stationary_idx = np.argmin(np.abs(eigenvalues - 1))
 stationary_dist = np.real(eigenvectors[:, stationary_idx])
-stationary_dist = stationary_dist / stationary_dist.sum()
+stationary_dist = np.abs(stationary_dist) / np.abs(stationary_dist).sum()
 
 highest_stationary_prob = np.max(stationary_dist)
 
