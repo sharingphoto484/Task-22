@@ -1,0 +1,129 @@
+# NEGATIVE WEIGHTED RUBRIC CRITERIA: Transactional Flow Dynamics Analysis
+
+## Nice-to-Have Criteria (Interpretive/Reasoning Errors)
+
+**1. States that the DCT coefficient magnitude of 75.3423 establishes predictable periodic cycles in shipping deviations that will recur in future periods.**
+*-15 points · nice to have criteria*
+**Rationale:** Treats frequency-domain decomposition as evidence of deterministic recurring patterns rather than a mathematical transformation of historical sample data.
+
+**2. States that the Gamma GLM coefficient of 0.0011 demonstrates that discount changes cause proportional changes in extended value.**
+*-12 points · nice to have criteria*
+**Rationale:** Confuses observational association with causal mechanism, ignoring confounders and reverse causality.
+
+**3. States that the maximum rolling Herfindahl average of 0.584 represents a permanent equilibrium concentration level in customer ordering patterns.**
+*-12 points · nice to have criteria*
+**Rationale:** Treats a maximum value from a rolling window as a stable structural feature rather than a peak observation.
+
+**4. States that the MDS stress value of 2.3870 measures the quality or clarity of geographic market segmentation in the customer base.**
+*-10 points · nice to have criteria*
+**Rationale:** Confuses a dimensionality reduction technical metric with a business segmentation quality measure.
+
+**5. States that the standard deviation of 0.165 days proves consistent and uniform fulfillment performance that will persist across all future periods.**
+*-10 points · nice to have criteria*
+**Rationale:** Treats within-sample variability as proof of permanent process stability and future operational consistency.
+
+**6. States that the 307 terminal leaves represent distinct product diversity categories or meaningful expenditure groupings in the business.**
+*-10 points · nice to have criteria*
+**Rationale:** Confuses algorithmic partitioning behavior with substantive product categorization or business segments.
+
+**7. States that the stationary probability of 0.869 predicts that 86.9% of orders will reach this specific status.**
+*-12 points · nice to have criteria*
+**Rationale:** Misinterprets long-run equilibrium distribution as a forecast of individual order outcomes.
+
+**8. States that the Pearson correlation of 0.0000 proves there is no relationship between customer order frequency and geographic location.**
+*-10 points · nice to have criteria*
+**Rationale:** Confuses zero correlation from zero variance (data structure artifact) with evidence of independence.
+
+**9. States that the seasonal demand surges identified in the verdict occur at predictable times with consistent magnitudes that enable reliable capacity planning.**
+*-12 points · nice to have criteria*
+**Rationale:** Treats identification of capacity saturation effects as proof of regular, predictable seasonal cycles.
+
+**10. States that the fitted statistical models identify permanent structural characteristics that will remain stable for long-term strategic planning.**
+*-15 points · nice to have criteria*
+**Rationale:** Treats sample-based model fits as discoveries of invariant laws rather than descriptions of historical patterns.
+
+**11. States that increasing discounts will optimize revenue based on the positive Gamma GLM coefficient of 0.0011.**
+*-12 points · nice to have criteria*
+**Rationale:** Treats observational correlation as actionable causal lever, ignoring confounding and selection effects.
+
+**12. States that the MDS stress value of 2.3870 indicates the geographic customer structure is simple and well-represented in two dimensions.**
+*-12 points · nice to have criteria*
+**Rationale:** Reverses interpretation of stress metric—higher stress means worse fit, not better representation.
+
+**13. States that the DCT analysis reveals the root causes of shipping delays.**
+*-10 points · nice to have criteria*
+**Rationale:** Frequency decomposition identifies patterns but does not establish causal mechanisms behind deviations.
+
+**14. States that the Herfindahl concentration pattern indicates customer preference consolidation toward fewer products.**
+*-10 points · nice to have criteria*
+**Rationale:** Infers behavioral preferences from a descriptive concentration index without evidence of customer choice mechanisms.
+
+**15. States that the Markov stationary distribution represents the optimal or most efficient order status configuration.**
+*-10 points · nice to have criteria*
+**Rationale:** Confuses statistical equilibrium of a stochastic process with normative optimality or efficiency.
+
+**16. States that the regression tree structure identifies the true causal drivers of product-level expenditure.**
+*-12 points · nice to have criteria*
+**Rationale:** Treats algorithmic partitioning as causal discovery when trees only identify predictive splits in sample data.
+
+**17. States that the zero correlation between orders and cities means location is irrelevant to customer behavior.**
+*-10 points · nice to have criteria*
+**Rationale:** Overgeneralizes from a zero-variance artifact to a substantive conclusion about location irrelevance.
+
+**18. States that the monthly deviation standard deviation of 0.165 establishes a service level agreement benchmark.**
+*-10 points · nice to have criteria*
+**Rationale:** Treats descriptive sample statistic as a prescriptive performance target without operational context.
+
+**19. States that the observed transactional patterns will persist unchanged regardless of business strategy changes.**
+*-12 points · nice to have criteria*
+**Rationale:** Assumes fitted models capture invariant structure immune to operational, strategic, or market changes.
+
+**20. States that the second-order Markov process proves that order status depends only on the previous two states.**
+*-10 points · nice to have criteria*
+**Rationale:** Confuses a modeling assumption (second-order Markov) with proof that longer histories are irrelevant.
+
+---
+
+## Summary Statistics
+
+- **Total Nice-to-Have Criteria:** 20
+- **Maximum Possible Deduction:** -226 points
+- **Average Deduction per Criterion:** -11.3 points
+- **Severity Distribution:**
+  - Critical interpretive errors (-15 points): 2 criteria
+  - Major reasoning errors (-12 points): 7 criteria
+  - Moderate errors (-10 points): 11 criteria
+
+---
+
+## Criterion Categories by Error Type
+
+### Causal Inference Errors (5 criteria)
+- Criterion 2: Discount causation
+- Criterion 11: Revenue optimization
+- Criterion 13: Root causes of delays
+- Criterion 16: Causal drivers of expenditure
+- Criterion 19: Persistence of patterns
+
+### Prediction/Forecasting Errors (4 criteria)
+- Criterion 1: Predictable cycles
+- Criterion 7: Individual order outcomes
+- Criterion 9: Predictable demand surges
+- Criterion 20: Markov state dependencies
+
+### Permanence/Stability Errors (5 criteria)
+- Criterion 3: Permanent equilibrium
+- Criterion 5: Persistent performance
+- Criterion 10: Permanent structural characteristics
+- Criterion 14: Preference consolidation
+- Criterion 18: SLA benchmark
+
+### Misinterpretation of Technical Metrics (4 criteria)
+- Criterion 4: MDS segmentation quality
+- Criterion 12: MDS simple structure
+- Criterion 6: Product diversity
+- Criterion 15: Optimal configuration
+
+### Relationship/Independence Errors (2 criteria)
+- Criterion 8: No relationship proof
+- Criterion 17: Location irrelevance
