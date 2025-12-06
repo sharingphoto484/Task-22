@@ -1,0 +1,233 @@
+# OUTPUT-BASED RUBRICS: Transactional Flow Dynamics Analysis
+
+## **CATEGORY 1: CORE NUMERICAL RESULTS (240 points total)**
+
+**1. States that the largest DCT coefficient magnitude is 75.3423, rounded to four decimal places.**
+*30 points · Must Have*
+**Proof of Ask:** *"A discrete cosine transform shall be applied to this ordered deviation sequence and the largest coefficient magnitude shall be extracted. Report this magnitude rounded to four decimals."*
+
+**2. States that the Gamma GLM discount coefficient is 0.0011, rounded to four decimal places.**
+*30 points · Must Have*
+**Proof of Ask:** *"A gamma-family generalized linear model shall be fitted in which extended value acts as the dependent quantity and discount serves as the predictor. The estimated coefficient associated with the predictor shall be obtained. Report this coefficient rounded to four decimals."*
+
+**3. States that the maximum rolling Herfindahl average is 0.584, rounded to three decimal places.**
+*30 points · Must Have*
+**Proof of Ask:** *"The maximum value in this rolling-average sequence shall be extracted. Report this maximum rounded to three decimals."*
+
+**4. States that the MDS stress value is 2.3870, rounded to four decimal places.**
+*30 points · Must Have*
+**Proof of Ask:** *"A classical multidimensional scaling procedure shall be applied and the resulting two-dimensional embedding's stress value shall be extracted. Report this stress value rounded to four decimals."*
+
+**5. States that the standard deviation of monthly mean deviations is 0.165, rounded to three decimal places.**
+*30 points · Must Have*
+**Proof of Ask:** *"The standard deviation across these monthly means shall be extracted. Report this standard deviation rounded to three decimals."*
+
+**6. States that the number of terminal leaves in the regression tree is 307 as an integer.**
+*30 points · Must Have*
+**Proof of Ask:** *"The number of terminal leaves in the fitted tree shall be extracted. Report this number as an integer."*
+
+**7. States that the highest stationary probability is 0.869, rounded to three decimal places.**
+*30 points · Must Have*
+**Proof of Ask:** *"The highest stationary probability across the model's states shall be extracted. Report this probability rounded to three decimals."*
+
+**8. States that the Pearson correlation coefficient is 0.0000, rounded to four decimal places.**
+*30 points · Must Have*
+**Proof of Ask:** *"A Pearson correlation coefficient shall be derived from these two customer-level sequences. Report this coefficient rounded to four decimals."*
+
+---
+
+## **CATEGORY 2: TEMPORAL DEVIATION VISUALIZATION (60 points total)**
+
+**9. Includes a line plot for deviation sequences that is semantically similar to the attached visualization.**
+*25 points · Must Have*
+**Proof of Ask:** *"This stage generates a line plot for deviation sequences with x axis represents order_date, y axis represents deviation in days."*
+
+**10. Provides a line plot for deviation sequences with order_date on the x-axis.**
+*20 points · Must Have*
+**Proof of Ask:** *"This stage generates a line plot for deviation sequences with x axis represents order_date, y axis represents deviation in days."*
+
+**11. Provides a line plot for deviation sequences with deviation in days on the y-axis.**
+*15 points · Must Have*
+**Proof of Ask:** *"This stage generates a line plot for deviation sequences with x axis represents order_date, y axis represents deviation in days."*
+
+---
+
+## **CATEGORY 3: SPENDING-INTENSITY VISUALIZATION (60 points total)**
+
+**12. Includes a scatter plot for discount versus extended value that is semantically similar to the attached visualization.**
+*25 points · Must Have*
+**Proof of Ask:** *"This stage generates a scatter plot for discount versus extended value with x axis represents discount, y axis represents extended value."*
+
+**13. Provides a scatter plot for discount versus extended value with discount on the x-axis.**
+*20 points · Must Have*
+**Proof of Ask:** *"This stage generates a scatter plot for discount versus extended value with x axis represents discount, y axis represents extended value."*
+
+**14. Provides a scatter plot for discount versus extended value with extended value on the y-axis.**
+*15 points · Must Have*
+**Proof of Ask:** *"This stage generates a scatter plot for discount versus extended value with x axis represents discount, y axis represents extended value."*
+
+---
+
+## **CATEGORY 4: CONCENTRATION DIAGNOSTIC VISUALIZATION (60 points total)**
+
+**15. Includes a line plot for rolling Herfindahl averages that is semantically similar to the attached visualization.**
+*25 points · Must Have*
+**Proof of Ask:** *"This stage generates a line plot for rolling Herfindahl averages with x axis represents order index, y axis represents concentration measure."*
+
+**16. Provides a line plot for rolling Herfindahl averages with order index on the x-axis.**
+*20 points · Must Have*
+**Proof of Ask:** *"This stage generates a line plot for rolling Herfindahl averages with x axis represents order index, y axis represents concentration measure."*
+
+**17. Provides a line plot for rolling Herfindahl averages with concentration measure on the y-axis.**
+*15 points · Must Have*
+**Proof of Ask:** *"This stage generates a line plot for rolling Herfindahl averages with x axis represents order index, y axis represents concentration measure."*
+
+---
+
+## **CATEGORY 5: CUSTOMER-LOCATION EMBEDDING VISUALIZATION (60 points total)**
+
+**18. Includes a heatmap for encoded state distances that is semantically similar to the attached visualization.**
+*25 points · Must Have*
+**Proof of Ask:** *"This stage generates a heatmap for encoded state distances with x axis represents encoded state, y axis represents encoded state."*
+
+**19. Provides a heatmap for encoded state distances with encoded state on the x-axis.**
+*20 points · Must Have*
+**Proof of Ask:** *"This stage generates a heatmap for encoded state distances with x axis represents encoded state, y axis represents encoded state."*
+
+**20. Provides a heatmap for encoded state distances with encoded state on the y-axis.**
+*15 points · Must Have*
+**Proof of Ask:** *"This stage generates a heatmap for encoded state distances with x axis represents encoded state, y axis represents encoded state."*
+
+---
+
+## **CATEGORY 6: FULFILLMENT-REGULARITY VISUALIZATION (60 points total)**
+
+**21. Includes a bar chart for monthly mean deviations that is semantically similar to the attached visualization.**
+*25 points · Must Have*
+**Proof of Ask:** *"This stage generates a bar chart for monthly mean deviations with x axis represents month index, y axis represents deviation magnitude."*
+
+**22. Provides a bar chart for monthly mean deviations with month index on the x-axis.**
+*20 points · Must Have*
+**Proof of Ask:** *"This stage generates a bar chart for monthly mean deviations with x axis represents month index, y axis represents deviation magnitude."*
+
+**23. Provides a bar chart for monthly mean deviations with deviation magnitude on the y-axis.**
+*15 points · Must Have*
+**Proof of Ask:** *"This stage generates a bar chart for monthly mean deviations with x axis represents month index, y axis represents deviation magnitude."*
+
+---
+
+## **CATEGORY 7: PRODUCT EXPENDITURE VISUALIZATION (60 points total)**
+
+**24. Includes a scatter plot for product-level mean extended value that is semantically similar to the attached visualization.**
+*25 points · Must Have*
+**Proof of Ask:** *"This stage generates a scatter plot for product-level mean extended value with x axis represents product_id, y axis represents mean extended value."*
+
+**25. Provides a scatter plot for product-level mean extended value with product_id on the x-axis.**
+*20 points · Must Have*
+**Proof of Ask:** *"This stage generates a scatter plot for product-level mean extended value with x axis represents product_id, y axis represents mean extended value."*
+
+**26. Provides a scatter plot for product-level mean extended value with mean extended value on the y-axis.**
+*15 points · Must Have*
+**Proof of Ask:** *"This stage generates a scatter plot for product-level mean extended value with x axis represents product_id, y axis represents mean extended value."*
+
+---
+
+## **CATEGORY 8: ORDER STATUS TRANSITIONS VISUALIZATION (60 points total)**
+
+**27. Includes a line plot for transition frequencies that is semantically similar to the attached visualization.**
+*25 points · Must Have*
+**Proof of Ask:** *"This stage generates a line plot for transition frequencies with x axis represents order_date, y axis represents transition intensity."*
+
+**28. Provides a line plot for transition frequencies with order_date on the x-axis.**
+*20 points · Must Have*
+**Proof of Ask:** *"This stage generates a line plot for transition frequencies with x axis represents order_date, y axis represents transition intensity."*
+
+**29. Provides a line plot for transition frequencies with transition intensity on the y-axis.**
+*15 points · Must Have*
+**Proof of Ask:** *"This stage generates a line plot for transition frequencies with x axis represents order_date, y axis represents transition intensity."*
+
+---
+
+## **CATEGORY 9: CUSTOMER-ORDER ALIGNMENT VISUALIZATION (60 points total)**
+
+**30. Includes a density plot for customer order counts that is semantically similar to the attached visualization.**
+*25 points · Must Have*
+**Proof of Ask:** *"This stage generates a density plot for customer order counts with x axis represents order count, y axis represents density."*
+
+**31. Provides a density plot for customer order counts with order count on the x-axis.**
+*20 points · Must Have*
+**Proof of Ask:** *"This stage generates a density plot for customer order counts with x axis represents order count, y axis represents density."*
+
+**32. Provides a density plot for customer order counts with density on the y-axis.**
+*15 points · Must Have*
+**Proof of Ask:** *"This stage generates a density plot for customer order counts with x axis represents order count, y axis represents density."*
+
+---
+
+## **CATEGORY 10: OPEN-ENDED VERDICT (50 points total)**
+
+**33. Provides a verdict explaining the drivers behind extreme deviation-frequency spikes, for example stating that extreme deviation spikes reflect systemic capacity saturation during seasonal demand surges rather than random operational failures.**
+*30 points · Must Have*
+**Proof of Ask:** *"What verdict best summarizes the drivers behind extreme deviation-frequency spikes?"*
+
+**34. States that the drivers involve capacity constraints, operational bottlenecks, or infrastructure limitations intersecting with demand patterns.**
+*10 points · Nice to Have*
+**Proof of Ask:** *"What verdict best summarizes the drivers behind extreme deviation-frequency spikes?"*
+
+**35. States that the spikes are not random but reflect systematic, periodic, or structural patterns in the fulfillment process.**
+*10 points · Nice to Have*
+**Proof of Ask:** *"What verdict best summarizes the drivers behind extreme deviation-frequency spikes?"*
+
+---
+
+## **CATEGORY 11: DATA PROCESSING CONFIRMATIONS (30 points total)**
+
+**36. States or confirms that dates were transformed into a single consistent format.**
+*10 points · Nice to Have*
+**Proof of Ask:** *"All dates shall be transformed into a single consistent format and any row containing missing or nonnumeric entries required by a procedure shall be removed before that procedure is performed."*
+
+**37. States or confirms that rows with missing or invalid data were removed before analyses.**
+*10 points · Nice to Have*
+**Proof of Ask:** *"All dates shall be transformed into a single consistent format and any row containing missing or nonnumeric entries required by a procedure shall be removed before that procedure is performed."*
+
+**38. States or confirms that merges were performed on order_id or customer_id as specified.**
+*10 points · Nice to Have*
+**Proof of Ask:** *"All merges shall rely strictly on order_id or customer_id."*
+
+---
+
+## **CATEGORY 12: METHODOLOGICAL CONFIRMATIONS (40 points total)**
+
+**39. States or confirms that a second-order Markov process was estimated for order status transitions.**
+*25 points · Must Have*
+**Proof of Ask:** *"A second-order Markov process shall be estimated using these transitions."*
+
+**40. States or confirms that the Herfindahl index uses a rolling fifty-order window.**
+*10 points · Nice to Have*
+**Proof of Ask:** *"A rolling fifty-order average of these indices, ordered by order_id, shall be formed for windows containing fifty valid observations."*
+
+**41. States or confirms that the deviation for fulfillment regularity is calculated as shipped_date minus required_date.**
+*5 points · Nice to Have*
+**Proof of Ask:** *"The deviation shall be derived as shipped_date minus required_date."*
+
+---
+
+## **SUMMARY POINT DISTRIBUTION**
+
+- **Core Numerical Results (Category 1):** 240 points (8 × 30 points)
+- **Visualizations (Categories 2-9):** 480 points (8 visualizations × 60 points)
+- **Open-Ended Verdict (Category 10):** 50 points
+- **Data Processing Confirmations (Category 11):** 30 points
+- **Methodological Confirmations (Category 12):** 40 points
+
+**TOTAL POSSIBLE POINTS: 840**
+
+---
+
+## **GRADING SCALE RECOMMENDATION**
+
+- **Outstanding (90-100%):** 756-840 points
+- **Proficient (80-89%):** 672-755 points
+- **Adequate (70-79%):** 588-671 points
+- **Developing (60-69%):** 504-587 points
+- **Below Expectations (<60%):** <504 points
