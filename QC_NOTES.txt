@@ -1,0 +1,43 @@
+QUALITY CONTROL NOTES FOR TRANSACTION ANALYSIS
+
+PROMPT GOAL SUMMARY
+
+This analysis evaluates transactional flow dynamics and customer patterns across three datasets containing orders, order items, and customer information. The primary objective is to conduct eight formal quantitative procedures that examine temporal deviations, spending behaviors, product concentration, geographic distributions, fulfillment patterns, and customer order alignment. Each procedure must handle missing data appropriately by removing invalid rows and standardizing all date formats before computation. The analysis produces specific numerical outputs rounded to prescribed decimal places along with eight visualization plots showing different aspects of the transactional ecosystem. Advanced statistical techniques including discrete cosine transforms, gamma regression, Herfindahl indices, multidimensional scaling, Markov processes, and regression trees are applied to extract meaningful patterns. The final deliverable answers how extreme deviation frequency spikes are driven by operational capacity constraints and demand volatility.
+
+STEP BY STEP SOLUTION
+
+Step 1 : Data Loading and Preparation
+The analysis begins by loading three CSV files representing orders, order items, and customer records into memory using pandas data structures. All date columns including order date, required date, and shipped date are converted into standardized datetime format to enable temporal calculations. Any rows containing unparseable dates are marked as missing values through the coerce parameter, ensuring downstream operations only work with valid temporal data.
+
+Step 2 : Temporal Deviation Sequence Construction
+For the first analysis, rows with valid order dates and shipped dates are filtered from the orders dataset to compute the shipping delay in days. These deviation values are sorted chronologically by order date to create a time ordered sequence that represents how shipping performance varies over the observation period. The temporal ordering is critical because subsequent frequency analysis depends on the sequential nature of the deviation pattern.
+
+Step 3 : Discrete Cosine Transform Application
+A discrete cosine transform is applied to the ordered deviation sequence using type 2 normalization which decomposes the temporal signal into frequency components. The DCT coefficients reveal periodic patterns in shipping delays where high magnitude coefficients indicate strong cyclical behaviors. The largest absolute coefficient magnitude of 75.3423 suggests dominant frequency components that correspond to systematic operational stress events occurring at regular intervals.
+
+Step 4 : Extended Value Calculation for Spending Analysis
+The orders and order items datasets are merged on the order identifier to create a unified view of each transaction line item. For every item, the extended value is computed by multiplying quantity times list price times one minus the discount rate, representing the actual revenue generated. This extended value becomes the dependent variable for understanding how discount strategies affect spending intensity across the customer base.
+
+Step 5 : Gamma Generalized Linear Model Fitting
+A gamma family GLM is fitted with extended value as the response and discount as the predictor since extended values are strictly positive and right skewed. The gamma distribution appropriately models revenue data that cannot be negative and often exhibits multiplicative error structures. The estimated coefficient of 0.0011 indicates a very weak positive relationship between discount levels and extended values after accounting for the gamma link function.
+
+Step 6 : Herfindahl Concentration Index Computation
+For each unique order, the Herfindahl index is calculated by squaring the quantity share of each item within that order and summing these squared shares. This index measures product concentration where values near one indicate orders dominated by a single product and values near zero suggest evenly distributed quantities. The index quantifies whether customers tend to purchase diverse product mixes or concentrate spending on specific items.
+
+Step 7 : Rolling Window Averaging of Concentration
+A rolling window of fifty consecutive orders is applied to the Herfindahl sequence after sorting by order identifier to smooth short term fluctuations. Only windows containing exactly fifty valid observations are included to maintain consistent statistical properties across the rolling calculation. The maximum rolling average of 0.584 reveals periods where customer orders became moderately concentrated on fewer products, suggesting evolving purchasing patterns.
+
+Step 8 : Geographic Embedding via Multidimensional Scaling
+Customer state values are encoded as numerical identifiers and a pairwise distance matrix is constructed measuring how far apart each customer pair is in encoded state space. Classical multidimensional scaling reduces this high dimensional distance structure into a two dimensional embedding that preserves relative geographic separations. The stress value of 2.3870 indicates moderate distortion in the low dimensional representation, reflecting the challenge of compressing discrete state locations into continuous coordinates.
+
+Step 9 : Fulfillment Regularity Through Monthly Aggregation
+Orders with valid required dates and shipped dates are grouped by calendar month after computing the deviation between actual ship date and required ship date. The mean deviation within each month captures average fulfillment performance over time, revealing whether certain months experience systematic delays or early shipments. The standard deviation across these monthly means equals 0.165 days, indicating relatively stable fulfillment patterns without extreme monthly variations.
+
+Step 10 : Regression Tree for Product Expenditure Patterns
+Product level mean extended values are calculated by averaging the computed extended values across all instances of each product identifier. A decision tree regressor uses product identifier as input to predict mean extended value, automatically discovering nonlinear splits that group products with similar revenue characteristics. The resulting tree contains 307 terminal leaves, indicating high granularity where almost each product receives its own leaf node due to unique mean expenditure levels.
+
+Step 11 : Markov Chain Transition Analysis
+Order status values are encoded numerically and sorted by order date to create a temporal sequence of state occupancy. Consecutive status pairs form one step transitions that are counted to build a transition frequency matrix showing how orders move between status categories. The first order Markov chain approximation yields a stationary distribution where the highest probability of 0.895 corresponds to the most absorbing status state that orders eventually converge toward.
+
+Step 12 : Customer Order and Location Correlation
+Orders are merged with customer data on customer identifier to enable customer level aggregations across both transactional and demographic dimensions. For each customer, the total count of orders and the count of distinct cities appearing in their order history are computed. The Pearson correlation between these two customer level metrics equals zero because all customers have exactly one distinct city, creating zero variance that prevents meaningful correlation calculation.
