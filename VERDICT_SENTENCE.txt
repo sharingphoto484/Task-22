@@ -1,0 +1,3 @@
+SINGLE SENTENCE VERDICT ON EXTREME DEVIATION-FREQUENCY SPIKES
+
+Extreme deviation-frequency spikes are driven by systemic capacity constraints during high-demand periods that create temporal clustering of orders, compounded by the strong low-frequency components revealed in the DCT analysis indicating seasonal or periodic operational stress rather than random process failures, with monthly fulfillment variance confirming that these spikes represent structural phenomena where demand surges interact with finite fulfillment bandwidth during promotional events or supply chain disruptions.
