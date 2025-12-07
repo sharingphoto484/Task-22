@@ -1,0 +1,19 @@
+MODEL FAILURE ANALYSIS FOR SALES BEHAVIOR EVALUATION
+
+The model reported 2.4390 for the average analytic signal amplitude from the Hilbert transform, but the correct value is 4.3050, likely because the model used only the N02BE column instead of summing all eight sales columns (M01AB, M01AE, N02BA, N02BE, N05B, N05C, R03, R06) to create the unified Sales metric as required by the prompt specification that references a single Sales field across all datasets.
+
+The model reported 1.545 for the mean 5 day block entropy, but the correct value is 1.569, likely because the model computed entropy on the N02BE column alone rather than the aggregated total Sales which changes the probability distributions within each five day block and subsequently alters the Shannon entropy calculations across all blocks.
+
+The model reported 69.980 for the monthly B spline structural smoothness deviation, but the correct value is 699.989, likely because the model fitted the B spline to only the N02BE monthly values instead of the sum of all product categories resulting in a magnitude difference of approximately one order since the summed sales are naturally much larger than any single component.
+
+The model reported 0.2398 for the daily monthly mutual information estimate, but the correct value is 0.1934, likely because the model binned only N02BE values into equal frequency intervals rather than total aggregated Sales which produces different bin boundaries and contingency table frequencies that alter the mutual information score between daily and monthly scales.
+
+The model reported 4.606 for the hour level structural divergence index, but the correct value is 17.853, likely because the model calculated hour level means from N02BE alone instead of total Sales leading to smaller mean values and consequently smaller squared distances when fitting the principal curve approximation through the 24 hourly averages.
+
+The model reported 0.014 for the standard deviation of the daily monthly sales ratio, but the correct value is 10.716, likely because the model computed ratios using only N02BE which as a single product category represents a small fraction of total sales resulting in much smaller and more stable ratio values with drastically reduced variability across the time series.
+
+The model reported 6.861 for the mean absolute deviation from the centered 5 day moving median, but the correct value is 10.362, likely because the model applied the moving median smoother to N02BE values instead of aggregated Sales producing smaller absolute differences since the magnitude of N02BE fluctuations is inherently smaller than those of the combined sales across all eight product categories.
+
+FUNDAMENTAL ERROR PATTERN
+
+The model systematically failed to recognize that the prompt specifies a single Sales field across all three datasets which in the context of pharmaceutical sales data with multiple product code columns requires summing M01AB M01AE N02BA N02BE N05B N05C R03 and R06 into a unified Sales metric. Instead the model arbitrarily selected only the N02BE column for analysis leading to incorrect magnitudes across all seven numeric outputs. This represents a critical misunderstanding of data preparation requirements where multi column datasets must be aggregated to match the singular Sales variable described in the prompt specification. The spline curvature matched at 0.0000 only coincidentally because both approaches yielded minimal curvature in their respective ratio sequences.
