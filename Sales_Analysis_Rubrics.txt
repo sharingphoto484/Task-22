@@ -36,85 +36,85 @@ Proof of Ask: The mean absolute difference between the original daily Sales and 
 
 CATEGORY 2: VISUALIZATIONS - HOURLY SALES ANALYSIS
 
-9. Includes a line chart for hourly Sales that is semantically similar to the expected visualization.
+9. Includes a line chart for Hourly Sales Time Series that is semantically similar to the attached visualization.
 8 points · Must Have
 Proof of Ask: This stage generates a line chart for hourly Sales with x axis represents hour index, y axis represents Sales magnitude.
 
-10. Provides a line chart for hourly Sales with hour index on the x-axis.
+10. Provides a line chart for Hourly Sales Time Series with hour index on the x-axis.
 6 points · Must Have
 Proof of Ask: This stage generates a line chart for hourly Sales with x axis represents hour index, y axis represents Sales magnitude.
 
-11. Provides a line chart for hourly Sales with Sales magnitude on the y-axis.
+11. Provides a line chart for Hourly Sales Time Series with Sales magnitude on the y-axis.
 6 points · Must Have
 Proof of Ask: This stage generates a line chart for hourly Sales with x axis represents hour index, y axis represents Sales magnitude.
 
 CATEGORY 3: VISUALIZATIONS - RATIO SCATTER PLOT
 
-12. Includes a scatter plot for ratio values that is semantically similar to the expected visualization.
+12. Includes a scatter plot for Max Hourly to Daily Sales Ratio that is semantically similar to the attached visualization.
 8 points · Must Have
 Proof of Ask: This stage generates a scatter plot for ratio values with x axis represents date index, y axis represents ratio magnitude.
 
-13. Provides a scatter plot for ratio values with date index on the x-axis.
+13. Provides a scatter plot for Max Hourly to Daily Sales Ratio with date index on the x-axis.
 6 points · Must Have
 Proof of Ask: This stage generates a scatter plot for ratio values with x axis represents date index, y axis represents ratio magnitude.
 
-14. Provides a scatter plot for ratio values with ratio magnitude on the y-axis.
+14. Provides a scatter plot for Max Hourly to Daily Sales Ratio with ratio magnitude on the y-axis.
 6 points · Must Have
 Proof of Ask: This stage generates a scatter plot for ratio values with x axis represents date index, y axis represents ratio magnitude.
 
 CATEGORY 4: VISUALIZATIONS - ENTROPY BOXPLOT
 
-15. Includes a boxplot for blockwise entropies that is semantically similar to the expected visualization.
+15. Includes a boxplot for Blockwise Entropy Distribution that is semantically similar to the attached visualization.
 8 points · Must Have
 Proof of Ask: This stage generates a boxplot for blockwise entropies with x axis represents block category, y axis represents entropy.
 
-16. Provides a boxplot for blockwise entropies with block category on the x-axis.
+16. Provides a boxplot for Blockwise Entropy Distribution with block category on the x-axis.
 6 points · Must Have
 Proof of Ask: This stage generates a boxplot for blockwise entropies with x axis represents block category, y axis represents entropy.
 
-17. Provides a boxplot for blockwise entropies with entropy on the y-axis.
+17. Provides a boxplot for Blockwise Entropy Distribution with entropy on the y-axis.
 6 points · Must Have
 Proof of Ask: This stage generates a boxplot for blockwise entropies with x axis represents block category, y axis represents entropy.
 
 CATEGORY 5: VISUALIZATIONS - MONTHLY SALES LINE CHART
 
-18. Includes a line chart for fitted and observed monthly Sales that is semantically similar to the expected visualization.
+18. Includes a line chart for Monthly Sales Observed vs Fitted that is semantically similar to the attached visualization.
 8 points · Must Have
 Proof of Ask: This stage generates a line chart for fitted and observed monthly Sales with x axis represents month index, y axis represents Sales value.
 
-19. Provides a line chart for monthly Sales with month index on the x-axis.
+19. Provides a line chart for Monthly Sales Observed vs Fitted with month index on the x-axis.
 6 points · Must Have
 Proof of Ask: This stage generates a line chart for fitted and observed monthly Sales with x axis represents month index, y axis represents Sales value.
 
-20. Provides a line chart for monthly Sales with Sales value on the y-axis showing both fitted and observed values.
+20. Provides a line chart for Monthly Sales Observed vs Fitted with Sales value on the y-axis showing both fitted and observed values.
 6 points · Must Have
 Proof of Ask: This stage generates a line chart for fitted and observed monthly Sales with x axis represents month index, y axis represents Sales value.
 
 CATEGORY 6: VISUALIZATIONS - COUPLING HEATMAP
 
-21. Includes a heatmap for daily-to-monthly binned associations that is semantically similar to the expected visualization.
+21. Includes a heatmap for Daily-to-Monthly Sales Association Heatmap that is semantically similar to the attached visualization.
 8 points · Must Have
 Proof of Ask: This stage generates a heatmap for daily-to-monthly binned associations with x axis represents daily bin, y axis represents monthly bin.
 
-22. Provides a heatmap for daily-to-monthly associations with daily bin on the x-axis.
+22. Provides a heatmap for Daily-to-Monthly Sales Association Heatmap with daily bin on the x-axis.
 6 points · Must Have
 Proof of Ask: This stage generates a heatmap for daily-to-monthly binned associations with x axis represents daily bin, y axis represents monthly bin.
 
-23. Provides a heatmap for daily-to-monthly associations with monthly bin on the y-axis.
+23. Provides a heatmap for Daily-to-Monthly Sales Association Heatmap with monthly bin on the y-axis.
 6 points · Must Have
 Proof of Ask: This stage generates a heatmap for daily-to-monthly binned associations with x axis represents daily bin, y axis represents monthly bin.
 
 CATEGORY 7: VISUALIZATIONS - HOUR-LEVEL MEANS WITH FITTED CURVE
 
-24. Includes a visualization for hour-level means with fitted curve overlay that is semantically similar to the expected visualization.
+24. Includes a scatter plot with fitted curve overlay for Hour-Level Mean Sales with Fitted Curve that is semantically similar to the attached visualization.
 8 points · Must Have
 Proof of Ask: This stage generates a scatter plot for hour-level means with x axis represents hour, y axis represents mean Sales.
 
-25. Provides a visualization showing hour-level means as scatter points with hour on the x-axis.
+25. Provides a scatter plot with fitted curve overlay for Hour-Level Mean Sales with Fitted Curve with hour on the x-axis.
 6 points · Must Have
 Proof of Ask: This stage generates a scatter plot for hour-level means with x axis represents hour, y axis represents mean Sales.
 
-26. Provides a visualization showing hour-level means as scatter points with mean Sales on the y-axis and includes a fitted curve overlay.
+26. Provides a scatter plot with fitted curve overlay for Hour-Level Mean Sales with Fitted Curve with mean Sales on the y-axis showing both scatter points and fitted curve.
 6 points · Must Have
 Proof of Ask: This stage generates a scatter plot for hour-level means with x axis represents hour, y axis represents mean Sales.
 
