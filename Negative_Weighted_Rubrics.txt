@@ -1,0 +1,215 @@
+FAILURE IDEAS REPOSITORY: SALES BEHAVIOR ANALYSIS
+
+FAILURE IDEA 1: Single Column Extraction Versus Aggregate Sales Construction
+
+Failure Idea: An analyst examining pharmaceutical sales data with multiple product code columns (M01AB, M01AE, N02BA, N02BE, N05B, N05C, R03, R06) might conclude that selecting one representative column such as N02BE provides a valid proxy for total sales behavior, reasoning that major product categories exhibit correlated patterns. This approach fundamentally misinterprets the task specification which refers to a singular Sales variable across all three temporal granularities. When datasets contain disaggregated sales by product category, the unified Sales metric requires aggregation across all categories to capture total sales volume. Using only N02BE produces systematically lower magnitudes affecting all derived statistics including Hilbert transform amplitudes, entropy calculations, and deviation measures. The error stems from treating sales columns as interchangeable alternatives rather than components requiring summation to construct the total sales variable specified in the analytical framework.
+
+Corresponding Rubric Item:
+States that analysis uses N02BE column as the Sales variable across datasets.
+-25 points · must have criteria
+
+FAILURE IDEA 2: Percentile Thresholding as Discovery of Natural Regimes
+
+Failure Idea: The model response identifies the top 5 percent of Hilbert envelope values as extreme analytic signal amplitudes and treats this threshold as revealing a natural regime boundary in sales behavior. This reasoning applies an arbitrary statistical cutoff and interprets the resulting subset as if it represents a qualitatively distinct sales phenomenon. Percentile thresholds are analyst-imposed conventions for partitioning continuous distributions and do not establish that values above this boundary constitute a separate behavioral regime with unique generative mechanisms. The 5 percent threshold has no theoretical grounding in signal processing, sales dynamics, or the prompt requirements. Extreme values exist on a continuum and their statistical properties depend on the chosen threshold. The prompt asks for conditions linked to extreme amplitudes without specifying percentile-based partitioning, making this an over-interpretation that confuses descriptive classification with discovery of underlying structure.
+
+Corresponding Rubric Item:
+States that extreme analytic signal amplitudes are defined as the top 5 percent of the Hilbert envelope.
+-12 points · nice to have criteria
+
+FAILURE IDEA 3: Temporal Pattern Inference Without Statistical Validation
+
+Failure Idea: The model asserts that extreme amplitudes occur heavily concentrated in late afternoon and evening hours, especially around 18:00 to 21:00, presenting this as an empirical finding without reporting statistical tests, confidence intervals, or comparing against null distributions. This claim treats observed hour-of-day patterns as if they represent validated temporal structure when they may reflect sampling variation, seasonal effects, or data collection artifacts. The prompt requests conditions linked to extreme amplitudes but does not ask for hour-specific temporal clustering analysis. Making specific claims about 18:00 to 21:00 concentration requires demonstrating that this pattern is statistically distinguishable from uniform distribution or alternative hour ranges. Without formal hypothesis testing, such statements represent unvalidated pattern mining that may not generalize beyond the sample period. The error lies in presenting exploratory descriptive patterns as established temporal regularities.
+
+Corresponding Rubric Item:
+States that extreme amplitudes are heavily concentrated in late afternoon and evening hours, especially around 18:00 to 21:00.
+-10 points · nice to have criteria
+
+FAILURE IDEA 4: Day of Week Effects as Causal Demand Drivers
+
+Failure Idea: The response claims that extreme amplitudes are disproportionately likely on weekends, with Saturday and Sunday showing the highest extreme rates, implying that day of week represents a causal driver of amplitude extremes. This interpretation conflates temporal association with causal mechanism. Weekend patterns in pharmaceutical sales data may reflect operational factors such as pharmacy staffing, prescription filling schedules, or data recording conventions rather than genuine demand surges. The Hilbert transform extracts analytic signal properties from the time series structure itself, not purchasing behavior drivers. Asserting that weekends cause higher extreme rates requires controlling for confounders including product type, prescription refill cycles, and temporal aggregation effects. The prompt asks what conditions link to extreme amplitudes focusing on the signal characteristics like rapid fluctuations and high frequency variability, not day of week demographic or operational factors.
+
+Corresponding Rubric Item:
+States that extreme amplitudes are disproportionately likely on weekends with Saturday and Sunday showing the highest extreme rates.
+-10 points · nice to have criteria
+
+FAILURE IDEA 5: Month Specific Clustering as Seasonal Regime Detection
+
+Failure Idea: The model identifies January, February, September, October, and December as peak demand months exhibiting elevated extreme amplitude rates, treating this as evidence of seasonal demand regimes. This reasoning assumes that observing higher values in specific months within the sample establishes persistent seasonal patterns generalizable to future periods. Month specific patterns in pharmaceutical sales may arise from insurance coverage cycles, flu seasons, regulatory reporting periods, or sample specific events rather than stable seasonal structure. The months identified do not form coherent seasonal groupings (winter months plus September/October), suggesting the pattern may be data specific rather than reflecting underlying seasonal mechanisms. Without comparing against deseasonalized series or testing stationarity of seasonal effects, claiming these months represent peak demand periods constitutes overfitting to sample realizations. The prompt focuses on signal processing characteristics not seasonal demand forecasting.
+
+Corresponding Rubric Item:
+States that extreme amplitudes occur in peak demand months, notably January, February, September, October, and December.
+-10 points · nice to have criteria
+
+FAILURE IDEA 6: Signal Processing Extremes as Business Demand Surges
+
+Failure Idea: The verdict concludes that extreme analytic signal amplitudes reliably mark strong seasonally and temporally clustered demand surges, conflating mathematical properties of the Hilbert transform with economic interpretations of purchasing behavior. The analytic signal amplitude measures instantaneous envelope magnitude derived from applying the Hilbert transform to the sales time series, capturing signal processing characteristics like frequency content and phase relationships. High amplitude values indicate rapid changes in the underlying signal structure but do not necessarily correspond to demand surges in the business sense of unusual purchasing volumes. A sales sequence with high frequency oscillations can produce large Hilbert amplitudes even if absolute sales volumes remain moderate. The prompt asks about conditions linked to extreme amplitudes focusing on characteristics like rapid hourly fluctuations and sustained high frequency variability, which are signal properties, not demand interpretations. Translating signal processing outputs directly into business demand stories requires additional validation against sales volume distributions and domain knowledge about purchasing drivers.
+
+Corresponding Rubric Item:
+States that extreme analytic signal amplitudes reliably mark strong seasonally and temporally clustered demand surges.
+-12 points · nice to have criteria
+
+FAILURE IDEA 7: Sample Period Patterns as Permanent Sales Features
+
+Failure Idea: The response presents temporal patterns (weekend concentration, specific hour ranges, particular months) as stable features of sales behavior without acknowledging that these are descriptive statistics from one sample period in pharmaceutical sales data spanning 2014 to 2015. Statistical patterns estimated from historical data represent realizations conditional on the sample period and may not persist under changing market conditions, product mix evolution, regulatory environments, or competitive dynamics. The datasets contain sales for multiple ATC classified pharmaceutical categories whose relative volumes may shift over time as new drugs enter markets or prescribing guidelines change. Treating observed patterns as permanent features confuses in sample description with out of sample prediction. The prompt requests metrics capturing sales behavior characteristics during the observed period, not claims about invariant sales properties. Making statements about what extreme amplitudes reliably mark implies generalizability beyond the data generating process that produced this specific sample.
+
+Corresponding Rubric Item:
+States that observed temporal patterns represent permanent or stable features of sales behavior generalizable beyond the sample period.
+-10 points · nice to have criteria
+
+FAILURE IDEA 8: Uniform Versus Clustered Distribution Claims Without Formal Testing
+
+Failure Idea: The verdict asserts that extreme amplitudes represent temporally clustered patterns rather than random spikes spread uniformly across the calendar, making a distributional claim without reporting test statistics, clustering metrics, or comparison against uniformity benchmarks. This statement implies that a formal test rejected the null hypothesis of uniform temporal distribution in favor of clustered alternatives. Assessing whether points are clustered requires specifying a clustering definition, choosing appropriate test statistics such as Ripley K function or nearest neighbor distances, and establishing significance thresholds. Visual inspection of temporal patterns does not constitute statistical evidence against uniformity. The pharmaceutical sales context involves complex dependencies including weekly cycles, monthly billing periods, and seasonal effects that violate independence assumptions underlying simple uniformity tests. Making claims about non uniform versus uniform distribution without quantitative evidence represents unsupported statistical assertion. The prompt does not request distributional testing of amplitude temporal patterns.
+
+Corresponding Rubric Item:
+States that extreme amplitudes represent temporally clustered patterns rather than random spikes spread uniformly across the calendar without providing statistical test results.
+-8 points · nice to have criteria
+
+FAILURE IDEA 9: High Sales Values as Sufficient Condition for Amplitude Extremes
+
+Failure Idea: The model reports that extreme amplitudes occur almost exclusively when hourly sales are very high with mean approximately 8.1 versus overall mean approximately 1.25, suggesting that high sales values alone suffice to produce extreme Hilbert amplitudes. This interpretation oversimplifies the relationship between sales magnitudes and analytic signal properties. The Hilbert transform operates on the time series structure extracting instantaneous amplitude from the analytic signal representation which depends on both magnitude and rate of change. Extreme amplitudes arise from rapid fluctuations and high frequency variability, not merely elevated sales levels. A smoothly varying high sales period produces lower Hilbert amplitudes than a rapidly oscillating lower sales period. The model confuses sales volume with signal dynamics. The correct interpretation focuses on conditions like rapid hourly fluctuations coinciding with sustained high frequency variability, which are signal characteristics rather than simple magnitude thresholds. This error stems from not distinguishing between domain variable values and their signal processing representations.
+
+Corresponding Rubric Item:
+States that extreme amplitudes occur almost exclusively when hourly sales are very high with specific mean values.
+-10 points · nice to have criteria
+
+FAILURE IDEA 10: Arbitrary Precision in Comparative Magnitude Claims
+
+Failure Idea: The response reports that hourly sales during extreme amplitudes average approximately 8.1 compared to overall average approximately 1.25, providing specific numerical comparisons with implied precision. These values are presented without confidence intervals, sample sizes, or indication of how they were computed, treating point estimates as if they represent precise population parameters. In pharmaceutical sales data with multiple product categories and potential outliers, sample means exhibit substantial variability depending on which periods and products are included. Reporting means to one decimal place for a ratio comparison implies greater measurement precision than warranted by the underlying data variability. The prompt does not request stratified analysis of sales magnitudes conditional on amplitude levels, making these calculations unrequested elaborations. Furthermore, if the model used only N02BE column, these means reflect single product category statistics not total sales behavior. Presenting specific numerical comparisons without methodological transparency creates false precision masking underlying uncertainty and potential calculation errors.
+
+Corresponding Rubric Item:
+States that hourly sales during extreme amplitudes average approximately 8.1 versus overall average approximately 1.25 without providing methodological details or uncertainty quantification.
+-8 points · nice to have criteria
+
+FAILURE IDEA 11: Overnight Absence Claims as Temporal Regime Discovery
+
+Failure Idea: The model asserts that extreme amplitudes are almost absent overnight, treating this observation as revealing a temporal regime structure in amplitude behavior. This claim assumes that low overnight amplitude frequency represents a meaningful pattern rather than reflecting data collection characteristics, operational hours of pharmacies, or the structure of hourly aggregation in pharmaceutical dispensing data. Many retail pharmacy operations have limited or no overnight hours, meaning overnight sales volumes are structurally lower due to operational constraints not demand dynamics. Low sales volumes during non operating hours naturally produce lower Hilbert amplitudes because the transform operates on the observed sales sequence. The pattern tells us more about when pharmacies are open than about intrinsic properties linking conditions to extreme amplitudes. The prompt asks what verdict best summarizes conditions linked to extreme amplitudes, focusing on signal characteristics not operational hour patterns. Interpreting overnight absence as a substantive finding confuses data generating process artifacts with analytical insights about sales behavior dynamics.
+
+Corresponding Rubric Item:
+States that extreme amplitudes are almost absent overnight as evidence of temporal regime structure.
+-8 points · nice to have criteria
+
+FAILURE IDEA 12: Pharmaceutical Sales Generalization to Universal Sales Principles
+
+Failure Idea: The response presents findings as general sales behavior insights without acknowledging that the datasets contain pharmaceutical sales data with ATC classified product codes (M01AB representing anti inflammatory drugs, N02BE representing analgesics, etc.) whose patterns may not generalize to other sales contexts. Pharmaceutical sales exhibit unique characteristics including prescription requirements, insurance reimbursement cycles, seasonal illness patterns, and regulatory constraints that distinguish them from consumer goods, financial products, or service sales. Making broad statements about sales behavior conditions linked to signal amplitudes implies the findings apply across contexts when they may be specific to regulated healthcare products. The temporal patterns identified (weekend effects, specific months, hour ranges) likely reflect pharmacy operational schedules and prescription refill behaviors rather than universal sales dynamics. Proper interpretation requires acknowledging the domain specific nature of pharmaceutical dispensing data and avoiding overgeneralization. The prompt focuses on structured evaluation of the provided datasets without requesting extrapolation to broader sales principles.
+
+Corresponding Rubric Item:
+States findings as general sales behavior principles without acknowledging pharmaceutical specific context and limitations on generalizability.
+-8 points · nice to have criteria
+
+NEGATIVE WEIGHTED RUBRIC CRITERIA
+
+MUST HAVE CRITERIA (NUMERICAL AND FACTUAL ERRORS)
+
+1. States that the average analytic signal amplitude is 2.4390 rounded to four decimal places.
+-30 points · must have criteria
+Rationale: The correct value is 4.3050. This critical numerical error represents the most heavily weighted metric in the analysis and stems from using only N02BE column instead of aggregated total sales.
+
+2. States that the mean 5 day block entropy is 1.545 rounded to three decimal places.
+-25 points · must have criteria
+Rationale: The correct value is 1.569. This core calculation error affects the multiscale intensity signature and results from incorrect sales variable construction.
+
+3. States that the monthly B spline structural smoothness deviation is 69.980 rounded to three decimal places.
+-25 points · must have criteria
+Rationale: The correct value is 699.989. This order of magnitude error in integrated squared deviation demonstrates systematic underestimation due to using single column sales data.
+
+4. States that the daily monthly mutual information estimate is 0.2398 rounded to four decimal places.
+-25 points · must have criteria
+Rationale: The correct value is 0.1934. This cross frequency coupling measure error affects interpretation of daily to monthly associations and stems from incorrect binning of single column data.
+
+5. States that the hour level structural divergence index is 4.606 rounded to three decimal places.
+-25 points · must have criteria
+Rationale: The correct value is 17.853. This sum of squared distances error significantly understates divergence magnitude due to computing hour level means from N02BE only.
+
+6. States that the standard deviation of daily monthly sales ratio is 0.014 rounded to three decimal places.
+-20 points · must have criteria
+Rationale: The correct value is 10.716. This extreme underestimation by three orders of magnitude reveals fundamental miscalculation of cross scale regularity from improper sales variable.
+
+7. States that the mean absolute deviation from centered 5 day moving median is 6.861 rounded to three decimal places.
+-20 points · must have criteria
+Rationale: The correct value is 10.362. This stability index error understates volatility and results from computing moving median on single product category instead of total sales.
+
+8. States that analysis uses N02BE column as the Sales variable across datasets.
+-25 points · must have criteria
+Rationale: The prompt specifies a single Sales variable which requires aggregating all product code columns (M01AB, M01AE, N02BA, N02BE, N05B, N05C, R03, R06). Using only N02BE constitutes fundamental misinterpretation of data preparation requirements causing all numerical errors.
+
+NICE TO HAVE CRITERIA (INTERPRETIVE AND REASONING ERRORS)
+
+9. States that extreme analytic signal amplitudes are defined as the top 5 percent of the Hilbert envelope.
+-12 points · nice to have criteria
+Rationale: This imposes an arbitrary percentile threshold not specified in the prompt and treats it as discovering natural regime boundaries. The prompt asks about conditions linked to extremes without specifying percentile based partitioning.
+
+10. States that extreme amplitudes are heavily concentrated in late afternoon and evening hours, especially around 18:00 to 21:00.
+-10 points · nice to have criteria
+Rationale: This makes specific temporal clustering claims without statistical validation or hypothesis testing. The prompt does not request hour specific temporal analysis and such patterns require formal testing against null distributions.
+
+11. States that extreme amplitudes are disproportionately likely on weekends with Saturday and Sunday showing the highest extreme rates.
+-10 points · nice to have criteria
+Rationale: This conflates day of week associations with causal mechanisms. Weekend patterns may reflect operational factors rather than demand dynamics, and the prompt focuses on signal characteristics not day of week effects.
+
+12. States that extreme amplitudes occur in peak demand months, notably January, February, September, October, and December.
+-10 points · nice to have criteria
+Rationale: This treats sample period month specific patterns as established seasonal regimes without testing stationarity or controlling for sample specific events. These months do not form coherent seasonal groupings suggesting data specific overfitting.
+
+13. States that extreme analytic signal amplitudes reliably mark strong seasonally and temporally clustered demand surges.
+-12 points · nice to have criteria
+Rationale: This conflates signal processing properties (Hilbert amplitude extremes) with business interpretations (demand surges). High amplitudes indicate signal structure characteristics not necessarily elevated purchasing volumes.
+
+14. States that observed temporal patterns represent permanent or stable features of sales behavior generalizable beyond the sample period.
+-10 points · nice to have criteria
+Rationale: This treats descriptive statistics from one sample period as invariant properties without acknowledging conditioning on historical data and potential for structural change in pharmaceutical markets.
+
+15. States that extreme amplitudes represent temporally clustered patterns rather than random spikes spread uniformly across the calendar without providing statistical test results.
+-8 points · nice to have criteria
+Rationale: This makes distributional claims about uniformity versus clustering without reporting test statistics or clustering metrics. Such assertions require formal hypothesis testing not visual pattern inspection.
+
+16. States that extreme amplitudes occur almost exclusively when hourly sales are very high with specific mean values.
+-10 points · nice to have criteria
+Rationale: This confuses sales magnitudes with signal dynamics. Hilbert amplitudes depend on rate of change and frequency content not merely elevated sales levels. The correct focus is on rapid fluctuations and high frequency variability.
+
+17. States that hourly sales during extreme amplitudes average approximately 8.1 versus overall average approximately 1.25 without providing methodological details or uncertainty quantification.
+-8 points · nice to have criteria
+Rationale: This presents point estimates with false precision lacking confidence intervals or sample size information. These calculations represent unrequested elaborations potentially computed from incorrect single column data.
+
+18. States that extreme amplitudes are almost absent overnight as evidence of temporal regime structure.
+-8 points · nice to have criteria
+Rationale: This interprets low overnight values as substantive findings when they likely reflect pharmacy operational hours and data collection artifacts rather than intrinsic amplitude dynamics.
+
+19. States findings as general sales behavior principles without acknowledging pharmaceutical specific context and limitations on generalizability.
+-8 points · nice to have criteria
+Rationale: The datasets contain ATC classified pharmaceutical products with unique regulatory and operational characteristics. Presenting findings as universal sales principles overgeneralizes beyond the domain specific context.
+
+MAPPING: RUBRIC CRITERIA TO FAILURE IDEAS
+
+Rubric Number | Criterion Type | Failure Idea Title
+1 | Must have | Single Column Extraction Versus Aggregate Sales Construction
+2 | Must have | Single Column Extraction Versus Aggregate Sales Construction
+3 | Must have | Single Column Extraction Versus Aggregate Sales Construction
+4 | Must have | Single Column Extraction Versus Aggregate Sales Construction
+5 | Must have | Single Column Extraction Versus Aggregate Sales Construction
+6 | Must have | Single Column Extraction Versus Aggregate Sales Construction
+7 | Must have | Single Column Extraction Versus Aggregate Sales Construction
+8 | Must have | Single Column Extraction Versus Aggregate Sales Construction
+9 | Nice to have | Percentile Thresholding as Discovery of Natural Regimes
+10 | Nice to have | Temporal Pattern Inference Without Statistical Validation
+11 | Nice to have | Day of Week Effects as Causal Demand Drivers
+12 | Nice to have | Month Specific Clustering as Seasonal Regime Detection
+13 | Nice to have | Signal Processing Extremes as Business Demand Surges
+14 | Nice to have | Sample Period Patterns as Permanent Sales Features
+15 | Nice to have | Uniform Versus Clustered Distribution Claims Without Formal Testing
+16 | Nice to have | High Sales Values as Sufficient Condition for Amplitude Extremes
+17 | Nice to have | Arbitrary Precision in Comparative Magnitude Claims
+18 | Nice to have | Overnight Absence Claims as Temporal Regime Discovery
+19 | Nice to have | Pharmaceutical Sales Generalization to Universal Sales Principles
+
+SUMMARY
+
+Total Failure Ideas: 12
+Total Negative Criteria: 19
+Must Have Criteria: 8 (targeting explicit numerical and factual errors)
+Nice to Have Criteria: 11 (targeting interpretive and reasoning errors)
+Maximum Possible Deduction: -304 points
+
+Critical Error Pattern: The model systematically used only the N02BE column instead of aggregating all eight product code columns (M01AB, M01AE, N02BA, N02BE, N05B, N05C, R03, R06) to construct the unified Sales variable. This fundamental data preparation error propagated through all eight numerical outputs causing magnitude errors ranging from small deviations (mean entropy) to three order of magnitude underestimation (standard deviation of ratios). Additionally, the model generated elaborate interpretive claims about temporal patterns, seasonal clustering, and demand surges that represent overfitting to sample specific patterns and conflation of signal processing outputs with business interpretations.
+
+Weight Alignment Verification:
+All negative criterion weights are less than or equal to their corresponding positive criterion weights, ensuring proportional penalization. Must have numerical error weights (-20 to -30 points) align with positive criterion importance (20 to 30 points). Nice to have interpretive error weights (-8 to -12 points) reflect the severity of reasoning mistakes while remaining below the 20 to 25 point verdict criterion weight.
