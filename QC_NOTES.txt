@@ -1,0 +1,68 @@
+QUALITY CONTROL NOTES FOR MUSIC ANALYTICS PROJECT
+
+PROMPT GOAL
+
+The primary objective is to analyze three music datasets Customer Invoice and Track to understand purchasing behavior and catalogue structure through comprehensive statistical and machine learning techniques. The analysis requires rigorous data cleaning where any rows with missing key identifiers or non numeric values in operational variables must be removed before each specific operation. Eight distinct analytical tasks must be executed including customer revenue segmentation using k means clustering spending profile analysis via chi square test track feature structure examination through PCA revenue forecasting with ARIMA model track catalogue grouping via hierarchical clustering listening time distribution modeling through kernel density estimation seasonal revenue pattern identification using Fourier transform and customer value indicator calculation. Each task generates specific numeric outputs rounded to specified decimal places along with visualizations and the final deliverable must include a verdict summarizing the most important structure uncovered in customer and catalogue behavior.
+
+
+STEP BY STEP SOLUTION
+
+Step 1 : Data Loading and Initial Cleaning
+The first step loads three Excel files Customer Invoice and Track into pandas dataframes for analysis. Each dataset is immediately cleaned by removing any rows where the primary key identifiers CustomerId InvoiceId or TrackId contain missing values ensuring data integrity. This foundational cleaning step guarantees that all subsequent merge operations and analyses will operate on complete and valid records.
+
+Step 2 : Invoice Date Conversion and Sorting
+The InvoiceDate column in the Invoice dataset is converted from its original format into a proper datetime data type enabling temporal operations. After conversion the entire Invoice dataframe is sorted in ascending chronological order by InvoiceDate. This temporal ordering is critical for any time series analysis revenue forecasting and seasonal pattern detection performed later in the workflow.
+
+Step 3 : Customer Revenue Aggregation for Segmentation
+Invoice and Customer datasets are merged on the CustomerId field using an inner join to retain only customers who have made at least one purchase. For each unique CustomerId the analysis calculates two aggregated features total revenue as the sum of all Total values across their invoices and invoice count as the number of distinct invoices. These aggregated metrics form the foundation for understanding customer purchasing patterns and behavior segmentation.
+
+Step 4 : Feature Standardization for Clustering
+The two customer features total revenue and invoice count are standardized to have zero mean and unit variance across all customers. Standardization is performed by subtracting the mean of each feature and dividing by its standard deviation. This transformation ensures that both features contribute equally to the clustering algorithm regardless of their original scales and units.
+
+Step 5 : K Means Clustering Application
+K means clustering algorithm is applied to the standardized customer features with k set to three clusters. The algorithm uses Euclidean distance metric a fixed random seed of forty two for reproducibility and runs ten random initializations selecting the solution with minimum within cluster sum of squares. Each customer is assigned to one of three clusters representing distinct purchasing behavior segments.
+
+Step 6 : Silhouette Score Calculation
+The silhouette score is computed to evaluate the quality and cohesion of the clustering solution on the standardized feature space. This metric ranges from negative one to positive one where higher values indicate better defined clusters with good separation. The final silhouette score is rounded to three decimal places and reported as the primary evaluation metric for customer segmentation quality.
+
+Step 7 : Customer Segmentation Visualization
+A scatter plot is generated with standardized total revenue on the x axis and standardized invoice count on the y axis. Each customer is represented as a point colored according to their assigned cluster label using distinct colors for the three clusters. This visualization provides intuitive insight into how customers are segmented based on their purchasing behavior patterns.
+
+Step 8 : High Spender Classification
+Customer total revenue is calculated by summing the Total field across all invoices for each CustomerId. The seventy fifth percentile of customer total revenue is computed as a global threshold. Each customer is then classified as high spender if their total revenue meets or exceeds this threshold otherwise they are classified as non high spender.
+
+Step 9 : Contingency Table Construction
+A contingency table is constructed with rows representing distinct countries from the Customer dataset and columns representing the binary high spender indicator. Each cell in the table contains the count of customers from that country who fall into that spending category. This cross tabulation enables examination of the relationship between geographic location and spending behavior.
+
+Step 10 : Chi Square Test of Independence
+The chi square test of independence is applied to the contingency table to assess whether country and spending category are statistically independent. Expected frequencies are calculated from row and column marginals and the chi square statistic is computed using the standard formula. The test statistic is rounded to three decimals and reported along with the p value to evaluate statistical significance.
+
+Step 11 : Spending Heatmap Generation
+A heatmap visualization is created displaying the contingency table with countries on the y axis and spender categories on the x axis. Cell color intensity represents the observed count of customers in each country spending combination. Numeric values are overlaid on each cell providing both visual and quantitative representation of the spending distribution across geographic regions.
+
+Step 12 : Track Feature Engineering for PCA
+From the Track dataset all rows with positive values in Milliseconds Bytes and UnitPrice are selected ensuring valid numeric data. Three engineered features are created duration minutes calculated as Milliseconds divided by sixty thousand storage megabytes as Bytes divided by one million and UnitPrice used as given. Each of these three features is then standardized to zero mean and unit variance by subtracting its column mean and dividing by its standard deviation.
+
+Step 13 : Principal Component Analysis Execution
+Principal Component Analysis is applied to the standardized three column feature matrix extracting all principal components. The eigenvalues and eigenvectors are computed representing the variance explained by each component. The proportion of variance explained by the first two components is calculated as the sum of their eigenvalues divided by the sum of all eigenvalues and reported rounded to four decimal places.
+
+Step 14 : Daily Revenue Aggregation for Forecasting
+The date component is extracted from InvoiceDate without time information and invoices are grouped by this date. Daily revenue is calculated as the sum of Total for each unique date. A continuous daily index is constructed spanning from the earliest to latest date in the dataset and any dates without invoices are assigned zero revenue creating a complete time series.
+
+Step 15 : ARIMA Model Fitting and Forecasting
+An autoregressive integrated moving average model with order one one one is fitted to the complete daily revenue time series. The model parameters are estimated using maximum likelihood and the fitted model is used to generate point forecasts for fourteen days beyond the last observed date. The forecasted revenue value for the fourteenth day is extracted rounded to two decimals and reported.
+
+Step 16 : Revenue Forecast Visualization
+A line plot is created showing observed daily revenue as a continuous blue line and the fourteen day forecast as a dashed red line extension. The x axis represents calendar dates and the y axis represents revenue amounts. This visualization enables assessment of the forecast trajectory relative to historical patterns and provides insight into expected near term revenue trends.
+
+Step 17 : Track Feature Preparation for Hierarchical Clustering
+Track records with positive Milliseconds and UnitPrice values are selected for hierarchical clustering analysis. Duration minutes is derived as Milliseconds divided by sixty thousand and both duration minutes and UnitPrice are standardized separately to zero mean and unit variance. These two standardized features form the input space for building the hierarchical clustering dendrogram.
+
+Step 18 : Hierarchical Clustering and Tree Cutting
+Agglomerative hierarchical clustering is performed using Ward linkage method and Euclidean distance metric to build a complete clustering tree. The dendrogram is cut at a height that produces exactly four clusters and each track is assigned to one cluster. For each cluster the mean UnitPrice is calculated using original unstandardized values and the cluster with highest mean price is identified and reported as an integer between one and four.
+
+Step 19 : Kernel Density Estimation for Duration Distribution
+For all tracks with positive Milliseconds duration minutes is calculated and sorted in ascending order. A Gaussian kernel density estimator is fitted using Scott rule which determines bandwidth based on sample standard deviation and size. The estimated density function is evaluated over the observed duration range and the duration value where density reaches its maximum is identified as the mode and rounded to two decimals.
+
+Step 20 : Seasonal Revenue Analysis with Fourier Transform
+Year and month components are extracted from InvoiceDate and invoices are grouped by year month combination to derive monthly revenue totals. The monthly revenue values are sorted chronologically forming a numeric time series. Discrete Fourier transform is applied to this series computing magnitude for each frequency index and excluding the zero frequency component the index with largest magnitude is identified and reported as an integer indicating the dominant seasonal cycle.
