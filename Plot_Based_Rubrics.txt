@@ -2,7 +2,7 @@ PLOT-BASED RUBRICS FOR ECOMMERCE PRODUCT AND SELLER ANALYTICS
 
 QUANTILE_SCATTER.PNG
 
-1. Includes a scatter plot for quantile regression analysis that is semantically similar to the attached visualization with product length and weight relationship displayed.
+1. Includes a scatter plot for quantile regression analysis that is semantically similar to the attached visualization.
 15 points - Must Have
 Proof of Ask: "Generates a scatter plot with x-axis representing product_length_cm and y-axis representing product_weight_g."
 
@@ -16,7 +16,7 @@ Proof of Ask: "Generates a scatter plot with x-axis representing product_length_
 
 KMEANS_SCATTER.PNG
 
-4. Includes a scatter plot for k-means clustering that is semantically similar to the attached visualization showing product segmentation by physical characteristics.
+4. Includes a scatter plot for k-means clustering that is semantically similar to the attached visualization.
 15 points - Must Have
 Proof of Ask: "Generates a scatter plot with x-axis representing product_weight_g and y-axis representing product_length_cm."
 
@@ -30,7 +30,7 @@ Proof of Ask: "Generates a scatter plot with x-axis representing product_weight_
 
 ELASTICNET_PATH.PNG
 
-7. Includes a regularization path plot for elastic net regression that is semantically similar to the attached visualization displaying coefficient trajectories across penalty values.
+7. Includes a regularization path plot for elastic net regression that is semantically similar to the attached visualization.
 15 points - Must Have
 Proof of Ask: "Generates a regularization path plot with x-axis representing log lambda penalty values and y-axis representing standardized coefficient values."
 
@@ -44,7 +44,7 @@ Proof of Ask: "Generates a regularization path plot with x-axis representing log
 
 POISSON_BAR.PNG
 
-10. Includes a bar chart for Poisson regression predictions that is semantically similar to the attached visualization showing mean predicted photo counts across product categories.
+10. Includes a bar chart for Poisson regression predictions that is semantically similar to the attached visualization.
 15 points - Must Have
 Proof of Ask: "Generates a bar chart with x-axis representing four combinations of binary predictors and y-axis representing mean predicted photo count."
 
@@ -58,7 +58,7 @@ Proof of Ask: "Generates a bar chart with x-axis representing four combinations 
 
 PCA_BIPLOT.PNG
 
-13. Includes a biplot for principal component analysis that is semantically similar to the attached visualization displaying observations and feature loadings in principal component space.
+13. Includes a biplot for principal component analysis that is semantically similar to the attached visualization.
 15 points - Must Have
 Proof of Ask: "Generates a biplot with x-axis representing first principal component PC1 and y-axis representing second principal component PC2."
 
