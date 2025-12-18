@@ -1,0 +1,135 @@
+OUTPUT-BASED RUBRICS FOR ECOMMERCE PRODUCT AND SELLER ANALYTICS
+
+SECTION 1: NUMERICAL RESULTS AND FINDINGS
+
+CORE MACHINE LEARNING RESULTS
+
+1. States that the quantile regression coefficient for product_length_cm at the ninetieth percentile is 97.6268 rounded to four decimal places.
+30 points - Must Have
+Proof of Ask: "After fitting, extract coefficient for product_length_cm predictor from fitted model indicating impact of length on upper weight percentile. Report the length coefficient rounded to four decimal places."
+
+2. Reports that the k-means clustering largest cluster identifier is 0 as an integer from zero to three.
+30 points - Must Have
+Proof of Ask: "After fitting, identify cluster with maximum number of assigned products. Report the cluster identifier as integer from zero to three corresponding to largest cluster."
+
+3. States that the elastic net standardized coefficient for product_name_lenght is 50.1237 rounded to four decimal places.
+30 points - Must Have
+Proof of Ask: "After fitting, extract standardized coefficient for product_name_lenght predictor indicating relationship between name length and description length controlling for other features. Report the standardized coefficient rounded to four decimal places."
+
+4. Reports that the Poisson regression dispersion parameter is 1.0729 rounded to four decimal places.
+25 points - Must Have
+Proof of Ask: "Extract dispersion parameter computed as deviance divided by degrees of freedom assessing model fit quality. Report dispersion parameter rounded to four decimal places."
+
+5. States that the variance explained by PC1 is 46.62 percent rounded to two decimal places.
+25 points - Must Have
+Proof of Ask: "After fitting, calculate variance explained ratio for first principal component representing proportion of total variance captured by primary dimension. Report variance explained by PC1 as percentage rounded to two decimal places."
+
+MARKETPLACE INTELLIGENCE METRICS
+
+6. Reports that the weighted average product weight across all categories is 2277.00 grams rounded to two decimal places.
+15 points - Must Have
+Proof of Ask: "Calculate weighted average weight across all categories where each category mean is weighted by category product count then divided by total products. Report weighted average weight in grams rounded to two decimal places."
+
+7. States that the state with maximum seller density is SP and represents 59.74 percent of total sellers rounded to two decimal places.
+15 points - Must Have
+Proof of Ask: "Identify state with maximum seller count representing highest marketplace concentration. For maximum density state, calculate percentage of total sellers as state count divided by total sellers multiplied by one hundred. Report the percentage rounded to two decimal places."
+
+8. Reports that the Herfindahl-Hirschman Index for seller state concentration is 3848 rounded to the nearest integer.
+15 points - Must Have
+Proof of Ask: "Sum all squared proportions across states calculating HHI concentration index. Multiply HHI by ten thousand to express on standard scale from zero to ten thousand where higher values indicate greater concentration. Report HHI index rounded to nearest integer."
+
+9. States that the Pearson correlation coefficient between product_weight_g and computed volume is 0.8030 rounded to four decimal places.
+15 points - Must Have
+Proof of Ask: "Calculate Pearson correlation coefficient between product_weight_g and computed volume assessing linear relationship strength. Report correlation coefficient rounded to four decimal places."
+
+10. Reports that the category size ratio of maximum to minimum is 3029.00 rounded to two decimal places.
+15 points - Must Have
+Proof of Ask: "Calculate ratio of maximum category size to minimum category size quantifying category imbalance. Report the size ratio rounded to two decimal places."
+
+11. States that the top-five zip code concentration percentage is 2.75 percent rounded to two decimal places.
+15 points - Must Have
+Proof of Ask: "Calculate percentage of total sellers in top five zip codes as sum divided by total sellers multiplied by one hundred. Report top-five concentration percentage rounded to two decimal places."
+
+12. Reports that the category weight difference between maximum and minimum mean weight is 12953.49 grams rounded to two decimal places.
+15 points - Must Have
+Proof of Ask: "Calculate difference between maximum category mean weight and minimum category mean weight in grams. Report the weight difference rounded to two decimal places."
+
+STRATEGIC RECOMMENDATION
+
+13. Provides a product segmentation strategy recommendation that mentions dimension-based segmentation focusing on the largest cluster physical characteristics for inventory optimization and leveraging PCA insights to streamline product attribute collection by focusing on primary variance drivers in PC1, for example states the marketplace should prioritize a dimension-based segmentation strategy focusing on the largest cluster physical characteristics for inventory optimization while leveraging PCA insights to streamline product attribute collection by focusing on the primary variance drivers identified in PC1.
+30 points - Must Have
+Proof of Ask: "Based on k-means clustering and PCA results, what product segmentation strategy should the marketplace prioritize?"
+
+SECTION 2: VISUALIZATION REQUIREMENTS
+
+QUANTILE_SCATTER.PNG
+
+14. Includes a scatter plot for quantile regression analysis that is semantically similar to the attached visualization with product length and weight relationship displayed.
+15 points - Must Have
+Proof of Ask: "Generates a scatter plot with x-axis representing product_length_cm and y-axis representing product_weight_g."
+
+15. Provides a scatter plot for quantile regression with product_length_cm on the x-axis.
+10 points - Must Have
+Proof of Ask: "Generates a scatter plot with x-axis representing product_length_cm and y-axis representing product_weight_g."
+
+16. Provides a scatter plot for quantile regression with product_weight_g on the y-axis.
+10 points - Must Have
+Proof of Ask: "Generates a scatter plot with x-axis representing product_length_cm and y-axis representing product_weight_g."
+
+KMEANS_SCATTER.PNG
+
+17. Includes a scatter plot for k-means clustering that is semantically similar to the attached visualization showing product segmentation by physical characteristics.
+15 points - Must Have
+Proof of Ask: "Generates a scatter plot with x-axis representing product_weight_g and y-axis representing product_length_cm."
+
+18. Provides a scatter plot for k-means clustering with product_weight_g on the x-axis.
+10 points - Must Have
+Proof of Ask: "Generates a scatter plot with x-axis representing product_weight_g and y-axis representing product_length_cm."
+
+19. Provides a scatter plot for k-means clustering with product_length_cm on the y-axis.
+10 points - Must Have
+Proof of Ask: "Generates a scatter plot with x-axis representing product_weight_g and y-axis representing product_length_cm."
+
+ELASTICNET_PATH.PNG
+
+20. Includes a regularization path plot for elastic net regression that is semantically similar to the attached visualization displaying coefficient trajectories across penalty values.
+15 points - Must Have
+Proof of Ask: "Generates a regularization path plot with x-axis representing log lambda penalty values and y-axis representing standardized coefficient values."
+
+21. Provides a regularization path plot with log lambda penalty values on the x-axis.
+10 points - Must Have
+Proof of Ask: "Generates a regularization path plot with x-axis representing log lambda penalty values and y-axis representing standardized coefficient values."
+
+22. Provides a regularization path plot with standardized coefficient values on the y-axis.
+10 points - Must Have
+Proof of Ask: "Generates a regularization path plot with x-axis representing log lambda penalty values and y-axis representing standardized coefficient values."
+
+POISSON_BAR.PNG
+
+23. Includes a bar chart for Poisson regression predictions that is semantically similar to the attached visualization showing mean predicted photo counts across product categories.
+15 points - Must Have
+Proof of Ask: "Generates a bar chart with x-axis representing four combinations of binary predictors and y-axis representing mean predicted photo count."
+
+24. Provides a bar chart for Poisson predictions with four combinations of binary predictors on the x-axis.
+10 points - Must Have
+Proof of Ask: "Generates a bar chart with x-axis representing four combinations of binary predictors and y-axis representing mean predicted photo count."
+
+25. Provides a bar chart for Poisson predictions with mean predicted photo count on the y-axis.
+10 points - Must Have
+Proof of Ask: "Generates a bar chart with x-axis representing four combinations of binary predictors and y-axis representing mean predicted photo count."
+
+PCA_BIPLOT.PNG
+
+26. Includes a biplot for principal component analysis that is semantically similar to the attached visualization displaying observations and feature loadings in principal component space.
+15 points - Must Have
+Proof of Ask: "Generates a biplot with x-axis representing first principal component PC1 and y-axis representing second principal component PC2."
+
+27. Provides a biplot with first principal component PC1 on the x-axis.
+10 points - Must Have
+Proof of Ask: "Generates a biplot with x-axis representing first principal component PC1 and y-axis representing second principal component PC2."
+
+28. Provides a biplot with second principal component PC2 on the y-axis.
+10 points - Must Have
+Proof of Ask: "Generates a biplot with x-axis representing first principal component PC1 and y-axis representing second principal component PC2."
+
+TOTAL POSSIBLE POINTS: 425
