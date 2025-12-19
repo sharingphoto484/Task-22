@@ -1,0 +1,46 @@
+QC NOTES WITH PROMPT GOAL
+
+The primary objective is to perform advanced machine learning analytics on three vacation rental datasets including airnb.xlsx with 953 regular listings, airnb_luxe.xlsx with 280 luxury properties, and airnb_desert.xlsx with 280 desert locations. The analysis requires implementing sophisticated ML techniques including quantile regression for conditional percentile prediction, random forest for feature importance, elastic net for regularized selection, Gaussian mixture models for probabilistic clustering, and gradient boosting with cross validation. Each analysis demands careful data preprocessing including numeric extraction from formatted strings, standardization of features, and handling missing values before model fitting. The deliverables include ten key statistical metrics and five visualization plots demonstrating pricing patterns, feature importance, regularization paths, clustering results, and training convergence. All outputs must be precise with specified decimal places and the script should follow a structured format with clear section comments and no summary files.
+
+
+STEP BY STEP SOLUTIONS
+
+Step 1 : Load the three Excel datasets into pandas dataframes to begin the analysis workflow. The script reads airnb.xlsx containing regular Airbnb listings with columns for title, details, dates, prices, reviews and bed counts. It also loads airnb_luxe.xlsx with luxury property names, dates, prices and distances, plus airnb_desert.xlsx with desert property names, dates, prices, details and ratings.
+
+Step 2 : Create helper functions to extract numeric values from formatted string columns across all datasets. The extract_numeric_price function removes commas and dollar signs from price columns to convert them to float values. Additional functions parse ratings from review strings, extract bed counts from text, pull review counts from parentheses, and extract kilometer distances from location strings.
+
+Step 3 : Begin the first analysis by preparing data from airnb.xlsx for quantile regression at the eightieth percentile. Extract numeric price values by cleaning the Price in dollar column and removing comma separators. Parse the Review and rating column to extract both the numeric rating score and the review count from parentheses format.
+
+Step 4 : Extract bed count information from the Number of bed column by finding integer values in the text strings. Filter the dataframe to keep only records that have complete non missing values for price, rating, bed count, and review count. This cleaning process ensures the quantile regression model receives valid input data without null values.
+
+Step 5 : Standardize the three predictor variables including bed count, rating, and review count to zero mean and unit variance. Use StandardScaler from scikit learn to transform these features so they are on comparable scales. This standardization is critical for quantile regression to properly weight the contribution of each predictor variable.
+
+Step 6 : Fit a quantile regression model targeting the eightieth percentile using statsmodels QuantReg implementation. The model predicts price based on the three standardized predictors of bed count, rating, and review count. Extract the coefficient for the rating predictor which indicates the marginal impact of rating on upper percentile prices.
+
+Step 7 : Generate a scatter plot visualization showing the relationship between rating scores on the x axis and prices in dollars on the y axis. Save this plot as quantile_regression_scatter.png to demonstrate how ratings correlate with listing prices. The visualization helps identify pricing patterns across different rating levels in the regular Airbnb dataset.
+
+Step 8 : Prepare the luxury property data from airnb_luxe.xlsx for random forest feature importance analysis. Extract numeric prices from the Price In dollar column by removing commas and converting to float values. Parse distance values from the Distance column which contains kilometer measurements in text format.
+
+Step 9 : Create a month feature by extracting the month number from the Date column which has text formatted dates. Build a mapping dictionary for month names to numbers and search for month abbreviations in the date strings. Filter records to ensure complete data for price, distance, and month variables before model training.
+
+Step 10 : Train a random forest regressor with one hundred trees, maximum depth of fifteen, and random state forty two for reproducibility. Use distance and month as predictor features to predict luxury property prices. The random forest algorithm builds multiple decision trees and aggregates their predictions to capture non linear relationships.
+
+Step 11 : Extract feature importances from the trained random forest model based on mean decrease in impurity. Compare the importance scores between distance and month features to identify which variable has stronger predictive power. Report the feature name with maximum importance score indicating whether distance or month is more critical for luxury pricing.
+
+Step 12 : Create a horizontal bar chart displaying the importance scores from zero to one on the x axis with feature names on the y axis. Save this visualization as random_forest_importance.png to show which features drive luxury property pricing decisions. The chart clearly demonstrates the relative contribution of geographic distance versus temporal month factors.
+
+Step 13 : Prepare desert property data from airnb_desert.xlsx for elastic net regression with combined L1 and L2 regularization penalties. Extract numeric prices from the Price In dollar column and ensure the Rating column has complete numeric values. Standardize the price variable to zero mean and unit variance for regularized regression.
+
+Step 14 : Fit an elastic net regression model using ElasticNetCV with L1 ratio of zero point five balancing lasso and ridge penalties. Apply five fold cross validation across a range of alpha values from 0.0001 to 10 using logarithmic spacing. The cross validation process automatically selects the optimal lambda regularization parameter that minimizes prediction error.
+
+Step 15 : Extract the standardized coefficient for the price predictor showing how price relates to rating after regularization shrinkage. The elastic net applies both L1 penalty for feature selection and L2 penalty for coefficient shrinkage to prevent overfitting. Report this coefficient rounded to four decimal places along with the optimal alpha value selected by cross validation.
+
+Step 16 : Generate a regularization path plot showing how coefficient magnitudes change across different log lambda values. The x axis represents logarithm of regularization strength while y axis shows coefficient magnitude. Save this as elastic_net_path.png to visualize how increasing regularization shrinks coefficients toward zero.
+
+Step 17 : Prepare luxury property data for Gaussian mixture model clustering using price and distance features. Extract and clean both numeric variables then standardize them to zero mean and unit variance. The standardization ensures both features contribute equally to the distance calculations in the clustering algorithm.
+
+Step 18 : Fit a Gaussian mixture model with three components using full covariance matrices and random state forty two. The GMM assumes data comes from a mixture of three Gaussian distributions and uses expectation maximization to estimate parameters. Calculate the Bayesian Information Criterion which measures model fit while penalizing complexity to prevent overfitting.
+
+Step 19 : Generate cluster predictions for each luxury property and create a scatter plot with distance on x axis and price on y axis. Color code the points by cluster membership to visualize how properties group into three distinct segments. Save this as gmm_clustering.png showing the probabilistic clustering pattern in the luxury property market.
+
+Step 20 : Perform gradient boosting regression on airnb.xlsx using rating and bed count to predict prices with five fold cross validation. Configure the gradient boosting regressor with learning rate zero point one, maximum depth five, one hundred estimators, and random state forty two. Execute cross validation computing mean squared error for each fold then calculate the average MSE across all folds to assess prediction accuracy and model generalization capability.
