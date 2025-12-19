@@ -44,3 +44,33 @@ Step 18 : Fit a Gaussian mixture model with three components using full covarian
 Step 19 : Generate cluster predictions for each luxury property and create a scatter plot with distance on x axis and price on y axis. Color code the points by cluster membership to visualize how properties group into three distinct segments. Save this as gmm_clustering.png showing the probabilistic clustering pattern in the luxury property market.
 
 Step 20 : Perform gradient boosting regression on airnb.xlsx using rating and bed count to predict prices with five fold cross validation. Configure the gradient boosting regressor with learning rate zero point one, maximum depth five, one hundred estimators, and random state forty two. Execute cross validation computing mean squared error for each fold then calculate the average MSE across all folds to assess prediction accuracy and model generalization capability.
+
+Step 21 : After completing cross validation fit the gradient boosting model on the complete dataset to generate training error curves. Use the staged_predict method to iterate through all one hundred boosting iterations and compute mean squared error at each iteration. Create a line plot with boosting iterations from one to one hundred on the x axis and training MSE on the y axis to visualize how the ensemble model progressively reduces training error as more weak learners are added.
+
+Step 22 : Prepare airnb_desert.xlsx data for weighted median price calculation accounting for rating quality as weights. Extract numeric price values from the Price In dollar column and ensure the Rating column contains valid numeric values. Filter the dataframe to keep only records with complete price and rating information for the weighted quantile calculation.
+
+Step 23 : Calculate the weighted median by sorting price observations and their corresponding rating weights in ascending order. Compute cumulative weight proportions by summing ratings progressively and normalizing by total rating sum. Use interpolation to find the fiftieth percentile value where cumulative weights cross zero point five representing the median price weighted by property rating quality.
+
+Step 24 : Report the weighted median price in dollars rounded to two decimal places as specified in the prompt requirements. The weighted median gives higher influence to prices from higher rated properties compared to a simple median. This metric is more robust than weighted mean for skewed price distributions with outliers.
+
+Step 25 : Prepare airnb_luxe.xlsx data for geometric mean distance calculation representing central tendency on multiplicative scale. Extract numeric distance values by parsing kilometers from the Distance column text strings. Filter to keep only records with complete positive distance values since geometric mean requires strictly positive numbers.
+
+Step 26 : Calculate the geometric mean as the nth root of the product of n distance values using scipy gmean function. The geometric mean is more appropriate than arithmetic mean for multiplicative data like distances that span multiple orders of magnitude. Report the geometric mean distance in kilometers rounded to two decimal places.
+
+Step 27 : Prepare airnb.xlsx data for coefficient of quartile variation analysis measuring relative price dispersion. Extract numeric price values from the Price in dollar column by removing commas and converting to float. Filter the dataset to include only records with complete non missing price information for quartile calculations.
+
+Step 28 : Calculate the first quartile Q1 at the twenty fifth percentile and third quartile Q3 at the seventy fifth percentile of the price distribution. Compute the coefficient of quartile variation using the formula Q3 minus Q1 divided by Q3 plus Q1 then multiply by one hundred to express as percentage. This metric quantifies the relative spread of the middle fifty percent of prices normalized by their sum making it robust to outliers.
+
+Step 29 : Report the coefficient of quartile variation as a percentage rounded to two decimal places indicating price dispersion. Higher CQV values indicate greater relative variability in the interquartile price range. This metric is preferred over coefficient of variation when data contains extreme outliers or is not normally distributed.
+
+Step 30 : Prepare data from both airnb_desert.xlsx and airnb_luxe.xlsx for price per kilometer efficiency ratio comparison. From airnb_desert extract numeric prices and parse distance values from the Details column which contains mixed text including kilometer measurements. From airnb_luxe extract numeric prices and distances then filter both datasets to exclude records with zero or missing distance values.
+
+Step 31 : Calculate mean price per kilometer for desert properties by dividing each price by its distance and averaging across all valid records. Similarly calculate mean price per kilometer for luxury properties using the same division and averaging approach. Ensure both calculations exclude any zero distance values to prevent division errors and infinite ratios.
+
+Step 32 : Compute the efficiency ratio by dividing luxury mean price per kilometer by desert mean price per kilometer. Report this ratio rounded to two decimal places showing how many times more expensive luxury properties are per unit distance compared to desert properties. A ratio greater than one indicates luxury properties command higher price premiums relative to their distance from reference locations.
+
+Step 33 : Prepare airnb.xlsx data for Gini coefficient calculation measuring inequality in review count distribution. Extract review count values by parsing integers from parentheses in the Review and rating column. Filter to keep only records with complete non missing review count values for inequality analysis.
+
+Step 34 : Sort the review count values in ascending order to prepare for Gini coefficient formula application. Create an index array from one to n representing the rank position of each sorted review count. The Gini coefficient formula requires both the sorted values and their positional indices.
+
+Step 35 : Calculate the Gini coefficient using the formula two times sum of index times sorted review counts divided by n times sum of sorted review counts minus n plus one divided by n. Report the Gini coefficient rounded to four decimal places where values closer to zero indicate more equal review distribution and values closer to one indicate greater inequality. This metric quantifies how concentrated review activity is among a small subset of highly reviewed properties versus more evenly distributed across all listings.
