@@ -180,43 +180,43 @@
 
 ### Nice-to-Have Criteria (Interpretive/Reasoning Errors)
 
-**6. States that Patient_Body_Mass_Index causally determines one-year survival outcomes based on its random forest importance score of 0.4062.**
+**6. States that Patient_Body_Mass_Index causally determines one-year survival outcomes based on its random forest importance score.**
 - **-12 points · nice to have criteria**
 - **Rationale:** Corresponds to Failure Idea 6. Feature importance measures statistical association through mean decrease in impurity but does not establish causal relationships. Interpreting importance scores as causal impact conflates correlational patterns with mechanistic effects.
 
-**7. Claims that the XGBoost cross-validated AUC of 0.7413 establishes permanent predictive validity across all future patient populations and care settings.**
+**7. Claims that the XGBoost cross-validated AUC establishes permanent predictive validity across all future patient populations and care settings.**
 - **-12 points · nice to have criteria**
 - **Rationale:** Corresponds to Failure Idea 7. Sample-based cross-validation performance is conditional on the training population characteristics and does not guarantee invariant discrimination ability across different hospitals, time periods, or patient demographics subject to distribution shift.
 
-**8. Interprets the SVM mean predicted probability of 0.6209 as the true expected survival rate for the Testing_set_advance population suitable for direct clinical decision-making.**
+**8. Interprets the SVM mean predicted probability as the true expected survival rate for the Testing_set_advance population suitable for direct clinical decision-making.**
 - **-10 points · nice to have criteria**
 - **Rationale:** Corresponds to Failure Idea 8. SVM probability estimates from Platt scaling may be systematically miscalibrated and do not necessarily represent true event frequencies without calibration validation comparing predicted probabilities to observed outcomes.
 
-**9. Concludes that XGBoost is definitively superior to logistic regression based solely on comparing cross-validated AUC of 0.7413 to validation AUC of 0.6200 without considering calibration, interpretability, or ensemble strategies.**
+**9. States that XGBoost is definitively superior to logistic regression based solely on comparing cross-validated AUC to validation AUC without considering calibration, interpretability, or ensemble strategies.**
 - **-10 points · nice to have criteria**
 - **Rationale:** Corresponds to Failure Idea 9. Single-metric comparisons across different validation approaches ignore complementary model strengths and the potential benefits of ensemble combinations that leverage multiple algorithms.
 
-**10. Asserts that the smoking status count ratio of 263.27 indicates severe sampling bias that invalidates the Testing_set_advance dataset for model evaluation.**
+**10. Asserts that the smoking status count ratio indicates severe sampling bias that invalidates the Testing_set_advance dataset for model evaluation.**
 - **-8 points · nice to have criteria**
 - **Rationale:** Corresponds to Failure Idea 10. Extreme category imbalance may reflect true population distributions rather than methodological problems, and models should be evaluated on realistic patient mixes rather than artificially balanced samples.
 
-**11. Claims that the Pearson correlation of 0.0032 proves complete statistical independence between Patient_Age and Patient_Body_Mass_Index across all patient subgroups.**
+**11. States that the Pearson correlation between Patient_Age and Patient_Body_Mass_Index proves complete statistical independence across all patient subgroups.**
 - **-8 points · nice to have criteria**
 - **Rationale:** Corresponds to Failure Idea 11. Near-zero linear correlation does not establish general independence and ignores potential nonlinear relationships, threshold effects, or age-specific BMI patterns not captured by Pearson correlation.
 
-**12. Asserts that the age difference of 1.19 years indicates significant population drift requiring model recalibration before deployment to Testing_set_intermediate.**
+**12. Asserts that the age difference between training survivors and testing intermediate population indicates significant population drift requiring model recalibration before deployment.**
 - **-8 points · nice to have criteria**
-- **Rationale:** Corresponds to Failure Idea 12. A 1.19-year mean age difference represents negligible shift relative to typical healthcare dataset age ranges and conflates training survivors with all testing patients without implying generalization failure.
+- **Rationale:** Corresponds to Failure Idea 12. Modest mean age differences represent negligible shift relative to typical healthcare dataset age ranges and conflate training survivors with all testing patients without implying generalization failure.
 
-**13. States that the negative Patient_Age coefficient of negative 0.1745 establishes that increasing age universally decreases survival probability across all patient subgroups and clinical contexts.**
+**13. States that the negative Patient_Age coefficient establishes that increasing age universally decreases survival probability across all patient subgroups and clinical contexts.**
 - **-10 points · nice to have criteria**
 - **Rationale:** Corresponds to Failure Idea 13. Population-level coefficients represent average associations but do not prove homogeneous individual-level effects or account for nonlinear age relationships and subgroup heterogeneity.
 
-**14. Claims that the validation AUC of 0.6200 guarantees the deployed model will maintain this exact discrimination ability when applied to new patient populations.**
+**14. Claims that the validation AUC score guarantees the deployed model will maintain this exact discrimination ability when applied to new patient populations.**
 - **-10 points · nice to have criteria**
 - **Rationale:** Corresponds to Failure Idea 14. Validation AUC is a point estimate subject to sampling variability and population dependence, requiring confidence intervals and external validation to assess robust predictive performance.
 
-**15. Interprets the KNN predicted positive rate of 66.24 percent as the true proportion of Testing_set_intermediate patients who will survive one year.**
+**15. Interprets the KNN predicted positive rate as the true proportion of Testing_set_intermediate patients who will survive one year.**
 - **-10 points · nice to have criteria**
 - **Rationale:** Corresponds to Failure Idea 15. Model predictions represent algorithmic outputs based on training neighbor composition and do not directly correspond to true outcome frequencies without calibration validation.
 
