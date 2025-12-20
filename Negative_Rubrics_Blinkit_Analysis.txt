@@ -2,60 +2,60 @@
 
 ### Failure Idea 1: Ridge Coefficient Implies Causal Effect on Revenue
 
-**Failure Idea:** The analyst interprets the ridge regression coefficient of 7.4689 for total_orders as evidence that increasing a customer's order frequency by one unit will causally increase their average order value by approximately 7.47 dollars. This reasoning conflates statistical association in cross-sectional data with causal impact, when in fact the coefficient merely describes correlation between standardized predictors and outcomes within the existing customer base during the observation period. The ridge model cannot distinguish whether high-frequency customers place larger orders because frequent ordering causes higher spending, because high-value customers naturally order more often, or because both variables are driven by unobserved factors like income, household size, or proximity to delivery zones. Without experimental manipulation or causal identification strategies, the coefficient indicates predictive association but provides no evidence about what would happen if the business intervened to increase customer order frequency.
+**Failure Idea:** The analyst interprets the ridge regression coefficient for total_orders as evidence that increasing a customer's order frequency will causally increase their average order value proportionally. This reasoning conflates statistical association in cross-sectional data with causal impact, when in fact the coefficient merely describes correlation between standardized predictors and outcomes within the existing customer base during the observation period. The ridge model cannot distinguish whether high-frequency customers place larger orders because frequent ordering causes higher spending, because high-value customers naturally order more often, or because both variables are driven by unobserved factors like income, household size, or proximity to delivery zones. Without experimental manipulation or causal identification strategies, the coefficient indicates predictive association but provides no evidence about what would happen if the business intervened to increase customer order frequency.
 
 **Corresponding Rubric Item:**
-- **States that the ridge regression coefficient of 7.4689 for total_orders represents a causal effect where increasing customer order frequency will increase average order value by that amount.**
+- **States that the ridge regression coefficient for total_orders represents a causal effect where increasing customer order frequency will causally increase average order value.**
 - **-15 points · nice to have criteria**
 
 ---
 
 ### Failure Idea 2: Lasso Feature Elimination Proves Irrelevance
 
-**Failure Idea:** The analyst concludes that because lasso regression selected only 1 non-zero coefficient out of 6 features, the five eliminated features including category dummies and feedback month are irrelevant predictors of customer ratings and can be safely ignored in business decisions. This interpretation treats algorithmic feature selection as proof of variable irrelevance, when in fact lasso with alpha equals 0.1 is applying a specific penalty strength that may be too aggressive for this dataset, and excluded features may still contain meaningful predictive information that was sacrificed for model sparsity. The lasso selection depends critically on the chosen alpha parameter, correlation structure among predictors, and standardization approach, such that different preprocessing or regularization strength could yield entirely different feature sets. A feature having zero coefficient under one penalty configuration does not establish that it lacks business relevance or predictive value under alternative modeling choices or in combination with other variables.
+**Failure Idea:** The analyst concludes that features eliminated by lasso regression with zero coefficients are irrelevant predictors of customer ratings and can be safely ignored in business decisions. This interpretation treats algorithmic feature selection as proof of variable irrelevance, when in fact lasso is applying a specific penalty strength that may be too aggressive for this dataset, and excluded features may still contain meaningful predictive information that was sacrificed for model sparsity. The lasso selection depends critically on the chosen alpha parameter, correlation structure among predictors, and standardization approach, such that different preprocessing or regularization strength could yield entirely different feature sets. A feature having zero coefficient under one penalty configuration does not establish that it lacks business relevance or predictive value under alternative modeling choices or in combination with other variables.
 
 **Corresponding Rubric Item:**
-- **States that the five features eliminated by lasso regression are irrelevant predictors that can be ignored for business decisions or rating prediction.**
+- **States that features eliminated by lasso regression with zero coefficients are irrelevant predictors that can be ignored for business decisions or rating prediction.**
 - **-12 points · nice to have criteria**
 
 ---
 
 ### Failure Idea 3: High MAPE Indicates Model Failure Rather Than Data Characteristics
 
-**Failure Idea:** The analyst interprets the support vector regression MAPE of 115.43 percent as evidence of complete model failure requiring immediate architectural changes or additional feature engineering. This reasoning assumes that high percentage error necessarily reflects poor modeling when in fact MAPE can be inflated by small actual values in the denominator, and delivery times near zero minutes will mathematically produce large percentage errors even when absolute errors are small. The filtered delivery time range of negative 5 to 30 minutes includes many observations near zero where a prediction error of 2 minutes on an actual time of 1 minute produces 200 percent error despite being only 2 minutes off in absolute terms. Without examining mean absolute error, root mean squared error, or the distribution of actual delivery times, the MAPE statistic alone cannot distinguish between genuinely poor predictions and mathematical artifacts of the percentage error calculation when denominators are small.
+**Failure Idea:** The analyst interprets high support vector regression MAPE as evidence of complete model failure requiring immediate architectural changes or additional feature engineering. This reasoning assumes that high percentage error necessarily reflects poor modeling when in fact MAPE can be inflated by small actual values in the denominator, and delivery times near zero minutes will mathematically produce large percentage errors even when absolute errors are small. The filtered delivery time range includes many observations near zero where a small prediction error on an actual time near zero produces extremely high percentage error despite being only minutes off in absolute terms. Without examining mean absolute error, root mean squared error, or the distribution of actual delivery times, the MAPE statistic alone cannot distinguish between genuinely poor predictions and mathematical artifacts of the percentage error calculation when denominators are small.
 
 **Corresponding Rubric Item:**
-- **States that the SVR MAPE of 115.43 percent indicates complete model failure requiring architectural changes without considering that percentage errors are inflated by small denominators near zero delivery times.**
+- **States that high SVR MAPE indicates complete model failure requiring architectural changes without considering that percentage errors are inflated by small denominators near zero delivery times.**
 - **-12 points · nice to have criteria**
 
 ---
 
 ### Failure Idea 4: Exponential Smoothing Parameters Are Optimal Across All Periods
 
-**Failure Idea:** The analyst concludes that the exponential smoothing alpha parameter of 0.3 which produced RMSE of 3.35 represents the optimal forecasting configuration that should be deployed permanently for daily order volume prediction across all future time periods. This reasoning treats a parameter chosen by specification rather than optimization as universally optimal, when in fact alpha equals 0.3 was predetermined in the prompt rather than selected through grid search or cross-validation, and optimal smoothing parameters typically vary across different time series characteristics, seasonal patterns, and volatility regimes. The RMSE of 3.35 reflects performance on one specific test period under one parameter choice, but does not establish that this alpha value will perform best during holiday seasons, promotional campaigns, supply disruptions, or other demand pattern shifts. Forecasting parameters should be adaptively tuned based on evolving data characteristics rather than assumed permanent based on single-period validation.
+**Failure Idea:** The analyst concludes that the exponential smoothing alpha parameter used represents the optimal forecasting configuration that should be deployed permanently for daily order volume prediction across all future time periods. This reasoning treats a parameter chosen by specification rather than optimization as universally optimal, when in fact the alpha was predetermined in the prompt rather than selected through grid search or cross-validation, and optimal smoothing parameters typically vary across different time series characteristics, seasonal patterns, and volatility regimes. The RMSE reflects performance on one specific test period under one parameter choice, but does not establish that this alpha value will perform best during holiday seasons, promotional campaigns, supply disruptions, or other demand pattern shifts. Forecasting parameters should be adaptively tuned based on evolving data characteristics rather than assumed permanent based on single-period validation.
 
 **Corresponding Rubric Item:**
-- **States that the exponential smoothing alpha parameter of 0.3 is optimal for all future forecasting periods without recognizing it was predetermined rather than optimized through validation.**
+- **States that the exponential smoothing alpha parameter is optimal for all future forecasting periods without recognizing it was predetermined rather than optimized through validation.**
 - **-10 points · nice to have criteria**
 
 ---
 
 ### Failure Idea 5: Logistic Threshold Is Universal Decision Rule
 
-**Failure Idea:** The analyst recommends deploying the logistic regression threshold of 0.2934 as a universal classification rule for identifying high-rating orders across all customer segments, delivery zones, and time periods. This interpretation treats the threshold where sensitivity equals specificity as an inherently optimal decision boundary, when in fact the appropriate threshold depends on business costs and benefits that may vary dramatically across contexts, such as whether false positives or false negatives are more expensive in resource allocation decisions. A threshold that balances sensitivity and specificity treats both error types as equally costly, which may be inappropriate if predicting high ratings is used for driver bonuses where false positives waste money or for quality interventions where false negatives miss dissatisfied customers. The optimal operating point should reflect the specific business use case, asymmetric costs, and whether precision, recall, or balanced accuracy aligns with organizational objectives rather than defaulting to the equal-error-rate threshold.
+**Failure Idea:** The analyst recommends deploying the logistic regression threshold where sensitivity equals specificity as a universal classification rule for identifying high-rating orders across all customer segments, delivery zones, and time periods. This interpretation treats the threshold where sensitivity equals specificity as an inherently optimal decision boundary, when in fact the appropriate threshold depends on business costs and benefits that may vary dramatically across contexts, such as whether false positives or false negatives are more expensive in resource allocation decisions. A threshold that balances sensitivity and specificity treats both error types as equally costly, which may be inappropriate if predicting high ratings is used for driver bonuses where false positives waste money or for quality interventions where false negatives miss dissatisfied customers. The optimal operating point should reflect the specific business use case, asymmetric costs, and whether precision, recall, or balanced accuracy aligns with organizational objectives rather than defaulting to the equal-error-rate threshold.
 
 **Corresponding Rubric Item:**
-- **States that the logistic regression threshold of 0.2934 should be deployed as a universal decision rule without considering that optimal thresholds depend on business costs varying across contexts.**
+- **States that the logistic regression threshold where sensitivity equals specificity should be deployed as a universal decision rule without considering that optimal thresholds depend on business costs varying across contexts.**
 - **-12 points · nice to have criteria**
 
 ---
 
 ### Failure Idea 6: Chi-Square Non-Significance Proves No Relationship Exists
 
-**Failure Idea:** The analyst concludes that because the chi-square statistic of 4.48 with p-value of 0.61 fails to reject independence between feedback_category and sentiment, there is definitively no relationship between which service aspect customers comment on and whether their sentiment is positive, neutral, or negative, implying that sentiment patterns are completely uniform across all feedback categories. This reasoning conflates failure to detect an effect with proof of no effect, when in fact the non-significant result could reflect insufficient sample size, weak but real associations below detection threshold, or heterogeneous relationships that cancel out in aggregate testing. The chi-square test examines whether cell frequencies deviate from independence expectations, but a non-significant result only indicates that any deviation is not large enough to exceed the statistical threshold given the data, not that categories and sentiment are truly unrelated at the population level or that more granular analyses would not reveal meaningful patterns within specific category-sentiment combinations.
+**Failure Idea:** The analyst concludes that because the chi-square test fails to reject independence between feedback_category and sentiment, there is definitively no relationship between which service aspect customers comment on and whether their sentiment is positive, neutral, or negative, implying that sentiment patterns are completely uniform across all feedback categories. This reasoning conflates failure to detect an effect with proof of no effect, when in fact the non-significant result could reflect insufficient sample size, weak but real associations below detection threshold, or heterogeneous relationships that cancel out in aggregate testing. The chi-square test examines whether cell frequencies deviate from independence expectations, but a non-significant result only indicates that any deviation is not large enough to exceed the statistical threshold given the data, not that categories and sentiment are truly unrelated at the population level or that more granular analyses would not reveal meaningful patterns within specific category-sentiment combinations.
 
 **Corresponding Rubric Item:**
-- **States that the chi-square test p-value of 0.61 proves there is definitively no relationship between feedback_category and sentiment rather than insufficient evidence to detect one.**
+- **States that the chi-square test non-significant result proves there is definitively no relationship between feedback_category and sentiment rather than insufficient evidence to detect one.**
 - **-10 points · nice to have criteria**
 
 ---
@@ -72,40 +72,40 @@
 
 ### Failure Idea 8: Low VIF Guarantees No Multicollinearity Concerns
 
-**Failure Idea:** The analyst concludes that because the maximum variance inflation factor of 1.00 indicates no multicollinearity among distance, total orders, and average order value, all future modeling can proceed without any concern for correlated predictors or need for regularization techniques across any analytical context involving these variables. This reasoning generalizes a sample-specific multicollinearity assessment to universal feature independence, when in fact the VIF of 1.00 reflects the particular merged dataset linking delivery and customer data through feedback which may contain only a small subset of orders with specific characteristics, and these same variables could exhibit strong correlations in the full population, different customer segments, or alternative merge strategies. The absence of multicollinearity in one analytical sample does not establish that these features are fundamentally uncorrelated, as correlation structures can vary across data subsets, time periods, and filtering criteria used to create the analysis dataset.
+**Failure Idea:** The analyst concludes that because the maximum variance inflation factor indicates no multicollinearity among distance, total orders, and average order value, all future modeling can proceed without any concern for correlated predictors or need for regularization techniques across any analytical context involving these variables. This reasoning generalizes a sample-specific multicollinearity assessment to universal feature independence, when in fact the low VIF reflects the particular merged dataset linking delivery and customer data through feedback which may contain only a small subset of orders with specific characteristics, and these same variables could exhibit strong correlations in the full population, different customer segments, or alternative merge strategies. The absence of multicollinearity in one analytical sample does not establish that these features are fundamentally uncorrelated, as correlation structures can vary across data subsets, time periods, and filtering criteria used to create the analysis dataset.
 
 **Corresponding Rubric Item:**
-- **States that the maximum VIF of 1.00 guarantees these features will never exhibit multicollinearity in any future analysis without recognizing this reflects one specific merged sample.**
+- **States that low maximum VIF guarantees these features will never exhibit multicollinearity in any future analysis without recognizing this reflects one specific merged sample.**
 - **-10 points · nice to have criteria**
 
 ---
 
 ### Failure Idea 9: F-Statistic Indicates Causal Segment Differences
 
-**Failure Idea:** The analyst interprets the F-statistic of 0.17 for variance equality between Premium and Regular customer segments as evidence that customer segment classification has no causal impact on order value variability, suggesting that business strategies differentiating these segments are ineffective at creating behavioral differences. This reasoning treats a descriptive variance comparison as causal evidence, when in fact the F-test only assesses whether between-group variance differs from within-group variance in the observed data, and customers are not randomly assigned to segments but rather classified based on existing behaviors that could be driven by pre-existing characteristics like income, location, or usage patterns. A low F-statistic indicates that segment means are similar relative to within-segment variation, but does not address whether segment assignment causes similar behaviors versus segments being defined in ways that happen to group already-similar customers, or whether moving a customer from Regular to Premium status would actually change their ordering patterns.
+**Failure Idea:** The analyst interprets the F-statistic for variance equality between Premium and Regular customer segments as evidence that customer segment classification has no causal impact on order value variability, suggesting that business strategies differentiating these segments are ineffective at creating behavioral differences. This reasoning treats a descriptive variance comparison as causal evidence, when in fact the F-test only assesses whether between-group variance differs from within-group variance in the observed data, and customers are not randomly assigned to segments but rather classified based on existing behaviors that could be driven by pre-existing characteristics like income, location, or usage patterns. A low F-statistic indicates that segment means are similar relative to within-segment variation, but does not address whether segment assignment causes similar behaviors versus segments being defined in ways that happen to group already-similar customers, or whether moving a customer from Regular to Premium status would actually change their ordering patterns.
 
 **Corresponding Rubric Item:**
-- **States that the F-statistic of 0.17 demonstrates that customer segment classification has no causal impact on behavior rather than describing observational variance patterns.**
+- **States that the F-statistic demonstrates that customer segment classification has no causal impact on behavior rather than describing observational variance patterns.**
 - **-12 points · nice to have criteria**
 
 ---
 
 ### Failure Idea 10: Regularization Strength Reveals Feature Importance Ranking
 
-**Failure Idea:** The analyst concludes that because ridge regression required optimal alpha of 100 indicating strong regularization while lasso used alpha of 0.1, this difference reveals that ridge features are more collinear or less important than lasso features, establishing a hierarchy of feature importance across modeling approaches. This reasoning conflates regularization penalty strength with feature relevance, when in fact alpha parameters are not directly comparable between ridge and lasso because they operate in different penalty spaces where L1 and L2 norms have different scales and interpretations, and the chosen alpha values reflect different validation strategies with ridge using cross-validation while lasso used a predetermined value. The magnitude of regularization penalty depends on loss function scaling, number of features, sample size, and optimization convergence criteria, such that a higher alpha in ridge versus lasso provides no information about relative feature importance and the two models are solving fundamentally different optimization problems that cannot be compared through their penalty parameters alone.
+**Failure Idea:** The analyst concludes that comparing ridge and lasso regularization alpha values reveals that features used in one model are more collinear or less important than features in the other, establishing a hierarchy of feature importance across modeling approaches. This reasoning conflates regularization penalty strength with feature relevance, when in fact alpha parameters are not directly comparable between ridge and lasso because they operate in different penalty spaces where L1 and L2 norms have different scales and interpretations, and the chosen alpha values reflect different validation strategies with ridge using cross-validation while lasso used a predetermined value. The magnitude of regularization penalty depends on loss function scaling, number of features, sample size, and optimization convergence criteria, such that comparing alpha values across ridge and lasso provides no information about relative feature importance and the two models are solving fundamentally different optimization problems that cannot be compared through their penalty parameters alone.
 
 **Corresponding Rubric Item:**
-- **States that comparing ridge optimal alpha of 100 to lasso alpha of 0.1 reveals feature importance differences when these parameters are not comparable across L1 and L2 penalty spaces.**
+- **States that comparing ridge and lasso alpha values reveals feature importance differences when these parameters are not comparable across L1 and L2 penalty spaces.**
 - **-10 points · nice to have criteria**
 
 ---
 
 ### Failure Idea 11: Sample Statistics Are Population Parameters
 
-**Failure Idea:** The analyst reports that Premium segment IQR of 10 and New segment IQR of 10 with ratio 1.00 establishes that these two customer populations have identical order frequency dispersion that will persist indefinitely as a stable characteristic of these market segments. This reasoning treats sample statistics computed from 2500 customers as exact population parameters, when in fact these IQR values are point estimates subject to sampling variability, and the true population ratio could differ from 1.00 even if the sample ratio is exactly equal due to random variation in which customers happened to be observed during the data collection period. Additionally, customer behavior is dynamic and responsive to promotions, competitive actions, seasonal factors, and service quality changes, such that dispersion measures calculated from historical data do not constitute permanent structural features that will remain constant as the customer base evolves, new customers join different segments, and existing customers modify their ordering patterns over time.
+**Failure Idea:** The analyst reports that Premium and New segment IQR values with equal ratios establishes that these two customer populations have identical order frequency dispersion that will persist indefinitely as a stable characteristic of these market segments. This reasoning treats sample statistics computed from the observed customers as exact population parameters, when in fact these IQR values are point estimates subject to sampling variability, and the true population ratio could differ even if the sample ratio appears equal due to random variation in which customers happened to be observed during the data collection period. Additionally, customer behavior is dynamic and responsive to promotions, competitive actions, seasonal factors, and service quality changes, such that dispersion measures calculated from historical data do not constitute permanent structural features that will remain constant as the customer base evolves, new customers join different segments, and existing customers modify their ordering patterns over time.
 
 **Corresponding Rubric Item:**
-- **States that the IQR ratio of 1.00 between Premium and New segments represents a permanent population parameter rather than a sample estimate subject to variability.**
+- **States that the IQR ratio between Premium and New segments represents a permanent population parameter rather than a sample estimate subject to variability.**
 - **-10 points · nice to have criteria**
 
 ---
@@ -122,30 +122,30 @@
 
 ### Failure Idea 13: Baseline RMSE Proves Model Adds No Value
 
-**Failure Idea:** The analyst observes that baseline RMSE of 7.90 minutes using mean prediction is relatively close to the support vector regression performance, concluding that sophisticated machine learning models add minimal value over naive forecasting and resources should not be invested in complex delivery time prediction systems. This reasoning compares a single baseline to a single model without comprehensive evaluation, when in fact the baseline-to-model comparison only indicates performance on one validation set under one SVR configuration with two features, and alternative feature sets, different kernels, ensemble methods, or deep learning architectures might achieve substantially better accuracy that would justify model complexity. Furthermore, even small improvements in delivery time prediction accuracy could generate significant business value through better resource allocation, customer satisfaction, and operational efficiency at scale, such that a seemingly modest RMSE reduction might translate to millions in cost savings or revenue impact when deployed across thousands of daily deliveries.
+**Failure Idea:** The analyst observes that baseline RMSE using mean prediction is relatively close to the support vector regression performance, concluding that sophisticated machine learning models add minimal value over naive forecasting and resources should not be invested in complex delivery time prediction systems. This reasoning compares a single baseline to a single model without comprehensive evaluation, when in fact the baseline-to-model comparison only indicates performance on one validation set under one SVR configuration with two features, and alternative feature sets, different kernels, ensemble methods, or deep learning architectures might achieve substantially better accuracy that would justify model complexity. Furthermore, even small improvements in delivery time prediction accuracy could generate significant business value through better resource allocation, customer satisfaction, and operational efficiency at scale, such that a seemingly modest RMSE reduction might translate to millions in cost savings or revenue impact when deployed across thousands of daily deliveries.
 
 **Corresponding Rubric Item:**
-- **States that baseline RMSE of 7.90 being close to SVR performance proves sophisticated models add no value without considering alternative architectures or business impact of small accuracy gains.**
+- **States that baseline RMSE being close to SVR performance proves sophisticated models add no value without considering alternative architectures or business impact of small accuracy gains.**
 - **-10 points · nice to have criteria**
 
 ---
 
 ### Failure Idea 14: MAD Value Indicates Acceptable Delivery Consistency
 
-**Failure Idea:** The analyst interprets the median absolute deviation of 5.93 minutes as evidence that Blinkit delivery times exhibit acceptable consistency with typical variations around 6 minutes from the median, suggesting that current operational performance meets quality standards and no process improvements are needed. This reasoning treats a descriptive variability statistic as a normative performance benchmark, when in fact MAD simply quantifies the spread of observed delivery times without establishing whether this level of variation is acceptable to customers, competitive with rival services, consistent with service level agreements, or optimal from a business profitability perspective. A MAD of 5.93 minutes could represent excellent consistency if customers expect 30-minute windows but unacceptable volatility if the service promises 10-minute delivery slots, and the statistic provides no information about whether variability is concentrated in specific routes, times of day, or partner performance that could be improved through targeted interventions.
+**Failure Idea:** The analyst interprets the median absolute deviation for delivery times as evidence that Blinkit delivery times exhibit acceptable consistency with typical variations from the median, suggesting that current operational performance meets quality standards and no process improvements are needed. This reasoning treats a descriptive variability statistic as a normative performance benchmark, when in fact MAD simply quantifies the spread of observed delivery times without establishing whether this level of variation is acceptable to customers, competitive with rival services, consistent with service level agreements, or optimal from a business profitability perspective. The MAD value could represent excellent consistency if customers expect wide time windows but unacceptable volatility if the service promises narrow delivery slots, and the statistic provides no information about whether variability is concentrated in specific routes, times of day, or partner performance that could be improved through targeted interventions.
 
 **Corresponding Rubric Item:**
-- **States that the MAD value of 5.93 minutes indicates acceptable delivery consistency without recognizing this is a descriptive statistic that does not establish normative performance standards.**
+- **States that the MAD value indicates acceptable delivery consistency without recognizing this is a descriptive statistic that does not establish normative performance standards.**
 - **-8 points · nice to have criteria**
 
 ---
 
 ### Failure Idea 15: Cross-Validation Optimal Alpha Is Theoretically Justified
 
-**Failure Idea:** The analyst states that the ridge regression optimal alpha of 100 selected through cross-validation represents the theoretically correct amount of regularization that balances bias and variance according to statistical learning principles, implying this parameter choice has mathematical optimality beyond the specific dataset. This reasoning elevates an empirically selected hyperparameter to theoretical status, when in fact the optimal alpha of 100 is optimal only with respect to minimizing MSE on five-fold cross-validation splits of these particular 2500 customers using this specific feature set and target variable, and different loss functions like mean absolute error, different validation strategies like leave-one-out CV, or different evaluation metrics like R-squared could yield entirely different optimal alpha values. The cross-validation process identifies the best-performing parameter from the tested range for the given objective, but this does not imbue the selected value with theoretical significance or guarantee it represents the true bias-variance tradeoff in any fundamental sense beyond pragmatic performance optimization.
+**Failure Idea:** The analyst states that the ridge regression optimal alpha selected through cross-validation represents the theoretically correct amount of regularization that balances bias and variance according to statistical learning principles, implying this parameter choice has mathematical optimality beyond the specific dataset. This reasoning elevates an empirically selected hyperparameter to theoretical status, when in fact the optimal alpha is optimal only with respect to minimizing MSE on cross-validation splits of these particular customers using this specific feature set and target variable, and different loss functions like mean absolute error, different validation strategies like leave-one-out CV, or different evaluation metrics like R-squared could yield entirely different optimal alpha values. The cross-validation process identifies the best-performing parameter from the tested range for the given objective, but this does not imbue the selected value with theoretical significance or guarantee it represents the true bias-variance tradeoff in any fundamental sense beyond pragmatic performance optimization.
 
 **Corresponding Rubric Item:**
-- **States that the cross-validation optimal alpha of 100 is theoretically justified rather than empirically selected to minimize MSE on this specific dataset and validation strategy.**
+- **States that the cross-validation optimal alpha is theoretically justified rather than empirically selected to minimize MSE on this specific dataset and validation strategy.**
 - **-10 points · nice to have criteria**
 
 ---
@@ -154,27 +154,27 @@
 
 ### Nice-to-Have Criteria (Interpretive/Reasoning Errors)
 
-**1. States that the ridge regression coefficient of 7.4689 for total_orders represents a causal effect where increasing customer order frequency will increase average order value by that amount.**
+**1. States that the ridge regression coefficient for total_orders represents a causal effect where increasing customer order frequency will causally increase average order value.**
 **-15 points · nice to have criteria**
 **Rationale:** Conflates predictive association with causal impact, ignoring that cross-sectional correlation cannot distinguish causation from confounding or reverse causality.
 
-**2. States that the five features eliminated by lasso regression are irrelevant predictors that can be ignored for business decisions or rating prediction.**
+**2. States that features eliminated by lasso regression with zero coefficients are irrelevant predictors that can be ignored for business decisions or rating prediction.**
 **-12 points · nice to have criteria**
 **Rationale:** Treats algorithmic feature selection under one penalty strength as proof of variable irrelevance, when excluded features may contain meaningful information under different regularization choices.
 
-**3. States that the SVR MAPE of 115.43 percent indicates complete model failure requiring architectural changes without considering that percentage errors are inflated by small denominators near zero delivery times.**
+**3. States that high SVR MAPE indicates complete model failure requiring architectural changes without considering that percentage errors are inflated by small denominators near zero delivery times.**
 **-12 points · nice to have criteria**
 **Rationale:** Misinterprets high MAPE as model failure rather than recognizing mathematical artifacts when actual values approach zero.
 
-**4. States that the exponential smoothing alpha parameter of 0.3 is optimal for all future forecasting periods without recognizing it was predetermined rather than optimized through validation.**
+**4. States that the exponential smoothing alpha parameter is optimal for all future forecasting periods without recognizing it was predetermined rather than optimized through validation.**
 **-10 points · nice to have criteria**
 **Rationale:** Assumes a specified parameter represents universal optimality when it was chosen by design rather than empirical tuning.
 
-**5. States that the logistic regression threshold of 0.2934 should be deployed as a universal decision rule without considering that optimal thresholds depend on business costs varying across contexts.**
+**5. States that the logistic regression threshold where sensitivity equals specificity should be deployed as a universal decision rule without considering that optimal thresholds depend on business costs varying across contexts.**
 **-12 points · nice to have criteria**
 **Rationale:** Treats sensitivity-specificity equality as inherently optimal, ignoring asymmetric costs and business-specific objectives.
 
-**6. States that the chi-square test p-value of 0.61 proves there is definitively no relationship between feedback_category and sentiment rather than insufficient evidence to detect one.**
+**6. States that the chi-square test non-significant result proves there is definitively no relationship between feedback_category and sentiment rather than insufficient evidence to detect one.**
 **-10 points · nice to have criteria**
 **Rationale:** Conflates failure to reject null hypothesis with proof of no effect, a fundamental statistical inference error.
 
@@ -182,19 +182,19 @@
 **-8 points · nice to have criteria**
 **Rationale:** Assumes absence of extreme values establishes data correctness, when anomalies may exist within normal ranges or require multivariate detection.
 
-**8. States that the maximum VIF of 1.00 guarantees these features will never exhibit multicollinearity in any future analysis without recognizing this reflects one specific merged sample.**
+**8. States that low maximum VIF guarantees these features will never exhibit multicollinearity in any future analysis without recognizing this reflects one specific merged sample.**
 **-10 points · nice to have criteria**
 **Rationale:** Generalizes sample-specific multicollinearity assessment to universal feature independence across all contexts.
 
-**9. States that the F-statistic of 0.17 demonstrates that customer segment classification has no causal impact on behavior rather than describing observational variance patterns.**
+**9. States that the F-statistic demonstrates that customer segment classification has no causal impact on behavior rather than describing observational variance patterns.**
 **-12 points · nice to have criteria**
 **Rationale:** Treats descriptive variance comparison as causal evidence, ignoring that segments are observational classifications not random assignments.
 
-**10. States that comparing ridge optimal alpha of 100 to lasso alpha of 0.1 reveals feature importance differences when these parameters are not comparable across L1 and L2 penalty spaces.**
+**10. States that comparing ridge and lasso alpha values reveals feature importance differences when these parameters are not comparable across L1 and L2 penalty spaces.**
 **-10 points · nice to have criteria**
 **Rationale:** Compares regularization strengths across fundamentally different penalty functions with incomparable scales.
 
-**11. States that the IQR ratio of 1.00 between Premium and New segments represents a permanent population parameter rather than a sample estimate subject to variability.**
+**11. States that the IQR ratio between Premium and New segments represents a permanent population parameter rather than a sample estimate subject to variability.**
 **-10 points · nice to have criteria**
 **Rationale:** Treats sample statistics as exact population parameters, ignoring sampling variability and temporal dynamics.
 
@@ -202,15 +202,15 @@
 **-12 points · nice to have criteria**
 **Rationale:** Assumes in-sample validation generalizes to genuinely new populations and time periods with potential distribution shift.
 
-**13. States that baseline RMSE of 7.90 being close to SVR performance proves sophisticated models add no value without considering alternative architectures or business impact of small accuracy gains.**
+**13. States that baseline RMSE being close to SVR performance proves sophisticated models add no value without considering alternative architectures or business impact of small accuracy gains.**
 **-10 points · nice to have criteria**
 **Rationale:** Dismisses model value based on single baseline comparison without evaluating business impact or alternative approaches.
 
-**14. States that the MAD value of 5.93 minutes indicates acceptable delivery consistency without recognizing this is a descriptive statistic that does not establish normative performance standards.**
+**14. States that the MAD value indicates acceptable delivery consistency without recognizing this is a descriptive statistic that does not establish normative performance standards.**
 **-8 points · nice to have criteria**
 **Rationale:** Treats variability measure as performance benchmark when MAD only describes spread without normative context.
 
-**15. States that the cross-validation optimal alpha of 100 is theoretically justified rather than empirically selected to minimize MSE on this specific dataset and validation strategy.**
+**15. States that the cross-validation optimal alpha is theoretically justified rather than empirically selected to minimize MSE on this specific dataset and validation strategy.**
 **-10 points · nice to have criteria**
 **Rationale:** Elevates empirically tuned hyperparameter to theoretical status, ignoring dataset and metric specificity.
 
@@ -222,15 +222,15 @@
 **-8 points · nice to have criteria**
 **Rationale:** Confuses preprocessing normalization with feature importance equalization, when scaling affects regularization but not inherent predictive value.
 
-**18. States that selecting records with delivery_time_minutes between -5 and 30 minutes eliminates all invalid data points and ensures perfect data quality.**
+**18. States that selecting records with delivery_time_minutes within specified range eliminates all invalid data points and ensures perfect data quality.**
 **-8 points · nice to have criteria**
 **Rationale:** Assumes range filtering guarantees validity when anomalies may exist within acceptable ranges or data quality issues extend beyond time boundaries.
 
-**19. States that the 80-20 train-test split for exponential smoothing represents the statistically optimal ratio for time series validation.**
+**19. States that the train-test split ratio for exponential smoothing represents the statistically optimal ratio for time series validation.**
 **-8 points · nice to have criteria**
 **Rationale:** Treats conventional split ratio as theoretically optimal when appropriate proportions depend on series length, volatility, and forecasting horizon.
 
-**20. States that random_state equals 42 in logistic regression ensures complete reproducibility across all computational environments and software versions.**
+**20. States that using a fixed random_state in logistic regression ensures complete reproducibility across all computational environments and software versions.**
 **-6 points · nice to have criteria**
 **Rationale:** Overstates reproducibility guarantees when results may vary across different library versions, hardware, or numerical precision settings.
 
@@ -238,11 +238,11 @@
 **-8 points · nice to have criteria**
 **Rationale:** Assumes merged subset represents full population when join operations may systematically exclude certain order types or delivery scenarios.
 
-**22. States that RBF kernel with gamma equals 0.1 is the optimal kernel configuration for delivery time prediction across all datasets.**
+**22. States that RBF kernel with specified gamma parameter is the optimal kernel configuration for delivery time prediction across all datasets.**
 **-10 points · nice to have criteria**
 **Rationale:** Generalizes specified hyperparameter to universal optimality when kernel choice and parameters should be tuned to specific data characteristics.
 
-**23. States that creating binary high_rating threshold at 4-5 stars captures the true definition of customer satisfaction across all business contexts.**
+**23. States that creating binary high_rating threshold at upper rating values captures the true definition of customer satisfaction across all business contexts.**
 **-8 points · nice to have criteria**
 **Rationale:** Treats arbitrary threshold as objective satisfaction definition when appropriate cutoffs depend on industry norms and business objectives.
 
