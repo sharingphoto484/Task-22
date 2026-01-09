@@ -16,7 +16,7 @@ from sklearn.kernel_ridge import KernelRidge
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
 from scipy.stats import pearsonr
-from statsmodels.nonparametric.smoothers_lowess import lowess
+from scipy.interpolate import UnivariateSpline
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -103,29 +103,26 @@ print("=" * 60)
 ethereum_data = df_historical[df_historical['coin_id'] == 'ethereum'].copy()
 ethereum_data = ethereum_data.sort_values('date').reset_index(drop=True)
 
-# ---------- Extract Volatility Series ----------
-volatility_series = ethereum_data['volatility_7d'].dropna().values
+# ---------- Extract Volatility Series and Create DataFrame ----------
+eth_vol_df = ethereum_data[['date', 'volatility_7d']].dropna().copy()
+eth_vol_df = eth_vol_df.reset_index(drop=True)
 
 # ---------- Calculate Simple Moving Average and Residuals ----------
 window_size = 7
-sma = pd.Series(volatility_series).rolling(window=window_size, center=False).mean().values
-residuals = volatility_series - sma
+eth_vol_df['sma'] = eth_vol_df['volatility_7d'].rolling(window=window_size, center=False).mean()
+eth_vol_df['residual'] = eth_vol_df['volatility_7d'] - eth_vol_df['sma']
 
-# ---------- Create MA Features from Error Lags ----------
-residuals_clean = residuals[~np.isnan(residuals)]
-error_lag1 = np.roll(residuals_clean, 1)
-error_lag2 = np.roll(residuals_clean, 2)
-error_lag3 = np.roll(residuals_clean, 3)
+# ---------- Create MA Features from Error Lags Using Shift ----------
+eth_vol_df['error_lag1'] = eth_vol_df['residual'].shift(1)
+eth_vol_df['error_lag2'] = eth_vol_df['residual'].shift(2)
+eth_vol_df['error_lag3'] = eth_vol_df['residual'].shift(3)
 
-# ---------- Remove Initial Observations ----------
-n_lags = 3
-X_ma = np.column_stack([error_lag1[n_lags:], error_lag2[n_lags:], error_lag3[n_lags:]])
-y_ma = volatility_series[window_size + n_lags:len(volatility_series) - (len(volatility_series) - len(residuals_clean))]
+# ---------- Remove Observations with Missing Values ----------
+eth_ma_clean = eth_vol_df.dropna(subset=['sma', 'residual', 'error_lag1', 'error_lag2', 'error_lag3']).copy()
 
-# Adjust for proper alignment
-min_len = min(len(X_ma), len(residuals_clean) - n_lags)
-X_ma = X_ma[:min_len]
-y_ma = residuals_clean[n_lags:n_lags + min_len]
+# ---------- Prepare Features and Target: Regress CURRENT VOLATILITY on LAGGED RESIDUALS ----------
+X_ma = eth_ma_clean[['error_lag1', 'error_lag2', 'error_lag3']].values
+y_ma = eth_ma_clean['volatility_7d'].values  # Target is current volatility, NOT residuals
 
 # ---------- Fit MA(3) Model ----------
 ma_model = LinearRegression()
@@ -164,33 +161,40 @@ plt.close()
 print("Saved: ethereum_ma_autocorr.png\n")
 
 # ==========================================
-# TASK 3: Market-Wide Price Trend - LOWESS Smoothing
+# TASK 3: Market-Wide Price Trend - LOWESS Smoothing with Degree 2
 # ==========================================
 print("=" * 60)
-print("TASK 3: Market-Wide Price Trend - LOWESS Smoothing")
+print("TASK 3: Market-Wide Price Trend - LOWESS Smoothing (Polynomial Degree 2)")
 print("=" * 60)
 
 # ---------- Extract Month and Average Price ----------
 df_monthly_clean = df_monthly[['month', 'avg_price']].copy()
 df_monthly_clean['month_numeric'] = np.arange(1, len(df_monthly_clean) + 1)
 
-# ---------- Apply LOWESS Smoothing ----------
+# ---------- Apply Locally Weighted Polynomial Regression (Degree 2) ----------
 observed_prices = df_monthly_clean['avg_price'].values
 month_numeric = df_monthly_clean['month_numeric'].values
 
-smoothed = lowess(observed_prices, month_numeric, frac=0.3, it=0, delta=0.0, return_sorted=False)
+# Using UnivariateSpline with degree 2 (quadratic) for local polynomial smoothing
+# Set smoothing parameter s based on fraction of data points
+n_points = len(month_numeric)
+effective_points = int(n_points * 0.3)  # frac=0.3 equivalent
+s_param = effective_points * np.var(observed_prices) * 0.01  # smoothing parameter
+
+spline_smoother = UnivariateSpline(month_numeric, observed_prices, k=2, s=s_param)
+smoothed = spline_smoother(month_numeric)
 
 # ---------- Calculate Mean Absolute Deviation ----------
 mad_lowess = np.mean(np.abs(observed_prices - smoothed))
-print(f"LOWESS Mean Absolute Deviation (MAD): {mad_lowess:.2f}")
+print(f"LOWESS (Degree 2) Mean Absolute Deviation (MAD): {mad_lowess:.2f}")
 
 # ---------- Visualization: Observed vs Smoothed ----------
 plt.figure(figsize=(10, 5))
 plt.scatter(month_numeric, observed_prices, color='blue', alpha=0.6, s=80, label='Observed Avg Price')
-plt.plot(month_numeric, smoothed, color='red', linewidth=2.5, label='LOWESS Smoothed')
+plt.plot(month_numeric, smoothed, color='red', linewidth=2.5, label='LOWESS Smoothed (Degree 2)')
 plt.xlabel('Month Sequence')
 plt.ylabel('Average Price (USD)')
-plt.title('Market-Wide Price Trend - LOWESS Smoothing (fraction=0.3)')
+plt.title('Market-Wide Price Trend - LOWESS Smoothing (Polynomial Degree 2, fraction=0.3)')
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.tight_layout()
