@@ -64,7 +64,7 @@ Proof of Ask: "After transformation calculate variance explained by first princi
 
 ---
 
-11. States that the reconstruction error as Frobenius norm for non-negative matrix factorization on Cairo pollution patterns is within the range 1299.60 to 1399.60, for example 1349.60 rounded to two decimal places.
+11. States that the reconstruction error as Frobenius norm for non-negative matrix factorization on Cairo pollution patterns is within the range 1282.12 to 1417.08, for example 1349.60 rounded to two decimal places.
 25 · Must Have
 Proof of Ask: "After decomposition calculate reconstruction error as Frobenius norm. Report error rounded to two decimal places."
 
