@@ -1,0 +1,215 @@
+OUTPUT-BASED RUBRICS FOR ATMOSPHERIC POLLUTION MULTIVARIATE ANALYSIS
+
+---
+
+SECTION 1: VALUE-ORIENTED RUBRICS
+
+1. States that the Bayesian Information Criterion for the Gaussian mixture model on Cairo PM2.5 and PM10 is 125688.09 rounded to two decimal places.
+35 · Must Have
+Proof of Ask: "After convergence extract Bayesian Information Criterion quantifying model complexity penalty. Report BIC value rounded to two decimal places."
+
+---
+
+2. Reports that the first canonical correlation coefficient between primary pollutants CO NO2 SO2 and particulates PM2.5 PM10 is 0.8554 rounded to four decimal places.
+35 · Must Have
+Proof of Ask: "After fitting extract first canonical correlation coefficient representing maximum achievable correlation between pollutant groups. Report correlation rounded to four decimal places."
+
+---
+
+3. States that the mean absolute percentage error for VAE regression on Cairo AQI prediction is 18.74 percent rounded to two decimal places, for example 20.82 percent.
+35 · Must Have
+Proof of Ask: "After training generate predictions on remaining observations. Calculate mean absolute percentage error on test set. Report MAPE rounded to two decimal places."
+
+---
+
+4. Reports that the R-squared value for Ridge regression with cross-validation on Cairo and Dubai combined AQI prediction is 0.6497 rounded to four decimal places.
+35 · Must Have
+Proof of Ask: "Cross-validation selects optimal alpha. Calculate R-squared on full dataset. Report R-squared rounded to four decimal places."
+
+---
+
+5. States that the kurtosis of the first independent component from FastICA on Dubai pollutants is 2.2692 rounded to four decimal places.
+30 · Must Have
+Proof of Ask: "After decomposition calculate kurtosis of first independent component measuring heavy-tailedness indicating pollution event distribution. Report kurtosis rounded to four decimal places."
+
+---
+
+6. Reports that the communality for PM2.5 from factor analysis on Dubai pollutants is 0.8177 rounded to four decimal places.
+30 · Must Have
+Proof of Ask: "After fitting compute communality for PM2.5 measuring proportion variance explained by common factors. Report communality rounded to four decimal places."
+
+---
+
+7. States that the optimal alpha parameter selected by ElasticNetCV on Dubai and Cairo PM10 prediction is 3.3581 rounded to four decimal places.
+30 · Must Have
+Proof of Ask: "Cross-validation selects optimal alpha. After fitting extract chosen alpha parameter. Report alpha rounded to four decimal places."
+
+---
+
+8. Reports that the F1 score for quadratic discriminant analysis on Dubai high pollution classification is 0.7705 rounded to four decimal places.
+30 · Must Have
+Proof of Ask: "Predict on test set calculating F1 score. Report F1 rounded to four decimal places."
+
+---
+
+9. States that the cumulative explained variance ratio for three components from TruncatedSVD on Brasilia pollutants is 0.9164 rounded to four decimal places.
+25 · Must Have
+Proof of Ask: "After decomposition calculate cumulative explained variance ratio for three components. Report cumulative variance rounded to four decimal places."
+
+---
+
+10. Reports that the variance explained by the first principal component from Kernel PCA on Brasilia pollutants is 0.5438 rounded to four decimal places.
+25 · Must Have
+Proof of Ask: "After transformation calculate variance explained by first principal component in kernel space. Report explained variance rounded to four decimal places."
+
+---
+
+11. States that the reconstruction error as Frobenius norm for non-negative matrix factorization on Cairo pollution patterns is 1349.60 rounded to two decimal places.
+25 · Must Have
+Proof of Ask: "After decomposition calculate reconstruction error as Frobenius norm. Report error rounded to two decimal places."
+
+---
+
+12. Reports that the number of non-zero coefficients from Lasso-LARS regression on Brasilia AQI is 5 as an integer.
+20 · Must Have
+Proof of Ask: "After fitting count number of non-zero coefficients representing selected features. Report selected count as integer."
+
+---
+
+13. States that canonical correlation analysis better reveals multivariate pollution structure compared to factor analysis communality, for example stating that canonical correlation analysis better reveals multivariate pollution structure as it directly quantifies the maximum achievable linear relationship between primary pollutants and particulate matter with a correlation of 0.8554 whereas factor analysis communality of 0.8177 only explains individual variable variance without capturing cross-set associations.
+35 · Must Have
+Proof of Ask: "Based on canonical correlation maximum and factor analysis communality which better reveals multivariate pollution structure."
+
+---
+
+SECTION 2: VISUALIZATION RUBRICS
+
+em_scatter.png
+
+14. Includes a scatter plot for Cairo PM2.5 versus PM10 Gaussian mixture model component assignments that is semantically similar to the expected visualization showing three distinct pollution regimes.
+25 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis PM2.5, y-axis PM10, points colored by most probable component assignment showing three pollution regimes."
+
+---
+
+15. Provides a scatter plot for Cairo Gaussian mixture model with PM2.5 on the x-axis.
+20 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis PM2.5, y-axis PM10, points colored by most probable component assignment showing three pollution regimes."
+
+---
+
+16. Provides a scatter plot for Cairo Gaussian mixture model with PM10 on the y-axis.
+20 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis PM2.5, y-axis PM10, points colored by most probable component assignment showing three pollution regimes."
+
+---
+
+17. Provides a scatter plot for Cairo Gaussian mixture model with points colored by most probable component assignment showing three pollution regimes.
+25 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis PM2.5, y-axis PM10, points colored by most probable component assignment showing three pollution regimes."
+
+---
+
+ica_sources.png
+
+18. Includes a line plot for Dubai independent component analysis showing three extracted independent sources that is semantically similar to the expected visualization with distinct temporal patterns.
+25 · Must Have
+Proof of Ask: "Generates line plot with x-axis time index, y-axis component values showing three extracted independent sources as separate colored lines."
+
+---
+
+19. Provides a line plot for Dubai FastICA with time index on the x-axis.
+20 · Must Have
+Proof of Ask: "Generates line plot with x-axis time index, y-axis component values showing three extracted independent sources as separate colored lines."
+
+---
+
+20. Provides a line plot for Dubai FastICA with component values on the y-axis.
+20 · Must Have
+Proof of Ask: "Generates line plot with x-axis time index, y-axis component values showing three extracted independent sources as separate colored lines."
+
+---
+
+21. Provides a line plot for Dubai FastICA showing three extracted independent sources as separate colored lines.
+25 · Must Have
+Proof of Ask: "Generates line plot with x-axis time index, y-axis component values showing three extracted independent sources as separate colored lines."
+
+---
+
+cca_scatter.png
+
+22. Includes a scatter plot for canonical correlation analysis showing the relationship between first canonical variates that is semantically similar to the expected visualization demonstrating maximum correlation direction.
+25 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis first canonical variate of X, y-axis first canonical variate of Y showing maximum correlation direction."
+
+---
+
+23. Provides a scatter plot for canonical correlation analysis with first canonical variate of X from primary pollutants CO NO2 SO2 on the x-axis.
+20 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis first canonical variate of X, y-axis first canonical variate of Y showing maximum correlation direction."
+
+---
+
+24. Provides a scatter plot for canonical correlation analysis with first canonical variate of Y from particulates PM2.5 PM10 on the y-axis.
+20 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis first canonical variate of X, y-axis first canonical variate of Y showing maximum correlation direction."
+
+---
+
+25. Provides a scatter plot for canonical correlation analysis displaying data points that form a linear trend pattern demonstrating the positive correlation between the two canonical variates, for example showing points clustered along a diagonal from lower-left to upper-right.
+25 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis first canonical variate of X, y-axis first canonical variate of Y showing maximum correlation direction."
+
+---
+
+factor_heatmap.png
+
+26. Includes a heatmap for Dubai factor analysis showing factor loadings that is semantically similar to the expected visualization with pollutants and factors clearly displayed.
+25 · Must Have
+Proof of Ask: "Generates heatmap with rows as six pollutants, columns as three factors, cells showing factor loadings magnitude."
+
+---
+
+27. Provides a heatmap for Dubai factor analysis with rows representing the six pollutants CO NO2 SO2 O3 PM2.5 PM10.
+20 · Must Have
+Proof of Ask: "Generates heatmap with rows as six pollutants, columns as three factors, cells showing factor loadings magnitude."
+
+---
+
+28. Provides a heatmap for Dubai factor analysis with columns representing three factors.
+20 · Must Have
+Proof of Ask: "Generates heatmap with rows as six pollutants, columns as three factors, cells showing factor loadings magnitude."
+
+---
+
+29. Provides a heatmap for Dubai factor analysis with cells displaying numerical values representing factor loading magnitudes, for example values like 0.85, negative 0.42, 0.67 showing the strength and direction of each pollutant loading on each factor.
+25 · Must Have
+Proof of Ask: "Generates heatmap with rows as six pollutants, columns as three factors, cells showing factor loadings magnitude."
+
+---
+
+vae_predictions.png
+
+30. Includes a scatter plot for Cairo VAE regression showing actual versus predicted AQI that is semantically similar to the expected visualization with predictions along a diagonal pattern.
+25 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis actual AQI, y-axis predicted AQI, diagonal reference line."
+
+---
+
+31. Provides a scatter plot for Cairo VAE regression with actual AQI values on the x-axis.
+20 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis actual AQI, y-axis predicted AQI, diagonal reference line."
+
+---
+
+32. Provides a scatter plot for Cairo VAE regression with predicted AQI values on the y-axis.
+20 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis actual AQI, y-axis predicted AQI, diagonal reference line."
+
+---
+
+33. Provides a scatter plot for Cairo VAE regression with a diagonal reference line showing perfect prediction.
+25 · Must Have
+Proof of Ask: "Generates scatter plot with x-axis actual AQI, y-axis predicted AQI, diagonal reference line."
+
+---
