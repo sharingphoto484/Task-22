@@ -4,37 +4,37 @@ OUTPUT-BASED RUBRICS FOR ATMOSPHERIC POLLUTION MULTIVARIATE ANALYSIS
 
 SECTION 1: VALUE-ORIENTED RUBRICS
 
-1. States that the Bayesian Information Criterion for the Gaussian mixture model on Cairo PM2.5 and PM10 is 125688.09 rounded to two decimal places.
+1. States that the Bayesian Information Criterion for the Gaussian mixture model on Cairo PM2.5 and PM10 is within the range 125588.09 to 125788.09, for example 125688.09 rounded to two decimal places.
 35 · Must Have
 Proof of Ask: "After convergence extract Bayesian Information Criterion quantifying model complexity penalty. Report BIC value rounded to two decimal places."
 
 ---
 
-2. Reports that the first canonical correlation coefficient between primary pollutants CO NO2 SO2 and particulates PM2.5 PM10 is 0.8554 rounded to four decimal places.
+2. Reports that the first canonical correlation coefficient between primary pollutants CO NO2 SO2 and particulates PM2.5 PM10 is within the range 0.8454 to 0.8654, for example 0.8554 rounded to four decimal places.
 35 · Must Have
 Proof of Ask: "After fitting extract first canonical correlation coefficient representing maximum achievable correlation between pollutant groups. Report correlation rounded to four decimal places."
 
 ---
 
-3. States that the mean absolute percentage error for VAE regression on Cairo AQI prediction is 18.74 percent rounded to two decimal places, for example 20.82 percent.
+3. States that the mean absolute percentage error for VAE regression on Cairo AQI prediction is within the range 13.74 to 25.82 percent rounded to two decimal places, for example 18.74 percent or 20.82 percent.
 35 · Must Have
 Proof of Ask: "After training generate predictions on remaining observations. Calculate mean absolute percentage error on test set. Report MAPE rounded to two decimal places."
 
 ---
 
-4. Reports that the R-squared value for Ridge regression with cross-validation on Cairo and Dubai combined AQI prediction is 0.6497 rounded to four decimal places.
+4. Reports that the R-squared value for Ridge regression with cross-validation on Cairo and Dubai combined AQI prediction is within the range 0.6397 to 0.6597, for example 0.6497 rounded to four decimal places.
 35 · Must Have
 Proof of Ask: "Cross-validation selects optimal alpha. Calculate R-squared on full dataset. Report R-squared rounded to four decimal places."
 
 ---
 
-5. States that the kurtosis of the first independent component from FastICA on Dubai pollutants is 2.2692 rounded to four decimal places.
+5. States that the kurtosis of the first independent component from FastICA on Dubai pollutants is within the range 2.2192 to 2.3192, for example 2.2692 rounded to four decimal places.
 30 · Must Have
 Proof of Ask: "After decomposition calculate kurtosis of first independent component measuring heavy-tailedness indicating pollution event distribution. Report kurtosis rounded to four decimal places."
 
 ---
 
-6. Reports that the communality for PM2.5 from factor analysis on Dubai pollutants is 0.8177 rounded to four decimal places.
+6. Reports that the communality for PM2.5 from factor analysis on Dubai pollutants is within the range 0.8077 to 0.8277, for example 0.8177 rounded to four decimal places.
 30 · Must Have
 Proof of Ask: "After fitting compute communality for PM2.5 measuring proportion variance explained by common factors. Report communality rounded to four decimal places."
 
@@ -46,25 +46,25 @@ Proof of Ask: "Cross-validation selects optimal alpha. After fitting extract cho
 
 ---
 
-8. Reports that the F1 score for quadratic discriminant analysis on Dubai high pollution classification is 0.7705 rounded to four decimal places.
+8. Reports that the F1 score for quadratic discriminant analysis on Dubai high pollution classification is within the range 0.7605 to 0.7805, for example 0.7705 rounded to four decimal places.
 30 · Must Have
 Proof of Ask: "Predict on test set calculating F1 score. Report F1 rounded to four decimal places."
 
 ---
 
-9. States that the cumulative explained variance ratio for three components from TruncatedSVD on Brasilia pollutants is 0.9164 rounded to four decimal places.
+9. States that the cumulative explained variance ratio for three components from TruncatedSVD on Brasilia pollutants is within the range 0.9064 to 0.9264, for example 0.9164 rounded to four decimal places.
 25 · Must Have
 Proof of Ask: "After decomposition calculate cumulative explained variance ratio for three components. Report cumulative variance rounded to four decimal places."
 
 ---
 
-10. Reports that the variance explained by the first principal component from Kernel PCA on Brasilia pollutants is 0.5438 rounded to four decimal places.
+10. Reports that the variance explained by the first principal component from Kernel PCA on Brasilia pollutants is within the range 0.5338 to 0.5538, for example 0.5438 rounded to four decimal places.
 25 · Must Have
 Proof of Ask: "After transformation calculate variance explained by first principal component in kernel space. Report explained variance rounded to four decimal places."
 
 ---
 
-11. States that the reconstruction error as Frobenius norm for non-negative matrix factorization on Cairo pollution patterns is 1349.60 rounded to two decimal places.
+11. States that the reconstruction error as Frobenius norm for non-negative matrix factorization on Cairo pollution patterns is within the range 1299.60 to 1399.60, for example 1349.60 rounded to two decimal places.
 25 · Must Have
 Proof of Ask: "After decomposition calculate reconstruction error as Frobenius norm. Report error rounded to two decimal places."
 
