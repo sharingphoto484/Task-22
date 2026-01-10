@@ -144,7 +144,7 @@ Proof of Ask: "Generates scatter plot with x-axis first canonical variate of X, 
 
 ---
 
-23. Provides a scatter plot for canonical correlation analysis with first canonical variate of X from primary pollutants CO NO2 SO2 on the x-axis.
+23. Provides a scatter plot for canonical correlation analysis with the x-axis labeled as first canonical variate of X or first canonical component of X representing the linear combination of primary pollutants CO NO2 SO2 that maximizes correlation with particulates.
 20 · Must Have
 Proof of Ask: "Generates scatter plot with x-axis first canonical variate of X, y-axis first canonical variate of Y showing maximum correlation direction."
 
@@ -164,7 +164,7 @@ Proof of Ask: "Generates scatter plot with x-axis first canonical variate of X, 
 
 factor_heatmap.png
 
-26. Includes a heatmap for Dubai factor analysis showing factor loadings that is semantically similar to the expected visualization with pollutants and factors clearly displayed.
+26. Includes a heatmap for Dubai factor analysis that is semantically similar to the expected visualization with color-coded cells representing factor loading magnitudes ranging from negative to positive values, for example using a diverging color scale like red-white-blue or red-blue to show negative and positive loadings.
 25 · Must Have
 Proof of Ask: "Generates heatmap with rows as six pollutants, columns as three factors, cells showing factor loadings magnitude."
 
