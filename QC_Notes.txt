@@ -1,0 +1,128 @@
+QUALITY CONTROL NOTES
+URBAN AIR QUALITY ANALYSIS PROJECT
+
+PROMPT GOAL
+
+The objective is to perform comprehensive atmospheric monitoring analysis across three major cities Sydney New York and London using twelve distinct machine learning methodologies on hourly air quality measurements. Each dataset contains 8760 hourly observations with variables including Date City CO NO2 SO2 O3 PM2.5 PM10 and AQI requiring predictive modeling classification regression clustering and dimensionality reduction techniques. The analysis demands specific train test splits ranging from 70-30 to 80-20 with consistent random state 42 for reproducibility alongside precise model hyperparameters for RandomForest GradientBoosting XGBoost AdaBoost PLS Ridge Lasso ElasticNet SVR KMeans and PCA algorithms. All outputs require exact decimal precision ranging from two to four decimal places with corresponding visualizations including horizontal bar charts confusion matrices scatter plots residual plots and ROC curves. The final deliverable includes a comparative analysis between XGBoost sequential residual fitting and RandomForest bootstrap aggregation to determine optimal ensemble methodology for air quality prediction.
+
+STEP BY STEP SOLUTIONS
+
+Step 1 : Data Loading and Initial Exploration
+
+The analysis begins by loading three Excel files containing air quality data for Sydney New York and London using pandas read excel function to import hourly measurements. Each dataset comprises 8760 rows representing one full year of hourly observations and 10 columns including temporal and pollutant concentration variables. Initial shape verification confirms data integrity with Sydney New York and London all containing identical dimensional structures of 8760 observations by 10 features ensuring consistency across cities for comparative analysis.
+
+Step 2 : Sydney Random Forest Data Preparation
+
+The Sydney dataset undergoes feature selection extracting six predictor variables CO NO2 SO2 O3 PM2.5 and PM10 alongside the target variable AQI for regression modeling. Missing values are systematically removed using dropna operation to ensure clean input data for machine learning algorithms preventing computational errors and biased predictions. The cleaned dataset separates into feature matrix X containing all six pollutant predictors and target vector y containing AQI values creating the foundation for supervised learning.
+
+Step 3 : Sydney Random Forest Train Test Partitioning
+
+The prepared Sydney data splits into training and testing subsets using 75 percent for training and 25 percent for testing with random state 42 ensuring reproducible random sampling. This stratified division creates four distinct arrays including X train rf X test rf y train rf and y test rf maintaining proportional representation of the original dataset distribution. The 75-25 split balances model learning capacity with adequate holdout data for unbiased performance evaluation allowing sufficient training examples while preserving test set integrity.
+
+Step 4 : Sydney Random Forest Model Training
+
+RandomForestRegressor instantiates with specific hyperparameters including 100 estimators representing individual decision trees max depth 10 limiting tree growth to prevent overfitting and min samples split 5 requiring minimum samples for node splitting. Additional parameters include max features sqrt selecting square root of total features at each split and random state 42 ensuring reproducible tree construction across multiple executions. The model fits on training data learning complex nonlinear relationships between pollutant concentrations and AQI through ensemble averaging of multiple decision tree predictions.
+
+Step 5 : Sydney Random Forest Performance Evaluation
+
+Predictions generate on the holdout test set using the trained Random Forest model producing continuous AQI forecasts for comparison against actual observed values. Root mean squared error calculation measures prediction accuracy by computing the square root of averaged squared differences between predicted and actual AQI values. The resulting RMSE of 4.04 indicates relatively low prediction error demonstrating strong model performance with predictions deviating approximately 4 AQI units from true values on average.
+
+Step 6 : Sydney Random Forest Feature Importance Visualization
+
+Feature importance scores extract from the trained model quantifying each predictor variable contribution to AQI prediction accuracy based on mean decrease in impurity across all decision trees. A horizontal bar chart visualizes these importance values with feature names positioned along the vertical axis and importance magnitudes extending rightward along the horizontal axis. Sorting features by importance values creates an intuitive visual hierarchy revealing which pollutants most strongly influence AQI predictions enabling domain experts to identify critical air quality determinants.
+
+Step 7 : New York Classification Target Creation
+
+The New York dataset transforms the continuous AQI variable into a three level categorical target representing air quality categories good moderate and poor. Category boundaries define good as AQI below 35 moderate spanning 35 through 55 and poor exceeding 55 using pandas cut function for binning continuous values. This discretization converts the regression problem into a multiclass classification task enabling categorical prediction algorithms to learn decision boundaries separating distinct air quality states.
+
+Step 8 : New York Gradient Boosting Data Preparation
+
+Four predictor variables CO NO2 PM2.5 and PM10 extract from the New York dataset alongside the newly created categorical AQI target for classification modeling. Missing value removal ensures data quality and compatibility with gradient boosting algorithms which require complete observations without nulls. The 70-30 train test split allocates majority data for model learning while reserving 30 percent for independent validation maintaining statistical rigor in performance assessment.
+
+Step 9 : New York Gradient Boosting Classifier Training
+
+GradientBoostingClassifier configures with 100 sequential estimators learning rate 0.1 controlling contribution of each tree max depth 5 limiting individual tree complexity and subsample 0.8 using 80 percent of training data per iteration. Sequential boosting iteratively builds trees where each new tree corrects errors from previous trees creating a powerful additive model. The algorithm learns optimal decision boundaries separating good moderate and poor air quality categories through gradient descent optimization minimizing classification loss.
+
+Step 10 : New York Gradient Boosting Performance and Confusion Matrix
+
+Classification predictions generate on test data assigning each observation to one of three air quality categories based on learned decision rules. Accuracy computation divides correctly classified instances by total test samples yielding 73.52 percent indicating the model correctly predicts air quality category approximately three quarters of the time. The confusion matrix visualizes classification performance in a 3 by 3 heatmap where cell intensities encode frequency counts for true versus predicted class combinations revealing misclassification patterns and category specific performance.
+
+Step 11 : London PLS Regression Setup
+
+Partial Least Squares regression addresses PM10 prediction using five predictor variables CO NO2 SO2 O3 and PM2.5 through latent variable extraction maximizing covariance between predictors and response. Unlike standard regression PLS simultaneously decomposes predictor and response matrices finding directions of maximum shared variance reducing multicollinearity effects. Configuration with three components balances model complexity against predictive power extracting the most informative latent structures from predictor response relationships.
+
+Step 12 : London PLS Model Evaluation
+
+The PLS model trains on the complete London dataset learning optimal component weights that maximize predictor response covariance through iterative decomposition. Predictions generate by projecting original features onto learned latent components then reconstructing PM10 estimates from component scores. R squared calculation measuring proportion of PM10 variance explained by the model yields 0.9360 indicating exceptional predictive performance with the model capturing 93.6 percent of PM10 variability through three latent components.
+
+Step 13 : London PLS Visualization
+
+A scatter plot positions observed PM10 concentrations along the horizontal axis against model predicted PM10 values along the vertical axis enabling visual assessment of prediction accuracy. The 45 degree identity reference diagonal represents perfect predictions where observed equals predicted values providing a benchmark for evaluating model performance. Points clustering tightly around this diagonal line indicate strong agreement between observations and predictions while deviations reveal systematic under or over prediction patterns.
+
+Step 14 : Sydney XGBoost Regression Data Preparation
+
+Extreme Gradient Boosting tackles CO concentration prediction using six predictors NO2 SO2 O3 PM2.5 PM10 and AQI after removing missing values from the Sydney dataset. The 80-20 train test split allocates maximum training data for the complex boosting algorithm while maintaining adequate holdout samples for validation. XGBoost represents an advanced tree based method incorporating regularization techniques parallel processing and handling of sparse data distinguishing it from standard gradient boosting.
+
+Step 15 : Sydney XGBoost Training and Evaluation
+
+XGBRegressor configures with 100 estimators max depth 6 learning rate 0.1 subsample 0.8 and colsample bytree 0.8 implementing sophisticated regularization to prevent overfitting. The model trains through sequential tree building where each iteration fits residuals from previous predictions implementing second order gradient optimization for enhanced convergence. Mean absolute error calculation on test predictions yields 17.51 indicating average prediction errors of approximately 17.5 CO concentration units demonstrating reasonable but improvable predictive accuracy.
+
+Step 16 : Sydney XGBoost Residual Analysis
+
+Residuals compute as differences between actual and predicted CO values quantifying prediction errors across the test set revealing patterns of model bias or heteroscedasticity. The residual scatter plot positions predicted values horizontally and residual deviations vertically with a horizontal reference line at zero representing perfect predictions. Random scatter around zero indicates well calibrated unbiased predictions while systematic patterns suggest model improvements through feature engineering or alternative algorithms.
+
+Step 17 : New York AdaBoost Binary Classification
+
+Binary pollution severity classification creates a high pollution indicator variable coded as 1 when PM2.5 exceeds 40 and 0 otherwise transforming continuous pollution into a dichotomous health based threshold. Five predictor features CO NO2 SO2 O3 and AQI enter a 75-25 train test partition for learning pollution severity patterns. AdaBoost applies adaptive boosting through sequential weak learner weighting where misclassified instances receive increased attention in subsequent iterations progressively improving classification boundaries.
+
+Step 18 : New York AdaBoost Performance and ROC Curve
+
+The AdaBoost classifier with 50 estimators and learning rate 1.0 trains on binary labels learning to distinguish high versus low pollution episodes through weighted voting of weak classifiers. F1 score calculation balancing precision and recall yields 0.2128 indicating modest performance likely due to class imbalance or overlapping feature distributions between pollution categories. The ROC curve plots false positive rate horizontally against true positive rate vertically across varying classification thresholds visualizing discrimination ability with area under curve quantifying overall binary classification performance.
+
+Step 19 : London ElasticNet Regularization
+
+ElasticNetCV addresses NO2 prediction combining L1 and L2 penalty terms to simultaneously perform feature selection and coefficient shrinkage preventing overfitting in high dimensional settings. Standardization transforms all predictor variables to zero mean and unit variance ensuring equal contribution to regularization penalties regardless of original measurement scales. Cross validation systematically tests three L1 ratio values 0.1 0.5 and 0.9 across 100 logarithmically spaced alpha values from 0.01 to 100 selecting optimal regularization strength minimizing validation error.
+
+Step 20 : London ElasticNet Optimal Parameter Selection
+
+The five fold cross validation procedure partitions training data into five subsets iteratively using four for training and one for validation across all alpha and L1 ratio combinations. Performance metrics aggregate across folds identifying the alpha value producing minimum mean validation error representing optimal bias variance tradeoff. The selected optimal alpha of 1.0476 balances model complexity against prediction accuracy providing sufficient regularization to prevent overfitting while maintaining predictive power for NO2 concentration estimation.
+
+Step 21 : Sydney Ridge Regression Implementation
+
+Ridge regression applies L2 penalty shrinking coefficient magnitudes toward zero reducing model variance at the cost of introducing small bias particularly effective when predictors exhibit multicollinearity. Standardization preprocessing ensures fair penalization across features with different scales transforming CO NO2 SO2 O3 and AQI to comparable units. The model with alpha 10.0 performs coefficient regularization on PM2.5 prediction learning stable coefficients robust to small data perturbations yielding mean squared error of 15.11 on the full dataset.
+
+Step 22 : New York Lasso Regression Sparsity
+
+Lasso regression employs L1 penalty encouraging sparse solutions where many coefficients shrink exactly to zero effectively performing automatic feature selection. Six standardized predictors CO NO2 SO2 O3 PM2.5 and PM10 target AQI prediction with alpha 1.0 controlling regularization strength determining feature retention threshold. Coefficient inspection reveals only 3 non zero coefficients indicating Lasso identified three critical predictors while eliminating three less informative features reducing model complexity and improving interpretability.
+
+Step 23 : London SVR Nonlinear Modeling
+
+Support Vector Regression with radial basis function kernel maps input features into high dimensional space enabling capture of complex nonlinear relationships between predictors and O3 concentrations. Standardization preprocessing ensures proper kernel function computation preventing features with large scales from dominating distance calculations in the transformed space. The 70-30 split provides adequate training samples for learning kernel parameters while maintaining independent validation data for assessing generalization performance.
+
+Step 24 : London SVR Performance Assessment
+
+SVR configuration with RBF kernel C penalty parameter 100 gamma 0.1 controlling kernel width and epsilon 0.1 defining insensitivity margin trains on standardized features learning nonlinear O3 prediction function. The high C value permits greater model complexity accepting some training errors for improved fit while gamma controls decision boundary smoothness. Test set R squared of 0.6557 indicates moderate performance explaining approximately 65.6 percent of O3 variance suggesting nonlinear patterns exist but may require additional features or alternative kernel functions for improved accuracy.
+
+Step 25 : Combined Dataset Clustering Preparation
+
+Sydney and London datasets vertically concatenate combining PM2.5 PM10 and AQI features from both cities creating a unified dataset for cross city pattern discovery. Standardization transforms combined features to zero mean unit variance ensuring equal contribution to distance calculations in clustering algorithms. This merged approach enables identification of universal air quality patterns transcending geographic boundaries revealing whether pollution profiles cluster by severity level rather than city origin.
+
+Step 26 : KMeans Clustering Execution
+
+KMeans algorithm with five clusters partitions the combined standardized data into distinct groups based on Euclidean distance similarity maximizing within cluster cohesion while maximizing between cluster separation. Iterative centroid refinement over maximum 300 iterations repositions cluster centers until convergence where observations assign to nearest centroids and centroids update as cluster means. Random state 42 ensures reproducible initialization preventing algorithm sensitivity to starting positions which can yield different final cluster assignments.
+
+Step 27 : Clustering Quality Assessment
+
+Silhouette coefficient quantifies clustering quality measuring how similar each observation is to its own cluster compared to other clusters ranging from negative one to positive one. Values near positive one indicate well separated distinct clusters while values near zero suggest overlapping ambiguous cluster boundaries. The computed silhouette score of 0.3385 indicates weak to moderate cluster structure suggesting some natural groupings exist but with substantial overlap reflecting the continuous nature of air quality gradients rather than discrete pollution states.
+
+Step 28 : New York PCA Dimensionality Reduction
+
+Principal Component Analysis performs orthogonal transformation of six standardized pollutant features CO NO2 SO2 O3 PM2.5 PM10 identifying directions of maximum variance in the feature space. Standardization preprocessing ensures PCA captures variance structure rather than scale differences allowing fair comparison of component contributions. Four principal components extract from the six original features reducing dimensionality while retaining maximum information content about pollutant concentration patterns.
+
+Step 29 : PCA Variance Explanation
+
+Each principal component captures decreasing amounts of total dataset variance with the first component explaining maximum variance followed by orthogonal subsequent components. Cumulative explained variance ratio sums individual component variances quantifying total information retention across the first four components. The computed cumulative variance of 0.9727 demonstrates that four components preserve 97.27 percent of original six dimensional variance enabling substantial dimensionality reduction with minimal information loss.
+
+Step 30 : Ensemble Model Comparison and Conclusion
+
+XGBoost implements sequential boosting where each tree learns from residual errors of previous trees enabling iterative refinement and complex pattern capture through gradient based optimization. RandomForest constructs independent parallel trees through bootstrap sampling and feature randomization aggregating predictions through simple averaging without sequential error correction. The comparative analysis concludes XGBoost achieves superior predictive performance for air quality modeling through its sequential residual fitting approach that systematically reduces prediction errors whereas RandomForest parallel ensemble averaging may miss complex sequential dependencies in atmospheric pollution dynamics.
