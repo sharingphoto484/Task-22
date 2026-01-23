@@ -1,0 +1,390 @@
+## Failure Ideas Repository: Airline Operations Analysis
+
+### Failure Idea 1: Train-Test Split Contamination in Performance Metrics
+
+**Failure Idea:** The analyst reports SVM classification accuracy of 85.04 percent and decision tree accuracy of 85.05 percent, suggesting these models were trained and evaluated using identical random state 42 splits. However, these values deviate from the correctly computed metrics (85.43% and 85.40% respectively), indicating the train-test split was not executed with proper reproducibility controls or the evaluation was performed on a contaminated test set. This type of error commonly arises when random state parameters are inconsistently applied across split operations, when data preprocessing steps occur in different orders before splitting, or when observations are inadvertently duplicated or dropped during the dropna operations. The consequence is that reported performance metrics do not reflect true held-out generalization capability, making model comparison unreliable and potentially leading to overconfident deployment decisions based on inflated or deflated accuracy estimates.
+
+**Corresponding Rubric Item:**
+- **Reports that the SVM classification accuracy is 85.04 percent instead of 85.43 percent.**
+- **-20 points · must have criteria**
+
+---
+
+### Failure Idea 2: Macro F1 Score Miscomputation from Imbalanced Class Predictions
+
+**Failure Idea:** The analyst reports SVM macro F1 score of 0.4596 when the correct value is 0.4607, a discrepancy of 0.0011 that suggests improper averaging of class-specific F1 scores. Macro F1 requires computing precision and recall separately for each class (booking complete vs non-complete), then averaging these F1 scores without weighting by class frequency. This error pattern typically emerges when the averaging method parameter is set incorrectly (weighted instead of macro), when the confusion matrix used for calculation contains wrong cell values due to prediction errors, or when class labels are inconsistently encoded during evaluation. Since the prompt specifically requires macro F1 to assess balanced classification performance across both majority and minority classes, this computational error directly undermines the ability to compare how well SVM and decision tree handle class imbalance, which is the central analytical question posed by the prompt.
+
+**Corresponding Rubric Item:**
+- **Reports that the SVM macro F1 score is 0.4596 instead of 0.4607.**
+- **-20 points · must have criteria**
+
+---
+
+### Failure Idea 3: Feature Set Mismatch in Decision Tree Training
+
+**Failure Idea:** The analyst reports decision tree accuracy of 85.05 percent compared to the correct 85.40 percent, a gap of 0.35 percentage points that exceeds typical random variation and suggests the model was trained on an incorrect feature set or data subset. The prompt explicitly requires seven predictor attributes (num_passengers, purchase_lead, length_of_stay, flight_hour, wants_extra_baggage, wants_preferred_seat, wants_in_flight_meals) extracted from filtered_customer_booking.xlsx. This magnitude of accuracy discrepancy commonly occurs when one or more binary preference features are accidentally excluded, when continuous features are incorrectly discretized, or when the dropna operation removes a different set of observations due to inconsistent missing value handling. Since decision trees are sensitive to feature availability and the resulting sample composition, using the wrong feature set or sample produces systematically different split decisions at every node, propagating through the entire tree structure and yielding performance metrics that cannot be validly compared to the correctly-specified SVM baseline.
+
+**Corresponding Rubric Item:**
+- **Reports that the decision tree classification accuracy is 85.05 percent instead of 85.40 percent.**
+- **-20 points · must have criteria**
+
+---
+
+### Failure Idea 4: OneVsRestClassifier Wrapper Omission in Multiclass ROC Analysis
+
+**Failure Idea:** The analyst reports K-NN per-class ROC AUC scores of 0.5111 for CircleTrip, 0.5147 for OneWay, and 0.5179 for RoundTrip, deviating from correct values of 0.5202, 0.5210, and 0.5265 respectively. These consistent underestimations across all three trip types suggest the KNeighborsClassifier was not properly wrapped in OneVsRestClassifier as explicitly required by the prompt. Without this wrapper, the predict_proba method produces different probability estimates because the multiclass decomposition structure changes from one-versus-rest to one-versus-one or uses the default sklearn multiclass handling. The OneVsRestClassifier wrapper is essential for ROC analysis because it explicitly decomposes the three-class problem into three binary classification tasks (CircleTrip vs others, OneWay vs others, RoundTrip vs others), enabling proper calculation of true positive rates and false positive rates for each class independently. Omitting this wrapper produces incomparable AUC values that appear valid superficially but cannot be correctly interpreted under the one-versus-rest framework specified in the prompt.
+
+**Corresponding Rubric Item:**
+- **Reports that the CircleTrip ROC AUC score is 0.5111 instead of 0.5202.**
+- **-20 points · must have criteria**
+
+---
+
+### Failure Idea 5: Bootstrap Resampling Non-Determinism in Mediation Confidence Intervals
+
+**Failure Idea:** The analyst fails to report actual computed values for the mediation analysis indirect effect, instead providing placeholder text such as "expected to include 0" for the 95 percent bootstrap confidence interval. This pattern indicates the bootstrap resampling procedure was either not executed or not executed with the required deterministic RandomState(42) seed. Proper mediation analysis requires 1000 bootstrap replications where each iteration samples row indices with replacement, refits both the X→M and M→Y logistic regression models, computes the product a×b, and stores this indirect effect estimate. The percentile method then extracts the 2.5th and 97.5th percentiles from this distribution to form the confidence interval. Without executing this procedure with fixed random seed, it is impossible to determine whether the confidence interval excludes zero, which is the sole criterion specified in the prompt for concluding statistical mediation support. The absence of computed values suggests computational difficulty with 1000 logistic regression fits or misunderstanding of the bootstrap percentile method, both of which prevent valid inference about whether meal service preference mediates the purchase lead to booking completion pathway.
+
+**Corresponding Rubric Item:**
+- **Fails to report the actual computed 95 percent bootstrap confidence interval for the indirect effect.**
+- **-25 points · must have criteria**
+
+---
+
+### Failure Idea 6: PCA Variance Accounting Without Actual Decomposition Execution
+
+**Failure Idea:** The analyst provides generic placeholder estimates such as "around 0.3 to 0.4" for first principal component variance and "often greater than 0.8 to 0.9" for cumulative variance, rather than reporting the actual computed values of 0.2037 and 0.7387 respectively. This pattern reveals the PCA decomposition was not executed on the actual filtered_customer_booking.xlsx data after proper standardization of the eight numerical features. Principal component analysis produces deterministic results when given identical input data and standardization procedure, so the variance ratios should be reproducible to four decimal places. The absence of precise values prevents assessment of whether 80 percent cumulative variance is achieved within the first five components, which is the explicit reporting requirement in the prompt. Generic estimates based on "typical patterns" are analytically worthless because PCA variance structure is completely dataset-dependent - different correlation structures among the eight booking behavior features could produce first component variance anywhere from 0.15 to 0.50 and cumulative variance from 0.60 to 0.95. Without executing the actual decomposition, it is impossible to perform downstream tasks like determining the optimal number of components for dimensionality reduction in operational deployment.
+
+**Corresponding Rubric Item:**
+- **Fails to report the actual first principal component variance ratio, instead providing generic placeholder text.**
+- **-25 points · must have criteria**
+
+---
+
+### Failure Idea 7: Treating Nearly-Identical Macro F1 as Algorithmic Preference Evidence
+
+**Failure Idea:** The analyst provides extensive business interpretation about how decision trees achieve higher macro F1 through hierarchical splits that capture minority class behavior better than SVM's global margin optimization, when in fact the computed values show SVM achieves 0.4607 compared to decision tree's 0.4606 - a difference of only 0.0001 favoring SVM. This reasoning error stems from assuming the prompt question about "macro F1 differences favoring higher F1 model" implies substantial algorithmic superiority, when the actual data reveals essentially equivalent performance with SVM having negligible advantage. The lengthy qualitative explanation about class imbalance handling, behavioral feature utilization, and segmentation interpretability would be appropriate if macro F1 scores differed by 0.01 or more, but with only 0.0001 separation, the correct interpretation is that both algorithms perform equivalently on this booking completion task and neither demonstrates clear superiority in handling the class imbalance. The business insight should acknowledge this near-tie and explain why both models struggle equally with the minority class rather than fabricating a meaningful distinction where none exists.
+
+**Corresponding Rubric Item:**
+- **Claims that decision tree achieves higher macro F1 than SVM when the actual values show SVM scoring 0.4607 versus decision tree scoring 0.4606.**
+- **-15 points · nice to have criteria**
+
+---
+
+### Failure Idea 8: Confusing Statistical Mediation with Practical Mediation Strength
+
+**Failure Idea:** The analyst correctly identifies that the bootstrap confidence interval for indirect effect excludes zero, leading to the conclusion that mediation is statistically supported. However, the indirect effect magnitude is -0.0001 (approximately -0.0000743), which is practically negligible even though statistically distinguishable from zero. This represents a classic error of conflating statistical significance with practical importance - the confidence interval excluding zero means we can be confident the mediated pathway exists in the population, but the effect size is so small that wanting in-flight meals explains virtually none of the relationship between purchase lead time and booking completion. A one-day increase in purchase lead time reduces meal preference odds by 0.0005, which then increases booking odds by 0.1459, yielding a net indirect effect of -0.00007 on the log-odds scale. When translated to probability scale, this corresponds to a change of less than 0.002 percentage points in booking probability. The analyst should explicitly state that while mediation is statistically detectable, the practical business implication is that meal service preference is an ineffective lever for converting advance bookers into completed reservations.
+
+**Corresponding Rubric Item:**
+- **States that mediation is statistically supported without acknowledging that the indirect effect magnitude of -0.0001 is practically negligible.**
+- **-10 points · nice to have criteria**
+
+---
+
+### Failure Idea 9: Micro-Average ROC AUC as Evidence of Strong Classification Performance
+
+**Failure Idea:** The analyst reports K-NN micro-averaged ROC AUC of 0.9925 (or approximately 0.9929 in correct implementation) and describes this as evidence of "high overall discrimination" or "near the top-left" position, suggesting strong model performance. However, this interpretation ignores the fundamental mismatch between micro-average AUC and per-class AUC values. The per-class AUCs are all near 0.52, barely better than random guessing (0.50), indicating the model cannot reliably discriminate between trip types when evaluated through one-versus-rest decomposition. The micro-average AUC is high because it treats all predictions across all classes as a single binary problem, effectively averaging over the entire prediction matrix where the model benefits from the multinomial structure and class frequencies. This creates a statistical artifact where micro-average can be high even when individual class discrimination is poor. The correct interpretation is that K-NN achieves 98.97 percent accuracy through memorization and proximity matching of exact feature combinations rather than through learning generalizable boundaries between CircleTrip, OneWay, and RoundTrip patterns based on purchase_lead and flight_duration features alone.
+
+**Corresponding Rubric Item:**
+- **Interprets the micro-averaged ROC AUC of 0.9929 as evidence of strong discrimination ability without acknowledging that per-class AUCs near 0.52 indicate poor individual class separation.**
+- **-12 points · nice to have criteria**
+
+---
+
+### Failure Idea 10: Decision Tree Feature Importance as Causal Drivers
+
+**Failure Idea:** The analyst reports decision tree feature importance scores showing length_of_stay (0.4546) and wants_extra_baggage (0.3348) as dominant features and interprets these as "driving" booking completion or as levers for improving conversion rates. This reasoning conflates predictive association measured by Gini importance with causal effect or actionable business intervention. Feature importance in decision trees measures how much each variable reduces node impurity during recursive partitioning, which depends on correlation structure, feature availability at each split, and the sequential order of splits. High importance for length_of_stay does not establish that encouraging longer stays will increase booking completion - it only indicates that observations with longer planned stays are more likely to complete bookings in this observational dataset. The association could arise because customers who have already decided to book (unobserved commitment) then search for longer stays, making length_of_stay a consequence rather than cause of booking intent. Similarly, wants_extra_baggage might proxy for business travelers or trip seriousness rather than being a causally manipulable feature. Using these feature importances to design interventions (e.g., "promote longer stays" or "incentivize baggage add-ons") requires causal assumptions that cannot be validated from this cross-sectional observational data with decision tree splits.
+
+**Corresponding Rubric Item:**
+- **Interprets decision tree feature importance scores as causal drivers of booking completion that can be directly manipulated to improve conversion rates.**
+- **-12 points · nice to have criteria**
+
+---
+
+### Failure Idea 11: Linear Regression RMSE as Prediction Quality Certification
+
+**Failure Idea:** The analyst fails to report the actual RMSE value (1.471) for flight duration prediction and instead uses placeholder notation. Beyond this computational failure, a deeper conceptual error would be interpreting any RMSE value as certification of prediction quality without examining the residual plot structure or considering the scale of the dependent variable. RMSE of 1.471 in absolute terms is meaningless without knowing the typical range and standard deviation of flight_duration in the dataset - if most flights are 2-4 hours (120-240 minutes), then RMSE of 1.471 minutes represents excellent precision, but if it represents hours, the model has massive errors. More fundamentally, even a low RMSE does not validate the linear model specification because it only measures average magnitude of errors, not whether they exhibit systematic patterns indicating misspecification. The residual plot (predicted vs residuals with horizontal reference at zero) is the critical diagnostic - if residuals show curvature, heteroscedasticity, or clustering, the linear relationship assumption is violated regardless of RMSE magnitude. The prompt requests the residual plot precisely to assess specification adequacy, not to celebrate low RMSE as proof of model validity.
+
+**Corresponding Rubric Item:**
+- **Fails to report the actual root mean squared error value of 1.471 for flight duration prediction.**
+- **-20 points · must have criteria**
+
+---
+
+### Failure Idea 12: ANOVA F-Statistic as Managerial Decision Threshold
+
+**Failure Idea:** The analyst fails to report the actual F-statistic value (8.98) for purchase lead variation across sales channels, using placeholder notation instead. Beyond this omission, a common interpretive error would be treating the F-statistic magnitude or associated p-value as sufficient evidence for allocating marketing budgets differently across channels (Internet vs Mobile) or redesigning channel-specific acquisition strategies. One-way ANOVA tests the null hypothesis that mean purchase lead is identical across channels, and rejecting this null (which F=8.98 likely does with p<0.01) only establishes statistical detectability of a mean difference, not the practical importance, causal mechanism, or business relevance of that difference. The mean purchase lead might differ by 2 days between channels, which is statistically significant but operationally trivial if the overall purchase lead distribution spans 0-90 days. Moreover, channel differences in purchase lead could arise from customer self-selection (proactive planners prefer web, last-minute bookers prefer mobile) rather than channel treatment effects, meaning there is no causal intervention available. Using ANOVA results to justify channel strategy changes requires additional analysis of effect sizes, customer heterogeneity, and causal identification that the prompt does not request.
+
+**Corresponding Rubric Item:**
+- **Fails to report the actual F-statistic value of 8.98 for purchase lead variation across sales channels.**
+- **-20 points · must have criteria**
+
+---
+
+### Failure Idea 13: Standard Error Magnitude as Data Quality Indicator
+
+**Failure Idea:** The analyst fails to report the actual maximum standard error of mean (0.1307 for CircleTrip) and fails to identify which trip type exhibits this maximum. Even if reported correctly, a reasoning error would be interpreting larger SEM as indicating "data quality problems" or "measurement noise" in that trip type segment rather than recognizing it reflects sample size and population heterogeneity. Standard error of the mean is calculated as standard deviation divided by square root of sample size, so larger SEM arises from either (1) higher variance in flight duration within that trip type, indicating genuinely heterogeneous travel patterns, or (2) smaller sample size for that segment. CircleTrip having maximum SEM likely reflects it being the least common trip type in the filtered booking data, not that CircleTrip duration measurements are noisier or less reliable. The prompt requests maximum SEM identification precisely because it indicates where mean estimates are least precise, which is valuable for capacity planning and service level agreements - airlines should be more cautious about promising specific durations for CircleTrip routes, not because of data problems, but because CircleTrip patterns are inherently more variable or less frequently observed.
+
+**Corresponding Rubric Item:**
+- **Fails to report the actual maximum standard error of mean value of 0.1307 for flight duration.**
+- **-20 points · must have criteria**
+
+---
+
+### Failure Idea 14: Percentile Rank as Optimal Scheduling Threshold
+
+**Failure Idea:** The analyst fails to report the actual percentile rank (66 percent) for flight hour 12, using hypothetical placeholder text instead. Beyond this computational failure, an interpretive error would be treating the empirical percentile as prescriptive scheduling guidance - concluding that because 66 percent of flights occur before noon, the airline should maintain or increase morning capacity allocation. This confuses descriptive observation of historical patterns with normative capacity optimization. The 66th percentile position only describes what has happened in the existing schedule, which reflects complex interactions between passenger demand preferences, slot availability, crew scheduling constraints, aircraft utilization targets, and competitive positioning. The historical concentration of morning flights might represent optimal matching of supply and demand, or it might represent suboptimal legacy scheduling that could be improved by shifting capacity toward afternoon and evening when demand might be underserved. Using percentile rank for operational decisions requires demand analysis showing that 66 percent of passenger preference is for pre-noon departures, not just that 66 percent of existing flights happen to occur then, which could be supply-driven rather than demand-driven.
+
+**Corresponding Rubric Item:**
+- **Fails to report the actual percentile rank value of 66 percent for flight hour 12.**
+- **-15 points · must have criteria**
+
+---
+
+### Failure Idea 15: Negative Correlation Between Satisfaction and Review Length as Disengagement Signal
+
+**Failure Idea:** The analyst fails to report the actual Pearson correlation (-0.0321) between satisfaction ratings and review length, using placeholder notation. Even if reported, a misinterpretation would be concluding that negative correlation indicates dissatisfied customers are "more engaged" or "more verbose" in expressing complaints, leading to recommendations for prioritizing longer reviews in customer service workflows. The correlation magnitude of -0.0321 is extremely weak (R-squared = 0.001), meaning review length explains only 0.1 percent of variance in satisfaction scores. This near-zero relationship indicates that verbosity is essentially unrelated to satisfaction - some satisfied customers write detailed positive feedback, some write brief "excellent service" comments, and the same heterogeneity exists among dissatisfied customers. The weak negative direction might arise from ceiling effects (satisfied customers have nowhere to elaborate beyond "5 stars, great"), while dissatisfied customers have specific grievances to detail, but this is speculation. The correct interpretation is that review length is not a useful proxy for satisfaction level and cannot be used as a triage signal for customer service intervention. Automated sentiment analysis systems should analyze text content rather than relying on character count, which the -0.0321 correlation confirms is uninformative.
+
+**Corresponding Rubric Item:**
+- **Fails to report the actual Pearson correlation coefficient value of -0.0321 between satisfaction ratings and review length.**
+- **-20 points · must have criteria**
+
+---
+
+## Negative Weighted Rubric Criteria
+
+### Must-Have Criteria (Numerical/Factual Errors)
+
+**1. Reports that the SVM classification accuracy is 85.04 percent instead of the correct value 85.43 percent.**
+- **-20 points · must have criteria**
+- **Rationale:** Critical numerical error in primary classification performance metric that violates explicit prompt requirement for two decimal precision. This 0.39 percentage point deviation suggests improper train-test split execution, undermining reproducibility and model comparison validity.
+
+**2. Reports that the SVM macro F1 score is 0.4596 instead of the correct value 0.4607.**
+- **-20 points · must have criteria**
+- **Rationale:** Core calculation error in the explicitly required macro-averaged F1 score that is essential for comparing how SVM and decision tree handle class imbalance, which is the central analytical question in the prompt.
+
+**3. Reports that the decision tree classification accuracy is 85.05 percent instead of the correct value 85.40 percent.**
+- **-20 points · must have criteria**
+- **Rationale:** Critical numerical error representing 0.35 percentage point deviation that exceeds acceptable tolerance and suggests feature set mismatch or incorrect data preprocessing, directly impacting model comparison conclusions.
+
+**4. Reports that the decision tree macro F1 score is 0.4596 instead of the correct value 0.4606.**
+- **-20 points · must have criteria**
+- **Rationale:** Important factual error in required performance metric where 0.0010 deviation from correct value undermines the business insight requirement comparing SVM versus decision tree macro F1 differences.
+
+**5. Reports that the K-NN classification accuracy deviates from the correct value 98.97 percent by more than 0.05 percentage points.**
+- **-17 points · must have criteria**
+- **Rationale:** Significant numerical error in trip type classification accuracy that indicates improper train-test split execution or incorrect OneVsRestClassifier implementation.
+
+**6. Reports that the CircleTrip ROC AUC score is 0.5111 instead of the correct value 0.5202.**
+- **-20 points · must have criteria**
+- **Rationale:** Critical error of 0.0091 in per-class AUC score that suggests OneVsRestClassifier wrapper was omitted, violating explicit prompt requirement and making ROC analysis invalid.
+
+**7. Reports that the OneWay ROC AUC score is 0.5147 instead of the correct value 0.5210.**
+- **-20 points · must have criteria**
+- **Rationale:** Substantial deviation of 0.0063 in per-class AUC indicating incorrect distance weighting or missing OneVsRestClassifier wrapper that compromises multiclass ROC decomposition.
+
+**8. Reports that the RoundTrip ROC AUC score is 0.5179 instead of the correct value 0.5265.**
+- **-20 points · must have criteria**
+- **Rationale:** Significant error of 0.0086 in the highest AUC trip type that misrepresents discriminative strength and violates deterministic identification requirement from prompt.
+
+**9. Reports that the micro-averaged ROC AUC is 0.9925 instead of the correct value 0.9929.**
+- **-15 points · must have criteria**
+- **Rationale:** Numerical error in aggregate multiclass performance metric suggesting improper array flattening or incorrect micro-average calculation methodology.
+
+**10. Fails to report actual computed values for principal component analysis, instead providing generic placeholder text such as around 0.3 to 0.4 or often greater than 0.8 to 0.9.**
+- **-25 points · must have criteria**
+- **Rationale:** Complete failure to execute required PCA decomposition on standardized features, making it impossible to assess whether 80 percent cumulative variance threshold is met within first five components as explicitly required.
+
+**11. Fails to report the actual first principal component variance ratio of 0.2037 rounded to four decimal places.**
+- **-25 points · must have criteria**
+- **Rationale:** Critical omission of explicitly requested PCA metric that prevents assessment of information preservation in dimensionality reduction, suggesting decomposition was not executed on actual data.
+
+**12. Fails to report the actual cumulative variance of 0.7387 explained by the first 5 principal components.**
+- **-25 points · must have criteria**
+- **Rationale:** Missing required cumulative variance value prevents determination of whether 80 percent threshold is achieved, which is explicit reporting requirement in prompt specifications.
+
+**13. Fails to report the actual root mean squared error value of 1.471 for flight duration prediction.**
+- **-20 points · must have criteria**
+- **Rationale:** Complete omission of required RMSE metric using placeholder notation instead of executing LinearRegression fit and predict operations on specified 80/20 split.
+
+**14. Fails to report the actual F-statistic value of 8.98 for purchase lead variation across sales channels.**
+- **-20 points · must have criteria**
+- **Rationale:** Missing required ANOVA result using placeholder notation, indicating scipy.stats.f_oneway was not executed on purchase_lead values segregated by sales_channel groupings.
+
+**15. Fails to report the actual maximum standard error of mean value of 0.1307 for flight duration stratified by trip type.**
+- **-20 points · must have criteria**
+- **Rationale:** Complete omission of required SEM calculation and identification of CircleTrip as maximum, suggesting groupby operations were not performed on filtered booking data.
+
+**16. Fails to report the actual percentile rank value of 66 percent for flight hour 12.**
+- **-15 points · must have criteria**
+- **Rationale:** Missing required percentile rank using hypothetical example text instead of executing vectorized comparison counting observations below threshold value.
+
+**17. Fails to report the actual Pearson correlation coefficient value of -0.0321 between satisfaction ratings and review length.**
+- **-20 points · must have criteria**
+- **Rationale:** Critical omission of required correlation metric suggesting character count operation and pandas corr function were not executed on airline review data.
+
+**18. Fails to report the actual 95 percent bootstrap confidence interval values for the mediation indirect effect.**
+- **-25 points · must have criteria**
+- **Rationale:** Complete failure to execute required 1000-replication bootstrap procedure with RandomState(42), preventing determination of statistical mediation support as explicitly required.
+
+**19. States that RoundTrip is not the trip type with the highest ROC AUC when correct analysis shows RoundTrip achieves 0.5265.**
+- **-20 points · must have criteria**
+- **Rationale:** Factual error in deterministic identification requirement that misrepresents which journey category exhibits strongest discriminative pattern based on specified features.
+
+**20. States that mediation is not statistically supported when the 95 percent bootstrap confidence interval actually excludes zero.**
+- **-20 points · must have criteria**
+- **Rationale:** Fundamental error in statistical inference conclusion that contradicts prompt requirement to base mediation support solely on whether CI excludes zero.
+
+### Nice-to-Have Criteria (Interpretive/Reasoning Errors)
+
+**21. Claims that decision tree achieves higher macro F1 than SVM when actual computed values show SVM scoring 0.4607 versus decision tree scoring 0.4606.**
+- **-15 points · nice to have criteria**
+- **Rationale:** Critical interpretive error that reverses the actual model ranking with only 0.0001 difference, fabricating algorithmic superiority where performance is essentially equivalent.
+
+**22. Provides extensive business interpretation about decision tree superiority in handling class imbalance when macro F1 scores differ by only 0.0001.**
+- **-12 points · nice to have criteria**
+- **Rationale:** Over-interpretation of negligible performance difference as meaningful algorithmic distinction, creating false narrative about hierarchical splits versus global margin optimization effectiveness.
+
+**23. States that mediation is statistically supported without acknowledging that the indirect effect magnitude of -0.0001 is practically negligible.**
+- **-10 points · nice to have criteria**
+- **Rationale:** Conflates statistical significance with practical importance, failing to communicate that while mediated pathway is detectable, meal preference explains virtually none of the purchase lead to booking completion relationship.
+
+**24. Interprets the micro-averaged ROC AUC near 0.99 as evidence of strong model discrimination without acknowledging per-class AUCs near 0.52 indicate poor individual class separation.**
+- **-12 points · nice to have criteria**
+- **Rationale:** Misunderstands relationship between micro-average and per-class metrics, creating false impression of strong classification performance when individual trip type discrimination is barely better than random.
+
+**25. Interprets decision tree feature importance scores as causal drivers that can be directly manipulated to improve booking completion rates.**
+- **-12 points · nice to have criteria**
+- **Rationale:** Conflates predictive association measured by Gini importance with causal effect, suggesting interventions based on observational correlations without acknowledging potential reverse causality or confounding.
+
+**26. Claims that length of stay or wants extra baggage are levers for increasing reservation finalization based on feature importance magnitudes.**
+- **-10 points · nice to have criteria**
+- **Rationale:** Treats decision tree splits as actionable business recommendations without recognizing these associations could reflect customer self-selection rather than manipulable treatment effects.
+
+**27. Interprets SVM confusion matrix pattern of predicting almost everything as non-complete class as algorithmic deficiency rather than class imbalance manifestation.**
+- **-8 points · nice to have criteria**
+- **Rationale:** Mischaracterizes expected behavior under severe class imbalance as model failure, when majority class prediction is rational response to imbalanced training data without cost-sensitive learning.
+
+**28. States that K-NN achieves high accuracy through strong feature learning when 98.97 percent accuracy actually reflects memorization and proximity matching.**
+- **-10 points · nice to have criteria**
+- **Rationale:** Misattributes high accuracy to generalizable pattern learning rather than recognizing K-NN with k=5 and distance weighting succeeds through local similarity in high-dimensional feature space.
+
+**29. Interprets larger standard error of mean for CircleTrip as indicating data quality problems or measurement noise.**
+- **-8 points · nice to have criteria**
+- **Rationale:** Confuses statistical precision (SEM magnitude) with data quality, when larger SEM actually reflects genuine heterogeneity in flight duration patterns or smaller sample size for that trip type segment.
+
+**30. Treats the 66 percent percentile rank for flight hour 12 as prescriptive scheduling guidance for capacity allocation.**
+- **-10 points · nice to have criteria**
+- **Rationale:** Confuses descriptive observation of historical schedule patterns with normative optimization, failing to distinguish supply-driven scheduling from demand-driven passenger preferences.
+
+**31. Concludes that negative correlation between satisfaction and review length indicates dissatisfied customers are more engaged or verbose.**
+- **-10 points · nice to have criteria**
+- **Rationale:** Over-interprets correlation magnitude of -0.0321 which explains only 0.1 percent of variance, when correct interpretation is that review length is essentially unrelated to satisfaction level.
+
+**32. Recommends prioritizing longer reviews in customer service workflows based on negative correlation between satisfaction and review length.**
+- **-8 points · nice to have criteria**
+- **Rationale:** Proposes operational intervention based on weak correlation without recognizing review length is uninformative proxy for satisfaction requiring content analysis instead.
+
+**33. Interprets RMSE magnitude as certification of linear regression prediction quality without examining residual plot structure.**
+- **-10 points · nice to have criteria**
+- **Rationale:** Treats error magnitude as sufficient model validation when residual plot is critical diagnostic for assessing specification adequacy and detecting systematic misspecification patterns.
+
+**34. Treats ANOVA F-statistic significance as sufficient evidence for allocating marketing budgets differently across sales channels.**
+- **-12 points · nice to have criteria**
+- **Rationale:** Conflates statistical detectability of mean differences with practical business importance and causal intervention validity, ignoring customer self-selection mechanisms.
+
+**35. States that PCA first component variance around 0.3 to 0.4 is typical without executing actual decomposition on the specific dataset.**
+- **-12 points · nice to have criteria**
+- **Rationale:** Substitutes generic statistical patterns for dataset-specific analysis, when PCA variance structure depends entirely on correlation patterns among the eight booking behavior features.
+
+**36. Claims that SVM optimizes global margin which may favor majority class without acknowledging this is expected behavior under class imbalance.**
+- **-8 points · nice to have criteria**
+- **Rationale:** Describes imbalanced classification as algorithmic weakness rather than recognizing it as rational statistical behavior requiring class weights or sampling to override default accuracy optimization.
+
+**37. States that bootstrap confidence interval will almost certainly include zero based on point estimate magnitude without executing the resampling procedure.**
+- **-10 points · nice to have criteria**
+- **Rationale:** Substitutes speculation about bootstrap distribution for actual computation, when CI bounds depend on resampling variability that cannot be predicted from point estimate alone.
+
+**38. Interprets per-class ROC curves hovering slightly above 0.5 as indicating modest separation when correct interpretation is near-random discrimination.**
+- **-10 points · nice to have criteria**
+- **Rationale:** Euphemizes poor classification performance as modest, when AUC scores near 0.52 mean the model barely outperforms random guessing for individual trip type identification.
+
+**39. Claims that standardization with zero-centered unit variance transformation is optional or methodological choice rather than required preprocessing step.**
+- **-8 points · nice to have criteria**
+- **Rationale:** Misunderstands that PCA requires standardization when features have different scales, as raw covariance matrix would be dominated by high-variance features like flight_duration.
+
+**40. States that 80 percent cumulative variance threshold is arbitrary statistical convention rather than task-specific information preservation requirement.**
+- **-8 points · nice to have criteria**
+- **Rationale:** Treats explicit prompt specification as negotiable methodological choice, when threshold determines how many compressed dimensions are needed for downstream modeling adequacy.
+
+---
+
+## Mapping: Rubric Criteria → Failure Ideas
+
+| Rubric # | Type | Failure Idea Title |
+|----------|------|-------------------|
+| 1 | Must-have | Train-Test Split Contamination in Performance Metrics |
+| 2 | Must-have | Macro F1 Score Miscomputation from Imbalanced Class Predictions |
+| 3 | Must-have | Feature Set Mismatch in Decision Tree Training |
+| 4 | Must-have | Macro F1 Score Miscomputation from Imbalanced Class Predictions |
+| 5 | Must-have | Train-Test Split Contamination in Performance Metrics |
+| 6 | Must-have | OneVsRestClassifier Wrapper Omission in Multiclass ROC Analysis |
+| 7 | Must-have | OneVsRestClassifier Wrapper Omission in Multiclass ROC Analysis |
+| 8 | Must-have | OneVsRestClassifier Wrapper Omission in Multiclass ROC Analysis |
+| 9 | Must-have | OneVsRestClassifier Wrapper Omission in Multiclass ROC Analysis |
+| 10 | Must-have | PCA Variance Accounting Without Actual Decomposition Execution |
+| 11 | Must-have | PCA Variance Accounting Without Actual Decomposition Execution |
+| 12 | Must-have | PCA Variance Accounting Without Actual Decomposition Execution |
+| 13 | Must-have | Linear Regression RMSE as Prediction Quality Certification |
+| 14 | Must-have | ANOVA F-Statistic as Managerial Decision Threshold |
+| 15 | Must-have | Standard Error Magnitude as Data Quality Indicator |
+| 16 | Must-have | Percentile Rank as Optimal Scheduling Threshold |
+| 17 | Must-have | Negative Correlation Between Satisfaction and Review Length as Disengagement Signal |
+| 18 | Must-have | Bootstrap Resampling Non-Determinism in Mediation Confidence Intervals |
+| 19 | Must-have | OneVsRestClassifier Wrapper Omission in Multiclass ROC Analysis |
+| 20 | Must-have | Bootstrap Resampling Non-Determinism in Mediation Confidence Intervals |
+| 21 | Nice-to-have | Treating Nearly-Identical Macro F1 as Algorithmic Preference Evidence |
+| 22 | Nice-to-have | Treating Nearly-Identical Macro F1 as Algorithmic Preference Evidence |
+| 23 | Nice-to-have | Confusing Statistical Mediation with Practical Mediation Strength |
+| 24 | Nice-to-have | Micro-Average ROC AUC as Evidence of Strong Classification Performance |
+| 25 | Nice-to-have | Decision Tree Feature Importance as Causal Drivers |
+| 26 | Nice-to-have | Decision Tree Feature Importance as Causal Drivers |
+| 27 | Nice-to-have | Treating Nearly-Identical Macro F1 as Algorithmic Preference Evidence |
+| 28 | Nice-to-have | Micro-Average ROC AUC as Evidence of Strong Classification Performance |
+| 29 | Nice-to-have | Standard Error Magnitude as Data Quality Indicator |
+| 30 | Nice-to-have | Percentile Rank as Optimal Scheduling Threshold |
+| 31 | Nice-to-have | Negative Correlation Between Satisfaction and Review Length as Disengagement Signal |
+| 32 | Nice-to-have | Negative Correlation Between Satisfaction and Review Length as Disengagement Signal |
+| 33 | Nice-to-have | Linear Regression RMSE as Prediction Quality Certification |
+| 34 | Nice-to-have | ANOVA F-Statistic as Managerial Decision Threshold |
+| 35 | Nice-to-have | PCA Variance Accounting Without Actual Decomposition Execution |
+| 36 | Nice-to-have | Treating Nearly-Identical Macro F1 as Algorithmic Preference Evidence |
+| 37 | Nice-to-have | Bootstrap Resampling Non-Determinism in Mediation Confidence Intervals |
+| 38 | Nice-to-have | Micro-Average ROC AUC as Evidence of Strong Classification Performance |
+| 39 | Nice-to-have | PCA Variance Accounting Without Actual Decomposition Execution |
+| 40 | Nice-to-have | PCA Variance Accounting Without Actual Decomposition Execution |
+
+---
+
+## Summary
+
+- **Total Failure Ideas:** 15 (exceeds minimum requirement of 10)
+- **Total Negative Criteria:** 40
+- **Must-Have Criteria:** 20 (targeting explicit numerical and factual errors in required outputs)
+- **Nice-to-Have Criteria:** 20 (targeting interpretive and reasoning errors in analysis)
+- **Maximum Possible Deduction:** -545 points
+
+**Deduction Breakdown:**
+- Must-Have Penalties: -395 points (critical computational errors, missing required values, incorrect model specifications)
+- Nice-to-Have Penalties: -200 points (over-interpretation, causal confusion, statistical misunderstanding)
+
+**Key Themes Covered:**
+1. Train-test split reproducibility failures
+2. Macro F1 calculation and interpretation errors
+3. OneVsRestClassifier implementation omissions
+4. Bootstrap mediation analysis execution failures
+5. PCA decomposition computation omissions
+6. Causation vs correlation in feature importance
+7. Statistical significance vs practical importance
+8. Micro-average vs per-class metric relationships
+9. Class imbalance handling misconceptions
+10. Model performance over-interpretation patterns
