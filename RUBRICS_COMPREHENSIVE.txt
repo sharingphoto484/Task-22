@@ -1,0 +1,244 @@
+COMPREHENSIVE OUTPUT-BASED RUBRICS FOR AIRLINE OPERATIONS ANALYSIS
+
+SECTION 1: VALUE-ORIENTED RUBRICS
+
+SVM CLASSIFICATION METRICS
+
+1. Reports that the SVM classification accuracy on the test set is 85.43 percent rounded to two decimal places.
+30 points - Must Have
+Proof of Ask: "Report accuracy metric as percentage with two decimal precision."
+
+2. Reports that the SVM macro F1 score is 0.4607 rounded to four decimal places.
+30 points - Must Have
+Proof of Ask: "Report macro F1 metric with four decimal precision."
+
+DECISION TREE CLASSIFICATION METRICS
+
+3. Reports that the decision tree classification accuracy is 85.40 percent rounded to two decimal places.
+30 points - Must Have
+Proof of Ask: "Report accuracy as percentage rounded to two decimals."
+
+4. Reports that the decision tree macro F1 score is 0.4606 rounded to four decimal places.
+30 points - Must Have
+Proof of Ask: "Report macro F1 score rounded to four decimals."
+
+K-NEAREST NEIGHBORS CLASSIFICATION METRICS
+
+5. Reports that the K-NN classification accuracy is 98.97 percent rounded to two decimal places.
+25 points - Must Have
+Proof of Ask: "Report accuracy percentage to two decimal places."
+
+6. Reports that the CircleTrip ROC AUC score is 0.5202 rounded to four decimal places.
+25 points - Must Have
+Proof of Ask: "Report per-class AUC values to four decimals."
+
+7. Reports that the OneWay ROC AUC score is 0.5210 rounded to four decimal places.
+25 points - Must Have
+Proof of Ask: "Report per-class AUC values to four decimals."
+
+8. Reports that the RoundTrip ROC AUC score is 0.5265 rounded to four decimal places.
+25 points - Must Have
+Proof of Ask: "Report per-class AUC values to four decimals."
+
+9. Reports that the micro-averaged ROC AUC is 0.9929 rounded to four decimal places.
+25 points - Must Have
+Proof of Ask: "compute per-class ROC AUC scores plus micro-averaged ROC AUC"
+
+10. States that RoundTrip is the trip type with the highest AUC.
+20 points - Must Have
+Proof of Ask: "Deterministically identify trip type with highest AUC breaking ties alphabetically by class label if AUCs equal within 0.001 threshold."
+
+MEDIATION ANALYSIS METRICS
+
+11. Reports that the indirect effect is negative 0.0001 rounded to four decimal places.
+35 points - Must Have
+Proof of Ask: "Report indirect effect coefficient to four decimal precision."
+
+12. States that mediation is statistically supported based on the 95 percent confidence interval.
+25 points - Must Have
+Proof of Ask: "based solely on this CI state deterministically mediation is statistically supported if CI excludes zero otherwise not supported"
+
+PRINCIPAL COMPONENT ANALYSIS METRICS
+
+13. Reports that the first principal component variance ratio is 0.2037 rounded to four decimal places.
+30 points - Must Have
+Proof of Ask: "Report first component variance ratio to four decimal precision."
+
+14. Reports that the cumulative variance explained by the first 5 components is 0.7387 rounded to four decimal places.
+30 points - Must Have
+Proof of Ask: "Report cumulative variance to four decimal precision."
+
+15. States that none of the first 5 components exceed 80 percent cumulative variance threshold.
+25 points - Must Have
+Proof of Ask: "Deterministically state smallest number of components needed to exceed 80 percent cumulative variance threshold or report none within first 5 if threshold not met."
+
+LINEAR REGRESSION METRICS
+
+16. Reports that the root mean squared error for flight duration prediction is 1.471 rounded to three decimal places.
+30 points - Must Have
+Proof of Ask: "Report RMSE to three decimal precision."
+
+ONE-WAY ANOVA METRICS
+
+17. Reports that the F-statistic for purchase lead variation across sales channels is 8.98 rounded to two decimal places.
+25 points - Must Have
+Proof of Ask: "Report F-statistic rounded to two decimals."
+
+STANDARD ERROR METRICS
+
+18. Reports that the maximum standard error of mean for flight duration is 0.1307 rounded to four decimal places.
+25 points - Must Have
+Proof of Ask: "Report maximum SEM value to four decimal precision."
+
+PERCENTILE RANK METRICS
+
+19. Reports that the percentile rank for flight hour value 12 is 66 percent as an integer value.
+20 points - Must Have
+Proof of Ask: "Report percentile rank as integer value indicating percentage of observations below hour 12 threshold."
+
+CORRELATION ANALYSIS METRICS
+
+20. Reports that the Pearson correlation coefficient between satisfaction ratings and review length is negative 0.0321 rounded to four decimal places.
+25 points - Must Have
+Proof of Ask: "Report correlation coefficient to four decimal precision."
+
+BUSINESS INSIGHT
+
+21. States which model achieves higher macro F1 between SVM and decision tree and provides business explanation for the difference.
+25 points - Must Have
+Proof of Ask: "What business insights explain decision tree versus SVM macro F1 differences favoring higher F1 model."
+
+
+SECTION 2: VISUALIZATION RUBRICS
+
+CONFUSION MATRIX SVM (confusion_matrix_svm.png)
+
+22. Includes a confusion matrix heatmap for SVM classification that is semantically similar to a 2-by-2 grid with color intensity representing frequency counts.
+20 points - Must Have
+Proof of Ask: "Construct a confusion matrix visualization as a 2-by-2 heatmap grid where rows indicate actual reservation outcomes, columns indicate predicted reservation outcomes, and color intensity represents frequency counts."
+
+23. Provides a confusion matrix heatmap with rows indicating actual reservation outcomes.
+15 points - Must Have
+Proof of Ask: "Construct a confusion matrix visualization as a 2-by-2 heatmap grid where rows indicate actual reservation outcomes"
+
+24. Provides a confusion matrix heatmap with columns indicating predicted reservation outcomes.
+15 points - Must Have
+Proof of Ask: "columns indicate predicted reservation outcomes"
+
+25. Provides a confusion matrix heatmap with color intensity representing frequency counts.
+15 points - Must Have
+Proof of Ask: "color intensity represents frequency counts"
+
+FEATURE IMPORTANCE DECISION TREE (feature_importance_dt.png)
+
+26. Includes a horizontal bar chart for decision tree feature importance that is semantically similar to a chart with y-axis enumerating attribute names and x-axis quantifying contribution magnitude.
+20 points - Must Have
+Proof of Ask: "Produce a horizontal bar visualization depicting feature contribution scores with y-axis enumerating the seven attribute names and x-axis quantifying contribution magnitude."
+
+27. Provides a horizontal bar chart with y-axis enumerating the seven attribute names including num_passengers, purchase_lead, length_of_stay, flight_hour, wants_extra_baggage, wants_preferred_seat, and wants_in_flight_meals.
+15 points - Must Have
+Proof of Ask: "y-axis enumerating the seven attribute names"
+
+28. Provides a horizontal bar chart with x-axis quantifying contribution magnitude for each feature.
+15 points - Must Have
+Proof of Ask: "x-axis quantifying contribution magnitude"
+
+MODEL COMPARISON CHART (model_comparison.png)
+
+29. Includes a side-by-side bar chart comparing SVM and decision tree performance that is semantically similar to grouped bars for two models.
+20 points - Must Have
+Proof of Ask: "Generate side-by-side bar chart comparing SVM and decision tree with x-axis showing metric names macro F1 and accuracy, grouped bars for two models clearly labeled."
+
+30. Provides a side-by-side bar chart with x-axis showing metric names macro F1 and accuracy.
+15 points - Must Have
+Proof of Ask: "x-axis showing metric names macro F1 and accuracy"
+
+31. Provides a side-by-side bar chart with grouped bars for two models clearly labeled as SVM and decision tree.
+15 points - Must Have
+Proof of Ask: "grouped bars for two models clearly labeled"
+
+ROC CURVES K-NN (roc_curves_knn.png)
+
+32. Includes combined ROC curve visualization for K-NN classification that is semantically similar to three per-class curves plus micro-averaged curve with false positive proportion on horizontal axis and true positive proportion on vertical axis.
+25 points - Must Have
+Proof of Ask: "Generate combined ROC curve representation plotting three per-class curves using one-versus-rest decomposition plus micro-averaged curve where horizontal axis denotes false positive proportion, vertical axis denotes true positive proportion"
+
+33. Provides three per-class ROC curves with trip type A in blue, trip type B in orange, and trip type C in green.
+20 points - Must Have
+Proof of Ask: "with color mapping trip type A blue, B orange, C green"
+
+34. Provides micro-averaged ROC curve as a red dashed line.
+20 points - Must Have
+Proof of Ask: "micro-average red dashed line"
+
+35. Provides ROC curves with horizontal axis denoting false positive proportion and vertical axis denoting true positive proportion.
+15 points - Must Have
+Proof of Ask: "horizontal axis denotes false positive proportion, vertical axis denotes true positive proportion"
+
+MEDIATION PATH DIAGRAM (mediation_path_diagram.png)
+
+36. Includes a path diagram visualization displaying three nodes connected via directional arrows that is semantically similar to a mediation model structure.
+20 points - Must Have
+Proof of Ask: "Construct path diagram visualization displaying three nodes connected via directional arrows"
+
+37. Provides path diagram with purchase_lead connecting to wants_in_flight_meals with coefficient a annotated on the arrow.
+15 points - Must Have
+Proof of Ask: "purchase_lead connects to wants_in_flight_meals with coefficient a annotated"
+
+38. Provides path diagram with wants_in_flight_meals connecting to booking_complete with coefficient b annotated on the arrow.
+15 points - Must Have
+Proof of Ask: "wants_in_flight_meals connects to booking_complete with coefficient b annotated"
+
+39. Provides path diagram with purchase_lead directly connecting to booking_complete with coefficient c_prime annotated on the arrow.
+15 points - Must Have
+Proof of Ask: "purchase_lead directly connects to booking_complete with coefficient c_prime annotated"
+
+BOOTSTRAP HISTOGRAM (bootstrap_histogram.png)
+
+40. Includes a histogram of bootstrapped indirect effect estimates that is semantically similar to a distribution with vertical line at point estimate.
+20 points - Must Have
+Proof of Ask: "Generate histogram of bootstrapped indirect effect estimates with 30 equal-width bins over min-max range showing vertical line at point estimate."
+
+41. Provides a histogram with 30 equal-width bins spanning the minimum to maximum range of bootstrap estimates.
+15 points - Must Have
+Proof of Ask: "with 30 equal-width bins over min-max range"
+
+42. Provides a histogram with a vertical line positioned at the point estimate of the indirect effect.
+15 points - Must Have
+Proof of Ask: "showing vertical line at point estimate"
+
+SCREE PLOT (scree_plot.png)
+
+43. Includes a scree plot for PCA that is semantically similar to a dual-axis chart with component indices on horizontal axis and variance percentages on vertical axes.
+25 points - Must Have
+Proof of Ask: "Create scree visualization where horizontal axis enumerates component indices one through five and primary vertical axis displays individual variance percentage explained as connected line plot with point markers plus secondary vertical axis showing cumulative variance percentage as line with markers clearly labeled."
+
+44. Provides a scree plot with horizontal axis enumerating component indices one through five.
+15 points - Must Have
+Proof of Ask: "horizontal axis enumerates component indices one through five"
+
+45. Provides a scree plot with primary vertical axis displaying individual variance percentage explained as connected line plot with point markers.
+15 points - Must Have
+Proof of Ask: "primary vertical axis displays individual variance percentage explained as connected line plot with point markers"
+
+46. Provides a scree plot with secondary vertical axis showing cumulative variance percentage as line with markers clearly labeled.
+20 points - Must Have
+Proof of Ask: "secondary vertical axis showing cumulative variance percentage as line with markers clearly labeled"
+
+RESIDUAL PLOT (residual_plot.png)
+
+47. Includes a residual plot for linear regression that is semantically similar to a scatter plot with predicted values on horizontal axis and residuals on vertical axis with horizontal reference line at zero.
+20 points - Must Have
+Proof of Ask: "Produce residual visualization where horizontal axis presents predicted flight_duration estimates and vertical axis presents residuals computed as observed minus predicted values with horizontal reference line positioned at zero."
+
+48. Provides a residual plot with horizontal axis presenting predicted flight_duration estimates.
+15 points - Must Have
+Proof of Ask: "horizontal axis presents predicted flight_duration estimates"
+
+49. Provides a residual plot with vertical axis presenting residuals computed as observed minus predicted values.
+15 points - Must Have
+Proof of Ask: "vertical axis presents residuals computed as observed minus predicted values"
+
+50. Provides a residual plot with horizontal reference line positioned at zero.
+15 points - Must Have
+Proof of Ask: "horizontal reference line positioned at zero"
