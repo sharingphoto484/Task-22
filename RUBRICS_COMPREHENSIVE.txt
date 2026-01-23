@@ -4,43 +4,43 @@ SECTION 1: VALUE-ORIENTED RUBRICS
 
 SVM CLASSIFICATION METRICS
 
-1. Reports that the SVM classification accuracy on the test set is 85.43 percent rounded to two decimal places.
+1. Reports that the SVM classification accuracy on the test set is between 85.38 percent and 85.48 percent rounded to two decimal places.
 30 points - Must Have
 Proof of Ask: "Report accuracy metric as percentage with two decimal precision."
 
-2. Reports that the SVM macro F1 score is 0.4607 rounded to four decimal places.
+2. Reports that the SVM macro F1 score is between 0.4602 and 0.4612 rounded to four decimal places.
 30 points - Must Have
 Proof of Ask: "Report macro F1 metric with four decimal precision."
 
 DECISION TREE CLASSIFICATION METRICS
 
-3. Reports that the decision tree classification accuracy is 85.40 percent rounded to two decimal places.
+3. Reports that the decision tree classification accuracy is between 85.35 percent and 85.45 percent rounded to two decimal places.
 30 points - Must Have
 Proof of Ask: "Report accuracy as percentage rounded to two decimals."
 
-4. Reports that the decision tree macro F1 score is 0.4606 rounded to four decimal places.
+4. Reports that the decision tree macro F1 score is between 0.4601 and 0.4611 rounded to four decimal places.
 30 points - Must Have
 Proof of Ask: "Report macro F1 score rounded to four decimals."
 
 K-NEAREST NEIGHBORS CLASSIFICATION METRICS
 
-5. Reports that the K-NN classification accuracy is 98.97 percent rounded to two decimal places.
+5. Reports that the K-NN classification accuracy is between 98.92 percent and 99.02 percent rounded to two decimal places.
 25 points - Must Have
 Proof of Ask: "Report accuracy percentage to two decimal places."
 
-6. Reports that the CircleTrip ROC AUC score is 0.5202 rounded to four decimal places.
+6. Reports that the CircleTrip ROC AUC score is between 0.5197 and 0.5207 rounded to four decimal places.
 25 points - Must Have
 Proof of Ask: "Report per-class AUC values to four decimals."
 
-7. Reports that the OneWay ROC AUC score is 0.5210 rounded to four decimal places.
+7. Reports that the OneWay ROC AUC score is between 0.5205 and 0.5215 rounded to four decimal places.
 25 points - Must Have
 Proof of Ask: "Report per-class AUC values to four decimals."
 
-8. Reports that the RoundTrip ROC AUC score is 0.5265 rounded to four decimal places.
+8. Reports that the RoundTrip ROC AUC score is between 0.5260 and 0.5270 rounded to four decimal places.
 25 points - Must Have
 Proof of Ask: "Report per-class AUC values to four decimals."
 
-9. Reports that the micro-averaged ROC AUC is 0.9929 rounded to four decimal places.
+9. Reports that the micro-averaged ROC AUC is between 0.9924 and 0.9934 rounded to four decimal places.
 25 points - Must Have
 Proof of Ask: "compute per-class ROC AUC scores plus micro-averaged ROC AUC"
 
@@ -50,7 +50,7 @@ Proof of Ask: "Deterministically identify trip type with highest AUC breaking ti
 
 MEDIATION ANALYSIS METRICS
 
-11. Reports that the indirect effect is negative 0.0001 rounded to four decimal places.
+11. Reports that the indirect effect is between negative 0.0006 and 0.0004 rounded to four decimal places.
 35 points - Must Have
 Proof of Ask: "Report indirect effect coefficient to four decimal precision."
 
@@ -60,11 +60,11 @@ Proof of Ask: "based solely on this CI state deterministically mediation is stat
 
 PRINCIPAL COMPONENT ANALYSIS METRICS
 
-13. Reports that the first principal component variance ratio is 0.2037 rounded to four decimal places.
+13. Reports that the first principal component variance ratio is between 0.2032 and 0.2042 rounded to four decimal places.
 30 points - Must Have
 Proof of Ask: "Report first component variance ratio to four decimal precision."
 
-14. Reports that the cumulative variance explained by the first 5 components is 0.7387 rounded to four decimal places.
+14. Reports that the cumulative variance explained by the first 5 components is between 0.7382 and 0.7392 rounded to four decimal places.
 30 points - Must Have
 Proof of Ask: "Report cumulative variance to four decimal precision."
 
@@ -74,31 +74,31 @@ Proof of Ask: "Deterministically state smallest number of components needed to e
 
 LINEAR REGRESSION METRICS
 
-16. Reports that the root mean squared error for flight duration prediction is 1.471 rounded to three decimal places.
+16. Reports that the root mean squared error for flight duration prediction is between 1.466 and 1.476 rounded to three decimal places.
 30 points - Must Have
 Proof of Ask: "Report RMSE to three decimal precision."
 
 ONE-WAY ANOVA METRICS
 
-17. Reports that the F-statistic for purchase lead variation across sales channels is 8.98 rounded to two decimal places.
+17. Reports that the F-statistic for purchase lead variation across sales channels is between 8.93 and 9.03 rounded to two decimal places.
 25 points - Must Have
 Proof of Ask: "Report F-statistic rounded to two decimals."
 
 STANDARD ERROR METRICS
 
-18. Reports that the maximum standard error of mean for flight duration is 0.1307 rounded to four decimal places.
+18. Reports that the maximum standard error of mean for flight duration is between 0.1302 and 0.1312 rounded to four decimal places.
 25 points - Must Have
 Proof of Ask: "Report maximum SEM value to four decimal precision."
 
 PERCENTILE RANK METRICS
 
-19. Reports that the percentile rank for flight hour value 12 is 66 percent as an integer value.
+19. Reports that the percentile rank for flight hour value 12 is between 65 percent and 67 percent as an integer value.
 20 points - Must Have
 Proof of Ask: "Report percentile rank as integer value indicating percentage of observations below hour 12 threshold."
 
 CORRELATION ANALYSIS METRICS
 
-20. Reports that the Pearson correlation coefficient between satisfaction ratings and review length is negative 0.0321 rounded to four decimal places.
+20. Reports that the Pearson correlation coefficient between satisfaction ratings and review length is between negative 0.0326 and negative 0.0316 rounded to four decimal places.
 25 points - Must Have
 Proof of Ask: "Report correlation coefficient to four decimal precision."
 
