@@ -82,10 +82,10 @@
 
 ### Failure Idea 9: Micro-Average ROC AUC as Evidence of Strong Classification Performance
 
-**Failure Idea:** The analyst reports K-NN micro-averaged ROC AUC of 0.9925 (or approximately 0.9929 in correct implementation) and describes this as evidence of "high overall discrimination" or "near the top-left" position, suggesting strong model performance. However, this interpretation ignores the fundamental mismatch between micro-average AUC and per-class AUC values. The per-class AUCs are all near 0.52, barely better than random guessing (0.50), indicating the model cannot reliably discriminate between trip types when evaluated through one-versus-rest decomposition. The micro-average AUC is high because it treats all predictions across all classes as a single binary problem, effectively averaging over the entire prediction matrix where the model benefits from the multinomial structure and class frequencies. This creates a statistical artifact where micro-average can be high even when individual class discrimination is poor. The correct interpretation is that K-NN achieves 98.97 percent accuracy through memorization and proximity matching of exact feature combinations rather than through learning generalizable boundaries between CircleTrip, OneWay, and RoundTrip patterns based on purchase_lead and flight_duration features alone.
+**Failure Idea:** The analyst reports K-NN micro-averaged ROC AUC of 0.9920 (deviating from correct value 0.9929) and describes this as evidence of "high overall discrimination" or "near the top-left" position, suggesting strong model performance. However, this interpretation ignores the fundamental mismatch between micro-average AUC and per-class AUC values. The per-class AUCs are all near 0.52, barely better than random guessing (0.50), indicating the model cannot reliably discriminate between trip types when evaluated through one-versus-rest decomposition. The micro-average AUC is high because it treats all predictions across all classes as a single binary problem, effectively averaging over the entire prediction matrix where the model benefits from the multinomial structure and class frequencies. This creates a statistical artifact where micro-average can be high even when individual class discrimination is poor. The correct interpretation is that K-NN achieves 98.97 percent accuracy through memorization and proximity matching of exact feature combinations rather than through learning generalizable boundaries between CircleTrip, OneWay, and RoundTrip patterns based on purchase_lead and flight_duration features alone.
 
 **Corresponding Rubric Item:**
-- **Interprets the micro-averaged ROC AUC of 0.9929 as evidence of strong discrimination ability without acknowledging that per-class AUCs near 0.52 indicate poor individual class separation.**
+- **Interprets the micro-averaged ROC AUC of 0.9920 as evidence of strong discrimination ability without acknowledging that per-class AUCs near 0.52 indicate poor individual class separation.**
 - **-12 points · nice to have criteria**
 
 ---
@@ -154,41 +154,41 @@
 
 ### Must-Have Criteria (Numerical/Factual Errors)
 
-**1. Reports that the SVM classification accuracy is 85.04 percent instead of the correct value 85.43 percent.**
+**1. Reports that the SVM classification accuracy is 85.04 percent rounded to two decimal places [84.99, 85.09].**
 - **-20 points · must have criteria**
-- **Rationale:** Critical numerical error in primary classification performance metric that violates explicit prompt requirement for two decimal precision. This 0.39 percentage point deviation suggests improper train-test split execution, undermining reproducibility and model comparison validity.
+- **Rationale:** Critical numerical error in primary classification performance metric that violates explicit prompt requirement for two decimal precision. This value falls outside the correct range [85.38, 85.48], suggesting improper train-test split execution, undermining reproducibility and model comparison validity.
 
-**2. Reports that the SVM macro F1 score is 0.4596 instead of the correct value 0.4607.**
+**2. Reports that the SVM macro F1 score is 0.4596 rounded to four decimal places [0.4591, 0.4601].**
 - **-20 points · must have criteria**
-- **Rationale:** Core calculation error in the explicitly required macro-averaged F1 score that is essential for comparing how SVM and decision tree handle class imbalance, which is the central analytical question in the prompt.
+- **Rationale:** Core calculation error in the explicitly required macro-averaged F1 score that is essential for comparing how SVM and decision tree handle class imbalance. This value falls outside the correct range [0.4602, 0.4612], indicating improper averaging methodology.
 
-**3. Reports that the decision tree classification accuracy is 85.05 percent instead of the correct value 85.40 percent.**
+**3. Reports that the decision tree classification accuracy is 85.05 percent rounded to two decimal places [85.00, 85.10].**
 - **-20 points · must have criteria**
-- **Rationale:** Critical numerical error representing 0.35 percentage point deviation that exceeds acceptable tolerance and suggests feature set mismatch or incorrect data preprocessing, directly impacting model comparison conclusions.
+- **Rationale:** Critical numerical error representing 0.35 percentage point deviation that falls outside the correct range [85.35, 85.45], suggesting feature set mismatch or incorrect data preprocessing, directly impacting model comparison conclusions.
 
-**4. Reports that the decision tree macro F1 score is 0.4596 instead of the correct value 0.4606.**
+**4. Reports that the decision tree macro F1 score is 0.4596 rounded to four decimal places [0.4591, 0.4601].**
 - **-20 points · must have criteria**
-- **Rationale:** Important factual error in required performance metric where 0.0010 deviation from correct value undermines the business insight requirement comparing SVM versus decision tree macro F1 differences.
+- **Rationale:** Important factual error in required performance metric that falls outside the correct range [0.4601, 0.4611], undermining the business insight requirement comparing SVM versus decision tree macro F1 differences.
 
-**5. Reports that the K-NN classification accuracy deviates from the correct value 98.97 percent by more than 0.05 percentage points.**
+**5. Reports that the K-NN classification accuracy is 85.04 percent rounded to two decimal places [84.99, 85.09].**
 - **-17 points · must have criteria**
-- **Rationale:** Significant numerical error in trip type classification accuracy that indicates improper train-test split execution or incorrect OneVsRestClassifier implementation.
+- **Rationale:** Significant numerical error in trip type classification accuracy that falls outside the correct range [98.92, 99.02], indicating improper train-test split execution or incorrect OneVsRestClassifier implementation.
 
-**6. Reports that the CircleTrip ROC AUC score is 0.5111 instead of the correct value 0.5202.**
+**6. Reports that the CircleTrip ROC AUC score is 0.5111 rounded to four decimal places [0.5106, 0.5116].**
 - **-20 points · must have criteria**
-- **Rationale:** Critical error of 0.0091 in per-class AUC score that suggests OneVsRestClassifier wrapper was omitted, violating explicit prompt requirement and making ROC analysis invalid.
+- **Rationale:** Critical error that falls outside the correct range [0.5197, 0.5207], suggesting OneVsRestClassifier wrapper was omitted, violating explicit prompt requirement and making ROC analysis invalid.
 
-**7. Reports that the OneWay ROC AUC score is 0.5147 instead of the correct value 0.5210.**
+**7. Reports that the OneWay ROC AUC score is 0.5147 rounded to four decimal places [0.5142, 0.5152].**
 - **-20 points · must have criteria**
-- **Rationale:** Substantial deviation of 0.0063 in per-class AUC indicating incorrect distance weighting or missing OneVsRestClassifier wrapper that compromises multiclass ROC decomposition.
+- **Rationale:** Substantial deviation that falls outside the correct range [0.5205, 0.5215], indicating incorrect distance weighting or missing OneVsRestClassifier wrapper that compromises multiclass ROC decomposition.
 
-**8. Reports that the RoundTrip ROC AUC score is 0.5179 instead of the correct value 0.5265.**
+**8. Reports that the RoundTrip ROC AUC score is 0.5179 rounded to four decimal places [0.5174, 0.5184].**
 - **-20 points · must have criteria**
-- **Rationale:** Significant error of 0.0086 in the highest AUC trip type that misrepresents discriminative strength and violates deterministic identification requirement from prompt.
+- **Rationale:** Significant error that falls outside the correct range [0.5260, 0.5270], misrepresenting discriminative strength and violating deterministic identification requirement from prompt.
 
-**9. Reports that the micro-averaged ROC AUC is 0.9925 instead of the correct value 0.9929.**
+**9. Reports that the micro-averaged ROC AUC is 0.9920 rounded to four decimal places [0.9915, 0.9925].**
 - **-15 points · must have criteria**
-- **Rationale:** Numerical error in aggregate multiclass performance metric suggesting improper array flattening or incorrect micro-average calculation methodology.
+- **Rationale:** Numerical error in aggregate multiclass performance metric that falls outside the correct range [0.9924, 0.9934], suggesting improper array flattening or incorrect micro-average calculation methodology.
 
 **10. Fails to report actual computed values for principal component analysis, instead providing generic placeholder text such as around 0.3 to 0.4 or often greater than 0.8 to 0.9.**
 - **-25 points · must have criteria**
@@ -248,7 +248,7 @@
 - **-10 points · nice to have criteria**
 - **Rationale:** Conflates statistical significance with practical importance, failing to communicate that while mediated pathway is detectable, meal preference explains virtually none of the purchase lead to booking completion relationship.
 
-**24. Interprets the micro-averaged ROC AUC near 0.99 as evidence of strong model discrimination without acknowledging per-class AUCs near 0.52 indicate poor individual class separation.**
+**24. Interprets the micro-averaged ROC AUC of 0.9920 as evidence of strong model discrimination without acknowledging per-class AUCs near 0.52 indicate poor individual class separation.**
 - **-12 points · nice to have criteria**
 - **Rationale:** Misunderstands relationship between micro-average and per-class metrics, creating false impression of strong classification performance when individual trip type discrimination is barely better than random.
 
