@@ -1,0 +1,56 @@
+============================================================
+VACATION RENTAL MARKET ANALYSIS - KEY OUTPUTS
+============================================================
+
+ANALYSIS 1: Random Forest Regression - Amsterdam Pricing
+- Mean Absolute Error (Test Set): 166.51
+- Output: rf_feature_importance.png
+
+ANALYSIS 2: Gradient Boosting Regression - Barcelona Satisfaction
+- R-squared (Test Set): 0.5059
+- Output: gb_learning_curve.png
+
+ANALYSIS 3: DBSCAN Clustering - Athens Geographic Patterns
+- Total Clusters Discovered: 1
+- Noise Points: 2
+- Output: dbscan_clusters.png
+
+ANALYSIS 4: Factor Analysis - Athens Satisfaction Metrics
+- Cleanliness Rating Loading on Factor 1: 0.6252
+- Output: factor_loadings_heatmap.png
+
+ANALYSIS 5: Ridge Regression - Barcelona Pricing
+- Root Mean Squared Error (Test Set): 115.329
+- Output: ridge_coefficients.png
+
+ANALYSIS 6: Two-Sample T-Test - Amsterdam vs Athens Pricing
+- T-Statistic: 26.965
+- P-value: 0.000000
+
+ANALYSIS 7: Interquartile Range - Barcelona Pricing
+- Q1 (25th Percentile): 161.98
+- Q3 (75th Percentile): 335.37
+- Interquartile Range (IQR): 173.39
+
+ANALYSIS 8: Coefficient of Variation - Amsterdam Pricing
+- Mean Price: 545.02
+- Standard Deviation: 416.97
+- Coefficient of Variation (CV): 76.51%
+
+COMPARATIVE INSIGHTS:
+Random Forest achieves better generalization through parallel ensemble
+averaging reducing overfitting, while Gradient Boosting attains superior
+accuracy via sequential error correction but risks overfitting without
+careful regularization, making Random Forest more robust for noisy rental
+data with complex interactions whereas Gradient Boosting excels when
+patterns are systematic and training data is abundant and clean.
+
+============================================================
+GENERATED FILES:
+1. rental_market_analysis.py (main analysis script)
+2. rf_feature_importance.png
+3. gb_learning_curve.png
+4. dbscan_clusters.png
+5. factor_loadings_heatmap.png
+6. ridge_coefficients.png
+============================================================
