@@ -16,12 +16,7 @@ from sklearn.cluster import DBSCAN
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
-try:
-    from factor_analyzer import FactorAnalyzer
-    FACTOR_ANALYZER_AVAILABLE = True
-except:
-    FACTOR_ANALYZER_AVAILABLE = False
-    from sklearn.decomposition import FactorAnalysis
+from factor_analyzer import FactorAnalyzer
 from scipy import stats
 import warnings
 warnings.filterwarnings('ignore')
@@ -221,28 +216,11 @@ fa_scaler = StandardScaler()
 athens_fa_scaled = fa_scaler.fit_transform(athens_fa)
 
 # ---------- Apply Factor Analysis ----------
-if FACTOR_ANALYZER_AVAILABLE:
-    try:
-        fa = FactorAnalyzer(n_factors=3, rotation='varimax', method='minres')
-        fa.fit(athens_fa_scaled)
-        loadings = fa.loadings_
-    except:
-        # Fallback to sklearn FactorAnalysis
-        from sklearn.decomposition import PCA
-        from scipy.linalg import svd
+fa = FactorAnalyzer(n_factors=3, rotation='varimax', method='minres')
+fa.fit(athens_fa_scaled)
 
-        # Use PCA-based factor analysis
-        pca = PCA(n_components=3)
-        pca.fit(athens_fa_scaled)
-        loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
-else:
-    # Use sklearn's approach with varimax rotation
-    from sklearn.decomposition import PCA
-
-    pca = PCA(n_components=3)
-    pca.fit(athens_fa_scaled)
-    loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
-
+# ---------- Extract Loadings Matrix ----------
+loadings = fa.loadings_
 loadings_df = pd.DataFrame(
     loadings,
     index=fa_variables,

@@ -16,7 +16,7 @@ ANALYSIS 3: DBSCAN Clustering - Athens Geographic Patterns
 - Output: dbscan_clusters.png
 
 ANALYSIS 4: Factor Analysis - Athens Satisfaction Metrics
-- Cleanliness Rating Loading on Factor 1: 0.6252
+- Cleanliness Rating Loading on Factor 1: 0.0761
 - Output: factor_loadings_heatmap.png
 
 ANALYSIS 5: Ridge Regression - Barcelona Pricing
