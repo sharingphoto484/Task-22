@@ -262,9 +262,10 @@ try:
     # Calculate macro F1 score
     y_pred_qda = qda_clf.predict(X_test_qda)
     f1_macro = f1_score(y_test_qda, y_pred_qda, average='macro')
-except np.linalg.LinAlgError:
+except (np.linalg.LinAlgError, ValueError):
     # QDA fails with default parameters due to singular covariance matrices
     # Some categories have fewer samples than features causing rank deficiency
+    # or classes with only 1 sample making covariance ill defined
     f1_macro = 0.0000
     y_pred_qda = np.zeros_like(y_test_qda)
 
