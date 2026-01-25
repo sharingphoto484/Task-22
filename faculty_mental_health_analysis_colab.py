@@ -283,12 +283,15 @@ sgd_loss_tracker = SGDClassifier(loss='hinge', penalty='l2', max_iter=1, warm_st
 losses = []
 iterations = list(range(1, 101))
 
+# Convert labels from {0, 1} to {-1, 1} for correct hinge loss calculation
+y_train_sgd_transformed = np.where(y_train_sgd == 0, -1, 1)
+
 for i in iterations:
     sgd_loss_tracker.max_iter = i
     sgd_loss_tracker.fit(X_train_sgd_scaled, y_train_sgd)
-    # Calculate hinge loss
+    # Calculate hinge loss using correct formula: L(y, f(x)) = max(0, 1 - y * f(x))
     decision_values = sgd_loss_tracker.decision_function(X_train_sgd_scaled)
-    hinge_loss = np.mean(np.maximum(0, 1 - y_train_sgd * decision_values * 2 + 1))
+    hinge_loss = np.mean(np.maximum(0, 1 - y_train_sgd_transformed * decision_values))
     losses.append(hinge_loss)
 
 plt.figure(figsize=(10, 6))
