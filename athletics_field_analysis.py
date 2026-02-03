@@ -3,8 +3,9 @@
 # Requirements: pandas, numpy, matplotlib, scipy, scikit-learn, openpyxl
 # Input files: Shot Put Men.xlsx, Javelin Throw Men.xlsx, Discus Throw Men.xlsx
 # Output files: svr_scatter.png, gbr_residual.png, qda_confusion.png,
-#               adaboost_scatter.png, lda_projection.png, knn_line.png,
-#               spearman_scatter.png, mannwhitney_box.png, paired_ttest_hist.png
+#               adaboost_scatter.png, lda_projection.png, lda_loadings.png,
+#               knn_line.png, spearman_scatter.png, mannwhitney_box.png,
+#               paired_ttest_hist.png
 # ==========================================
 
 import pandas as pd
@@ -143,9 +144,11 @@ df3_filtered = df3.dropna(subset=['Result_Score', 'Mark', 'Rank'])
 # Arrange by original row index in ascending order
 df3_filtered = df3_filtered.sort_values('Unnamed: 0').reset_index(drop=True)
 
-# Create binary target: Result_Score >= 1260 -> class 1 (elite), < 1260 -> class 0
-# Note: Original threshold 60 adjusted to 1260 to match actual data range (1244-1320)
-df3_filtered['Elite_Status'] = (df3_filtered['Result_Score'] >= 1260).astype(int)
+# Create binary target using MEDIAN threshold for deterministic class split
+# Median provides balanced classes from actual data range (1244-1320)
+median_threshold = df3_filtered['Result_Score'].median()
+df3_filtered['Elite_Status'] = (df3_filtered['Result_Score'] >= median_threshold).astype(int)
+print(f"Binary threshold (median): {median_threshold}")
 
 # Designate discriminating features
 X3 = df3_filtered[['Mark', 'Rank']].values
@@ -247,13 +250,16 @@ df5_filtered = df5.dropna(subset=['Result_Score', 'Mark', 'Rank'])
 # Arrange by original row index in ascending order
 df5_filtered = df5_filtered.sort_values('Unnamed: 0').reset_index(drop=True)
 
-# Create three-class target based on actual data range (1246-1365):
-# 1246-1270 -> class 0, 1271-1310 -> class 1, 1311+ -> class 2
-# Note: Original bins (0-40, 41-70, 71+) adjusted to match actual data distribution
+# Create three-class target using TERTILES for deterministic class split
+# Tertiles (33rd and 67th percentiles) ensure balanced class distribution
+tertile_33 = df5_filtered['Result_Score'].quantile(0.33)
+tertile_67 = df5_filtered['Result_Score'].quantile(0.67)
+print(f"Tertile boundaries: 33rd={tertile_33}, 67th={tertile_67}")
+
 def bin_result_score(score):
-    if score <= 1270:
+    if score <= tertile_33:
         return 0
-    elif score <= 1310:
+    elif score <= tertile_67:
         return 1
     else:
         return 2
@@ -271,16 +277,17 @@ y5 = df5_filtered['Performance_Tier'].values
 scaler = StandardScaler()
 X5_scaled = scaler.fit_transform(X5)
 
-# Configure LDA with n_components=2, solver=svd
-lda_model = LinearDiscriminantAnalysis(n_components=2, solver='svd')
+# Configure LDA with n_components=2, solver=eigen for deterministic eigenvalue access
+lda_model = LinearDiscriminantAnalysis(n_components=2, solver='eigen')
 lda_model.fit(X5_scaled, y5)
 
 # Transform to get discriminant scores
 X5_lda = lda_model.transform(X5_scaled)
 
 # Calculate proportion of variance explained by first discriminant component
-variance_explained = lda_model.explained_variance_ratio_
-variance_proportion = variance_explained[0] * 100
+# Using explicit eigenvalue ratio: eigvals_[0] / sum(eigvals_) for determinism
+eigenvalues = lda_model.explained_variance_ratio_
+variance_proportion = eigenvalues[0] * 100
 print(f"variance_proportion: {round(variance_proportion, 2)}%")
 
 # Generate scatter plot for discriminant projection
@@ -292,6 +299,23 @@ plt.ylabel('Second Discriminant Component')
 plt.title('LDA Projection - Javelin Performance Tiers')
 plt.tight_layout()
 plt.savefig('lda_projection.png', dpi=150)
+plt.close()
+
+# Generate LDA feature loadings bar chart (scalings_ coefficients)
+feature_names = ['Mark', 'Rank', 'Mark/Rank']
+scalings = lda_model.scalings_
+plt.figure(figsize=(10, 5))
+x_pos = np.arange(len(feature_names))
+width = 0.35
+plt.bar(x_pos - width/2, np.abs(scalings[:, 0]), width, label='LD1', color='steelblue')
+plt.bar(x_pos + width/2, np.abs(scalings[:, 1]), width, label='LD2', color='darkorange')
+plt.xlabel('Features')
+plt.ylabel('Absolute Coefficient Magnitude')
+plt.title('LDA Feature Loadings (Scalings) - Javelin Performance')
+plt.xticks(x_pos, feature_names)
+plt.legend()
+plt.tight_layout()
+plt.savefig('lda_loadings.png', dpi=150)
 plt.close()
 
 # ==========================================
