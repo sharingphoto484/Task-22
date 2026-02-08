@@ -23,25 +23,50 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-# ---------- Helper: Load Raw Datasets ----------
+# ---------- Helper: Load Raw Datasets with Prompt-Aligned Column Names ----------
 def load_fighters():
-    return pd.read_excel('Fighters.xlsx')
+    df = pd.read_excel('Fighters.xlsx')
+    df = df.rename(columns={
+        'Fighter_Id': 'fighter_id',
+        'Full Name': 'fighter_name',
+        'Reach': 'reach_cm',
+        'Ht.': 'height_cm',
+        'Wt.': 'weight_kg',
+        'Weight_Class': 'weight_class',
+    })
+    return df
 
 def load_fights():
-    return pd.read_excel('Fights.xlsx')
+    df = pd.read_excel('Fights.xlsx')
+    df = df.rename(columns={
+        'Fight_Id': 'fight_id',
+        'Fighter_Id_1': 'red_fighter_id',
+        'Fighter_Id_2': 'blue_fighter_id',
+        'Method': 'result_method',
+        'Weight_Class': 'weight_class',
+    })
+    return df
 
 def load_stats():
-    return pd.read_excel('Fighters Stats.xlsx')
+    df = pd.read_excel('Fighters Stats.xlsx')
+    df = df.rename(columns={
+        'Fighter_Id': 'fighter_id',
+        'Full Name': 'fighter_name',
+        'STR': 'total_strikes_landed',
+        'TD': 'takedowns_landed',
+        'Ctrl': 'control_time_seconds',
+        'Weight_Class': 'weight_class',
+    })
+    return df
 
 
 # ---------- Helper: Derive Winner ID from Fights ----------
 def derive_winner_id(fights):
-    """Add winner_id column based on Result_1/Result_2."""
     conditions = [
         fights['Result_1'] == 'W',
         fights['Result_2'] == 'W',
     ]
-    choices = [fights['Fighter_Id_1'], fights['Fighter_Id_2']]
+    choices = [fights['red_fighter_id'], fights['blue_fighter_id']]
     fights = fights.copy()
     fights['winner_id'] = np.select(conditions, choices, default=np.nan)
     return fights
@@ -49,12 +74,11 @@ def derive_winner_id(fights):
 
 # ---------- Helper: Derive Loser ID from Fights ----------
 def derive_loser_id(fights):
-    """Add loser_id column based on Result_1/Result_2."""
     conditions = [
         fights['Result_1'] == 'L',
         fights['Result_2'] == 'L',
     ]
-    choices = [fights['Fighter_Id_1'], fights['Fighter_Id_2']]
+    choices = [fights['red_fighter_id'], fights['blue_fighter_id']]
     fights = fights.copy()
     fights['loser_id'] = np.select(conditions, choices, default=np.nan)
     return fights
@@ -62,20 +86,16 @@ def derive_loser_id(fights):
 
 # ---------- Helper: Compute Fight Duration in Seconds ----------
 def compute_fight_duration(fights):
-    """Compute fight_duration_seconds from Round, Fight_Time, and Time Format."""
     fights = fights.copy()
 
     def parse_round_duration(time_format):
-        """Extract per-round durations from Time Format string."""
         if pd.isna(time_format) or time_format == 'No Time Limit':
             return None
-        # Extract durations in parentheses, e.g. '3 Rnd (5-5-5)' -> [5, 5, 5]
         import re
         match = re.search(r'\(([^)]+)\)', str(time_format))
         if match:
             durations = [int(x) for x in match.group(1).split('-')]
             return durations
-        # Single round format like '1 Rnd (12)' already handled above
         return None
 
     def calc_duration(row):
@@ -84,14 +104,12 @@ def compute_fight_duration(fights):
             return np.nan
         fight_round = int(row['Round'])
         fight_time = str(row['Fight_Time'])
-        # Parse mm:ss
         parts = fight_time.split(':')
         if len(parts) == 2:
             minutes = int(parts[0])
             seconds = int(parts[1])
         else:
             return np.nan
-        # Sum completed rounds + final round time
         completed_seconds = 0
         for i in range(min(fight_round - 1, len(durations))):
             completed_seconds += durations[i] * 60
@@ -104,7 +122,6 @@ def compute_fight_duration(fights):
 
 # ---------- Helper: Identify Decision Fights ----------
 def is_decision(method):
-    """Check if a method is a decision (U-DEC, M-DEC, S-DEC)."""
     if pd.isna(method):
         return False
     return 'DEC' in str(method)
@@ -131,15 +148,15 @@ def operation_1_elo():
         (fights['Result_2'].isin(['W', 'L']))
     ].copy()
 
-    # ---------- Sort by Fight_Id Ascending ----------
-    fights = fights.sort_values('Fight_Id').reset_index(drop=True)
+    # ---------- Sort by fight_id Ascending ----------
+    fights = fights.sort_values('fight_id').reset_index(drop=True)
 
     # ---------- Initialize Elo Ratings ----------
     elo_ratings = {}
     K = 32
 
     # ---------- Track Elo Progression for Plot ----------
-    elo_history = {}  # fighter_id -> list of (fight_index, elo)
+    elo_history = {}
 
     # ---------- Process Fights in Order ----------
     for idx, row in fights.iterrows():
@@ -181,9 +198,6 @@ def operation_1_elo():
     print(f"Maximum Final Elo Rating: {max_elo_rounded}")
 
     # ---------- Generate Elo Progression Line Plot ----------
-    # Find the fighter with the highest Elo for the plot
-    top_fighter = max(elo_ratings, key=elo_ratings.get)
-    # Plot top 5 fighters for readability
     top_fighters = sorted(elo_ratings, key=elo_ratings.get, reverse=True)[:5]
 
     fig, ax = plt.subplots(figsize=(12, 6))
@@ -221,35 +235,34 @@ def operation_2_cox():
     fights = compute_fight_duration(fights)
 
     # ---------- Define Event Variable ----------
-    fights['event'] = fights['Method'].apply(lambda x: 0 if is_decision(x) else 1)
+    fights['event'] = fights['result_method'].apply(lambda x: 0 if is_decision(x) else 1)
 
-    # ---------- Join Reach for Red Fighter (Fighter_Id_1) ----------
-    fighters_reach = fighters[['Fighter_Id', 'Reach']].rename(
-        columns={'Fighter_Id': 'Fighter_Id_1', 'Reach': 'reach_red'}
+    # ---------- Join reach_cm for Red Fighter ----------
+    fighters_reach_red = fighters[['fighter_id', 'reach_cm']].rename(
+        columns={'fighter_id': 'red_fighter_id', 'reach_cm': 'reach_cm_red'}
     )
-    fights = fights.merge(fighters_reach, on='Fighter_Id_1', how='left')
+    fights = fights.merge(fighters_reach_red, on='red_fighter_id', how='left')
 
-    # ---------- Join Reach for Blue Fighter (Fighter_Id_2) ----------
-    fighters_reach2 = fighters[['Fighter_Id', 'Reach']].rename(
-        columns={'Fighter_Id': 'Fighter_Id_2', 'Reach': 'reach_blue'}
+    # ---------- Join reach_cm for Blue Fighter ----------
+    fighters_reach_blue = fighters[['fighter_id', 'reach_cm']].rename(
+        columns={'fighter_id': 'blue_fighter_id', 'reach_cm': 'reach_cm_blue'}
     )
-    fights = fights.merge(fighters_reach2, on='Fighter_Id_2', how='left')
+    fights = fights.merge(fighters_reach_blue, on='blue_fighter_id', how='left')
 
-    # ---------- Compute Reach Difference ----------
-    fights['reach_diff'] = (fights['reach_red'] - fights['reach_blue']).abs()
+    # ---------- Compute reach_cm Difference ----------
+    fights['reach_cm_diff'] = (fights['reach_cm_red'] - fights['reach_cm_blue']).abs()
 
     # ---------- Drop Rows with Missing Referenced Variables ----------
-    # Referenced: event (from Method), fight_duration_seconds, reach_diff
-    referenced_cols = ['event', 'fight_duration_seconds', 'reach_diff']
+    referenced_cols = ['event', 'fight_duration_seconds', 'reach_cm_diff']
     fights = fights.dropna(subset=referenced_cols).copy()
 
     # ---------- Fit Cox PH Model ----------
-    cox_df = fights[['fight_duration_seconds', 'event', 'reach_diff']].copy()
+    cox_df = fights[['fight_duration_seconds', 'event', 'reach_cm_diff']].copy()
     cph = CoxPHFitter()
     cph.fit(cox_df, duration_col='fight_duration_seconds', event_col='event')
 
     # ---------- Report Hazard Ratio ----------
-    hazard_ratio = np.exp(cph.params_['reach_diff'])
+    hazard_ratio = np.exp(cph.params_['reach_cm_diff'])
     hazard_ratio_rounded = round(hazard_ratio, 3)
     print(f"Hazard Ratio for reach_cm difference: {hazard_ratio_rounded}")
 
@@ -282,8 +295,8 @@ def operation_3_similarity():
     stats = load_stats()
 
     # ---------- Select Referenced Variables ----------
-    style_cols = ['STR', 'TD', 'Ctrl']
-    subset = stats[['Fighter_Id'] + style_cols].copy()
+    style_cols = ['total_strikes_landed', 'takedowns_landed', 'control_time_seconds']
+    subset = stats[['fighter_id'] + style_cols].copy()
 
     # ---------- Drop Rows with Missing Referenced Variables ----------
     subset = subset.dropna(subset=style_cols)
@@ -305,16 +318,14 @@ def operation_3_similarity():
 
     # ---------- Generate Heatmap Plot ----------
     fig, ax = plt.subplots(figsize=(12, 10))
-    # Use a subset for visibility (top 30 fighters by STR)
     n_display = 30
-    display_indices = subset.head(n_display).index
     display_sim = cosine_similarity(scaled_values[:n_display])
     np.fill_diagonal(display_sim, 0)
 
     im = ax.imshow(display_sim, cmap='YlOrRd', aspect='auto')
     ax.set_xticks(range(n_display))
     ax.set_yticks(range(n_display))
-    fighter_labels = subset['Fighter_Id'].iloc[:n_display].str[:8].tolist()
+    fighter_labels = subset['fighter_id'].iloc[:n_display].str[:8].tolist()
     ax.set_xticklabels(fighter_labels, rotation=90, fontsize=6)
     ax.set_yticklabels(fighter_labels, fontsize=6)
     ax.set_xlabel('Fighter Identifiers')
@@ -408,27 +419,35 @@ def operation_5_win_prediction():
         (fights['Result_2'].isin(['W', 'L']))
     ].copy()
 
-    # ---------- Join Fighter Stats for Fighter_Id_1 ----------
-    stats_1 = stats[['Fighter_Id', 'STR', 'TD', 'Ctrl']].rename(
-        columns={'Fighter_Id': 'Fighter_Id_1', 'STR': 'STR_stat_1',
-                 'TD': 'TD_stat_1', 'Ctrl': 'Ctrl_stat_1'}
+    # ---------- Join Fighter Stats for Red Fighter ----------
+    stats_red = stats[['fighter_id', 'total_strikes_landed', 'takedowns_landed', 'control_time_seconds']].rename(
+        columns={
+            'fighter_id': 'red_fighter_id',
+            'total_strikes_landed': 'total_strikes_landed_red',
+            'takedowns_landed': 'takedowns_landed_red',
+            'control_time_seconds': 'control_time_seconds_red',
+        }
     )
-    fights = fights.merge(stats_1, on='Fighter_Id_1', how='left')
+    fights = fights.merge(stats_red, on='red_fighter_id', how='left')
 
-    # ---------- Join Fighter Stats for Fighter_Id_2 ----------
-    stats_2 = stats[['Fighter_Id', 'STR', 'TD', 'Ctrl']].rename(
-        columns={'Fighter_Id': 'Fighter_Id_2', 'STR': 'STR_stat_2',
-                 'TD': 'TD_stat_2', 'Ctrl': 'Ctrl_stat_2'}
+    # ---------- Join Fighter Stats for Blue Fighter ----------
+    stats_blue = stats[['fighter_id', 'total_strikes_landed', 'takedowns_landed', 'control_time_seconds']].rename(
+        columns={
+            'fighter_id': 'blue_fighter_id',
+            'total_strikes_landed': 'total_strikes_landed_blue',
+            'takedowns_landed': 'takedowns_landed_blue',
+            'control_time_seconds': 'control_time_seconds_blue',
+        }
     )
-    fights = fights.merge(stats_2, on='Fighter_Id_2', how='left')
+    fights = fights.merge(stats_blue, on='blue_fighter_id', how='left')
 
-    # ---------- Compute Feature Differences (Red - Blue) ----------
-    fights['total_strikes_landed'] = fights['STR_stat_1'] - fights['STR_stat_2']
-    fights['takedowns_landed'] = fights['TD_stat_1'] - fights['TD_stat_2']
-    fights['control_time_seconds'] = fights['Ctrl_stat_1'] - fights['Ctrl_stat_2']
+    # ---------- Compute Feature Differences (Red minus Blue) ----------
+    fights['total_strikes_landed'] = fights['total_strikes_landed_red'] - fights['total_strikes_landed_blue']
+    fights['takedowns_landed'] = fights['takedowns_landed_red'] - fights['takedowns_landed_blue']
+    fights['control_time_seconds'] = fights['control_time_seconds_red'] - fights['control_time_seconds_blue']
 
-    # ---------- Define Target: Win = 1 if Fighter_Id_1 wins ----------
-    fights['win'] = (fights['winner_id'] == fights['Fighter_Id_1']).astype(int)
+    # ---------- Define Target: Win equals 1 if Red Fighter Wins ----------
+    fights['win'] = (fights['winner_id'] == fights['red_fighter_id']).astype(int)
 
     # ---------- Drop Rows with Missing Referenced Variables ----------
     feature_cols = ['total_strikes_landed', 'takedowns_landed', 'control_time_seconds']
@@ -496,11 +515,10 @@ def operation_6_gini():
     ].copy()
 
     # ---------- Compute Total Wins Per Fighter ----------
-    # Include all fighters (winners get wins, losers get 0 from this count)
     winner_counts = fights['winner_id'].value_counts().reset_index()
     winner_counts.columns = ['fighter_id', 'wins']
 
-    # Also include fighters who never won (losers only)
+    # ---------- Include All Fighters with Zero Wins ----------
     fights = derive_loser_id(fights)
     all_fighters = set(fights['winner_id'].dropna()) | set(fights['loser_id'].dropna())
     win_dict = dict(zip(winner_counts['fighter_id'], winner_counts['wins']))
@@ -552,9 +570,9 @@ def operation_7_lda():
     stats = load_stats()
 
     # ---------- Select Referenced Variables ----------
-    feature_cols = ['STR', 'TD', 'Ctrl']
-    target_col = 'Weight_Class'
-    subset = stats[['Fighter_Id'] + feature_cols + [target_col]].copy()
+    feature_cols = ['total_strikes_landed', 'takedowns_landed', 'control_time_seconds']
+    target_col = 'weight_class'
+    subset = stats[['fighter_id'] + feature_cols + [target_col]].copy()
 
     # ---------- Drop Rows with Missing Referenced Variables ----------
     subset = subset.dropna(subset=feature_cols + [target_col])
@@ -598,6 +616,12 @@ def operation_7_lda():
 
 # ============================================================
 # OPERATION 8: Striking Consistency (Coefficient of Variation)
+# NOTE: The prompt specifies total_strikes_landed from Fighters Stats.xlsx,
+# but Fighters Stats contains only one aggregated row per fighter, making
+# per-fight CV computation infeasible. The CV requires multiple observations
+# per fighter across recorded fights, so per-fight striking values from
+# Fights.xlsx are used as the necessary deviation to fulfill the analytical
+# intent of computing within-fighter variability across bouts.
 # ============================================================
 def operation_8_cv():
     print("\n" + "=" * 60)
@@ -608,14 +632,15 @@ def operation_8_cv():
     fights = load_fights()
 
     # ---------- Build Per-Fighter Per-Fight Striking Data ----------
-    # Fighter_Id_1 has STR_1, Fighter_Id_2 has STR_2
-    fighter1 = fights[['Fighter_Id_1', 'STR_1']].rename(
-        columns={'Fighter_Id_1': 'fighter_id', 'STR_1': 'total_strikes_landed'}
+    # Per-fight total_strikes_landed sourced from fight-level columns in Fights.xlsx
+    # because Fighters Stats.xlsx contains only one averaged row per fighter
+    fighter_red = fights[['red_fighter_id', 'STR_1']].rename(
+        columns={'red_fighter_id': 'fighter_id', 'STR_1': 'total_strikes_landed'}
     )
-    fighter2 = fights[['Fighter_Id_2', 'STR_2']].rename(
-        columns={'Fighter_Id_2': 'fighter_id', 'STR_2': 'total_strikes_landed'}
+    fighter_blue = fights[['blue_fighter_id', 'STR_2']].rename(
+        columns={'blue_fighter_id': 'fighter_id', 'STR_2': 'total_strikes_landed'}
     )
-    all_strikes = pd.concat([fighter1, fighter2], ignore_index=True)
+    all_strikes = pd.concat([fighter_red, fighter_blue], ignore_index=True)
 
     # ---------- Drop Rows with Missing Referenced Variables ----------
     all_strikes = all_strikes.dropna(subset=['total_strikes_landed'])
@@ -624,7 +649,7 @@ def operation_8_cv():
     grouped = all_strikes.groupby('fighter_id')['total_strikes_landed']
     cv_per_fighter = grouped.std() / grouped.mean()
 
-    # ---------- Drop NaN (fighters with only 1 fight have NaN std) ----------
+    # ---------- Drop NaN (fighters with only 1 fight have undefined std) ----------
     cv_per_fighter = cv_per_fighter.dropna()
 
     # ---------- Report Maximum CV ----------
@@ -657,8 +682,8 @@ def operation_9_dominance_gap():
         (fights['Result_2'].isin(['W', 'L']))
     ].copy()
 
-    # ---------- Sort by Fight_Id Ascending ----------
-    valid_fights = valid_fights.sort_values('Fight_Id').reset_index(drop=True)
+    # ---------- Sort by fight_id Ascending ----------
+    valid_fights = valid_fights.sort_values('fight_id').reset_index(drop=True)
 
     # ---------- Recompute Elo Ratings ----------
     elo_ratings = {}
@@ -700,23 +725,26 @@ def operation_9_dominance_gap():
     pr_series = pd.Series(pagerank)
     pr_rank = pr_series.rank(ascending=False, method='min').astype(int)
 
-    # ---------- Compute Dominance Gap (Elo Rank - PageRank Rank) ----------
+    # ---------- Compute Dominance Gap (Elo Rank minus PageRank Rank) ----------
     common_fighters = set(elo_rank.index) & set(pr_rank.index)
     dominance_gap = {}
     for fid in common_fighters:
         dominance_gap[fid] = elo_rank[fid] - pr_rank[fid]
 
-    # ---------- Find Fighter with Largest Positive Dominance Gap ----------
+    # ---------- Filter for Positive Gaps Only ----------
     gap_df = pd.DataFrame({
         'fighter_id': list(dominance_gap.keys()),
         'gap': list(dominance_gap.values())
     })
+    gap_df = gap_df[gap_df['gap'] > 0]
+
+    # ---------- Find Fighter with Largest Positive Dominance Gap ----------
     gap_df = gap_df.sort_values(['gap', 'fighter_id'], ascending=[False, True])
     top_fighter_id = gap_df.iloc[0]['fighter_id']
 
     # ---------- Look Up Fighter Name ----------
     fighter_name = fighters.loc[
-        fighters['Fighter_Id'] == top_fighter_id, 'Full Name'
+        fighters['fighter_id'] == top_fighter_id, 'fighter_name'
     ].values[0]
 
     print(f"Fighter with Largest Positive Dominance Gap: {fighter_name}")
