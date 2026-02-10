@@ -317,7 +317,7 @@ stl_df = dataset_tk_df.dropna(subset=['Tamil Nadu'])
 stl_df = stl_df.sort_values('Unnamed: 0')
 
 # Apply STL decomposition with period 7 (weekly seasonality)
-stl = STL(stl_df['Tamil Nadu'], period=7, seasonal=13)
+stl = STL(stl_df['Tamil Nadu'], period=7)
 result = stl.fit()
 
 # Extract components
