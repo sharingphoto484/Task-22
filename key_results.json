@@ -1,0 +1,13 @@
+{
+  "new_fights_in_v3_not_v1": 48,
+  "spearman_rho_event_vs_finish": -0.4731,
+  "anova_interaction_f_stat": 11.5507,
+  "cohens_d_ko_vs_sub": 0.1847,
+  "logistic_cv_mean_roc_auc": 0.8982,
+  "fft_dominant_period": 305.0,
+  "mediation_indirect_effect": -0.0003,
+  "quantile_reg_ko_tko_coef": -29.0,
+  "did_interaction_coef": -2.35,
+  "chi_square_statistic": 0.0144,
+  "interpretation": "The mediation analysis reveals an indirect effect of -0.0003, suggesting that as UFC events progress, fights tend to last longer (positive a-path), and longer fight durations are associated with lower finish rates (negative b-path), indicating that the gradual lengthening of fight durations acts as a meaningful pathway suppressing finishes. The spectral analysis detected a dominant cyclical period of 305.0 events, which could reflect rule changes (e.g., USADA testing implementation, new weight classes, scoring criteria updates) or roster composition shifts (e.g., waves of grapplers vs strikers, international expansion bringing diverse fighting styles) that periodically alter fight dynamics in a recurring pattern."
+}
