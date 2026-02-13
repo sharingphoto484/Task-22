@@ -1,0 +1,184 @@
+OUTPUT-BASED RUBRICS FOR SALES BEHAVIOR ANALYSIS
+
+CATEGORY 1: CORE NUMERICAL RESULTS
+
+1. Reports that the average analytic-signal amplitude is 4.3050 rounded to four decimal places.
+30 points · Must Have
+Proof of Ask: A Hilbert transform shall be applied to this sequence, and the average analytic-signal amplitude shall be extracted. Report this amplitude rounded to four decimals.
+
+2. Reports that the spline curvature is 0.0000 rounded to four decimal places.
+25 points · Must Have
+Proof of Ask: The spline curvature, expressed as the integral of squared second derivatives, shall be obtained. Report this curvature rounded to four decimals.
+
+3. Reports that the mean entropy is 1.569 rounded to three decimal places.
+25 points · Must Have
+Proof of Ask: The mean entropy across all valid blocks shall be extracted. Report this mean entropy rounded to three decimals.
+
+4. Reports that the integrated squared deviation is 699.989 rounded to three decimal places.
+25 points · Must Have
+Proof of Ask: The integrated squared deviation between the fitted curve and the original monthly Sales shall be obtained. Report this deviation rounded to three decimals.
+
+5. Reports that the mutual information estimate is 0.1934 rounded to four decimal places.
+25 points · Must Have
+Proof of Ask: The mutual-information estimate shall be extracted. Report this estimate rounded to four decimals.
+
+6. Reports that the distance sum is 17.853 rounded to three decimal places.
+25 points · Must Have
+Proof of Ask: The sum of squared distances from each mean value to the fitted curve shall be extracted. Report this distance sum rounded to three decimals.
+
+7. Reports that the standard deviation is 10.716 rounded to three decimal places.
+20 points · Must Have
+Proof of Ask: The standard deviation of this ratio sequence shall be extracted. Report this deviation rounded to three decimals.
+
+8. Reports that the mean absolute difference is 10.362 rounded to three decimal places.
+20 points · Must Have
+Proof of Ask: The mean absolute difference between the original daily Sales and this centered median shall be extracted. Report this difference rounded to three decimals.
+
+CATEGORY 2: VISUALIZATIONS - HOURLY SALES ANALYSIS
+
+9. Includes a line chart for Hourly Sales Time Series that is semantically similar to the attached visualization.
+8 points · Must Have
+Proof of Ask: This stage generates a line chart for hourly Sales with x axis represents hour index, y axis represents Sales magnitude.
+
+10. Provides a line chart for Hourly Sales Time Series with hour index on the x-axis.
+6 points · Must Have
+Proof of Ask: This stage generates a line chart for hourly Sales with x axis represents hour index, y axis represents Sales magnitude.
+
+11. Provides a line chart for Hourly Sales Time Series with Sales magnitude on the y-axis.
+6 points · Must Have
+Proof of Ask: This stage generates a line chart for hourly Sales with x axis represents hour index, y axis represents Sales magnitude.
+
+CATEGORY 3: VISUALIZATIONS - RATIO SCATTER PLOT
+
+12. Includes a scatter plot for Max Hourly to Daily Sales Ratio that is semantically similar to the attached visualization.
+8 points · Must Have
+Proof of Ask: This stage generates a scatter plot for ratio values with x axis represents date index, y axis represents ratio magnitude.
+
+13. Provides a scatter plot for Max Hourly to Daily Sales Ratio with date index on the x-axis.
+6 points · Must Have
+Proof of Ask: This stage generates a scatter plot for ratio values with x axis represents date index, y axis represents ratio magnitude.
+
+14. Provides a scatter plot for Max Hourly to Daily Sales Ratio with ratio magnitude on the y-axis.
+6 points · Must Have
+Proof of Ask: This stage generates a scatter plot for ratio values with x axis represents date index, y axis represents ratio magnitude.
+
+CATEGORY 4: VISUALIZATIONS - ENTROPY BOXPLOT
+
+15. Includes a boxplot for Blockwise Entropy Distribution that is semantically similar to the attached visualization.
+8 points · Must Have
+Proof of Ask: This stage generates a boxplot for blockwise entropies with x axis represents block category, y axis represents entropy.
+
+16. Provides a boxplot for Blockwise Entropy Distribution with block category on the x-axis.
+6 points · Must Have
+Proof of Ask: This stage generates a boxplot for blockwise entropies with x axis represents block category, y axis represents entropy.
+
+17. Provides a boxplot for Blockwise Entropy Distribution with entropy on the y-axis.
+6 points · Must Have
+Proof of Ask: This stage generates a boxplot for blockwise entropies with x axis represents block category, y axis represents entropy.
+
+CATEGORY 5: VISUALIZATIONS - MONTHLY SALES LINE CHART
+
+18. Includes a line chart for Monthly Sales Observed vs Fitted that is semantically similar to the attached visualization.
+8 points · Must Have
+Proof of Ask: This stage generates a line chart for fitted and observed monthly Sales with x axis represents month index, y axis represents Sales value.
+
+19. Provides a line chart for Monthly Sales Observed vs Fitted with month index on the x-axis.
+6 points · Must Have
+Proof of Ask: This stage generates a line chart for fitted and observed monthly Sales with x axis represents month index, y axis represents Sales value.
+
+20. Provides a line chart for Monthly Sales Observed vs Fitted with Sales value on the y-axis showing both fitted and observed values.
+6 points · Must Have
+Proof of Ask: This stage generates a line chart for fitted and observed monthly Sales with x axis represents month index, y axis represents Sales value.
+
+CATEGORY 6: VISUALIZATIONS - COUPLING HEATMAP
+
+21. Includes a heatmap for Daily-to-Monthly Sales Association Heatmap that is semantically similar to the attached visualization.
+8 points · Must Have
+Proof of Ask: This stage generates a heatmap for daily-to-monthly binned associations with x axis represents daily bin, y axis represents monthly bin.
+
+22. Provides a heatmap for Daily-to-Monthly Sales Association Heatmap with daily bin on the x-axis.
+6 points · Must Have
+Proof of Ask: This stage generates a heatmap for daily-to-monthly binned associations with x axis represents daily bin, y axis represents monthly bin.
+
+23. Provides a heatmap for Daily-to-Monthly Sales Association Heatmap with monthly bin on the y-axis.
+6 points · Must Have
+Proof of Ask: This stage generates a heatmap for daily-to-monthly binned associations with x axis represents daily bin, y axis represents monthly bin.
+
+CATEGORY 7: VISUALIZATIONS - HOUR-LEVEL MEANS WITH FITTED CURVE
+
+24. Includes a scatter plot with fitted curve overlay for Hour-Level Mean Sales with Fitted Curve that is semantically similar to the attached visualization.
+8 points · Must Have
+Proof of Ask: This stage generates a scatter plot for hour-level means with x axis represents hour, y axis represents mean Sales.
+
+25. Provides a scatter plot with fitted curve overlay for Hour-Level Mean Sales with Fitted Curve with hour on the x-axis.
+6 points · Must Have
+Proof of Ask: This stage generates a scatter plot for hour-level means with x axis represents hour, y axis represents mean Sales.
+
+26. Provides a scatter plot with fitted curve overlay for Hour-Level Mean Sales with Fitted Curve with mean Sales on the y-axis showing both scatter points and fitted curve.
+6 points · Must Have
+Proof of Ask: This stage generates a scatter plot for hour-level means with x axis represents hour, y axis represents mean Sales.
+
+CATEGORY 8: INTERPRETIVE VERDICT (OPEN-ENDED)
+
+27. States a verdict addressing conditions linked to extreme analytic-signal amplitudes, for example stating that extreme analytic-signal amplitudes emerge when rapid hourly sales fluctuations coincide with sustained high-frequency variability across consecutive time intervals.
+20 points · Must Have
+Proof of Ask: What verdict best summarizes the conditions linked to extreme analytic-signal amplitudes?
+
+CATEGORY 9: TECHNICAL SPECIFICATIONS
+
+28. States that dates are standardized into a consistent format.
+5 points · Nice to Have
+Proof of Ask: All dates shall be standardized into a consistent format.
+
+29. States that rows containing missing or nonnumeric values required for operations are excluded.
+5 points · Nice to Have
+Proof of Ask: Any row containing missing or nonnumeric values required for an operation shall be excluded.
+
+30. States that when linking two datasets, only dates common to both are used.
+5 points · Nice to Have
+Proof of Ask: When two datasets must be linked, only the dates common to both shall be used.
+
+31. States that the hourly Sales sequence is formed as a continuous sequence ordered by Date and hour.
+5 points · Nice to Have
+Proof of Ask: A high-resolution decomposition of hourly Sales from sales_hourly.csv shall be produced by forming a continuous sequence ordered by Date and hour.
+
+32. States that ratios are computed for each date shared by sales_daily.csv and sales_hourly.csv.
+5 points · Nice to Have
+Proof of Ask: A nonlinear association between daily and hourly patterns shall be formed by computing, for each date shared by sales_daily.csv and sales_hourly.csv, the ratio of the day's maximum hourly Sales to the daily Sales value.
+
+33. States that the daily Sales series is split into blocks of five consecutive days.
+5 points · Nice to Have
+Proof of Ask: A multiscale intensity signature for sales_daily.csv shall be derived by splitting the daily Sales series into blocks of five consecutive days, wherever such blocks exist.
+
+34. States that both daily and monthly variables are binned into ten equal-frequency intervals.
+5 points · Nice to Have
+Proof of Ask: A mutual-information estimator based on binning both variables into ten equal-frequency intervals shall be applied.
+
+35. States that entries are grouped by hour to form hour-level means across the entire dataset.
+5 points · Nice to Have
+Proof of Ask: A structural divergence index shall be defined from sales_hourly.csv by grouping entries by hour and forming, for each hour, the mean Sales across the entire dataset.
+
+36. States that a centered five-day moving median is formed wherever full windows exist.
+5 points · Nice to Have
+Proof of Ask: A medium-level stability index for sales_daily.csv shall be constructed by forming a centered five-day moving median of Sales wherever full windows exist.
+
+SUMMARY OF POINT ALLOCATION
+
+Core Numerical Results (8 metrics): 195 points total
+  Amplitude: 30 points
+  Curvature: 25 points
+  Mean Entropy: 25 points
+  Squared Deviation: 25 points
+  Mutual Information: 25 points
+  Distance Sum: 25 points
+  Standard Deviation: 20 points
+  Mean Absolute Difference: 20 points
+
+Visualizations (6 visualizations × 20 points): 120 points total
+  Each visualization: 3 criteria (8 + 6 + 6 points)
+
+Interpretive Verdict: 20 points
+
+Technical Specifications (9 criteria): 45 points total
+
+TOTAL POSSIBLE POINTS: 380
