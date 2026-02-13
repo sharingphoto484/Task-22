@@ -1,0 +1,8 @@
+{
+  "total_bubble_episodes": 3,
+  "cross_asset_avg_median_yz_volatility_percent": 31.61822166751069,
+  "average_lower_tail_dependence": 0.013278792851357461,
+  "twelve_month_avg_standardized_amihud": -0.8481443170368556,
+  "max_heatmap_tail_dependence": 0.03571428571428571,
+  "covar_verdict": 0
+}
